@@ -19,7 +19,6 @@ protocol ApiResource {
     var methodPath: String {get}
     var httpMethod: String {get}
     var parameters: [String] {get}
-    //var headers: [String:String] {get}
     func makeModel(data: Data) -> [Model]?
 }
 extension ApiResource {
@@ -50,10 +49,7 @@ protocol NetworkRequest: class {
 }
 extension NetworkRequest {
     func load(url: URL, httpMethod: String, parameters: [String], loader: OAuth2DataLoader, withCompletion completion: @escaping (Model?) -> Void) {
-        //let configuration = URLSessionConfiguration.ephemeral
-        //let session = URLSession(configuration: configuration)
         
-        //let url = URL(string: "https://accounts.spotify.com/api/token")!
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod
     
@@ -61,14 +57,7 @@ extension NetworkRequest {
         for p in parameters {
             bodyParams += p
         }
-        
-        //request.httpBody = bodyParams.data(using: String.Encoding.ascii, allowLossyConversion: true)
-        
-        /*
-        for (title,value) in headers {
-            request.addValue(value, forHTTPHeaderField: title)
-        }
-        */
+       
         
         loader.perform(request: request) { [weak self] response in
             do {
@@ -86,21 +75,6 @@ extension NetworkRequest {
             }
         }
         
-        
-        /*
-        let task = session.dataTask(with: request) { [weak self] (data,response,error) in
-            guard let data = data else {
-                print("NETWORK REQUEST FAILED")
-                print(response)
-                print(error)
-                completion(nil)
-                return
-            }
-    
-            completion(self?.decode(data))
-        }
-        task.resume()
-        */
     }
 }
 

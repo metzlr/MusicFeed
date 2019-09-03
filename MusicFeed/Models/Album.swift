@@ -21,7 +21,7 @@ struct Album {
     let urlImages: [SpotifyImage]
     
 }
-/*
+
 extension Album: Comparable, Equatable {
     static func == (lhs: Album, rhs: Album) -> Bool {
         return lhs.name == rhs.name && lhs.type == rhs.type
@@ -33,7 +33,7 @@ extension Album: Comparable, Equatable {
         return lhs.name != rhs.name && lhs.type != rhs.type
     }
 }
- */
+
 
 extension Album: Decodable {
     enum CodingKeys: String, CodingKey {
@@ -64,13 +64,12 @@ struct AlbumsWrapper: Decodable {
 struct AlbumsResource: ApiResource {
     
     var methodPath: String
-    //var headers: [String : String]
     var httpMethod = "GET"
     var parameters = ["include_groups=album,single", "limit=7", "market=US"]
     
-    init(artist: Artist) {// , authToken: String) {
+    init(artist: Artist) {
         methodPath = "artists/\(artist.id)/albums"
-        //headers = ["Authorization":"Bearer "+authToken]
+        
     }
     func makeModel(data: Data) -> [Album]? {
         let decoder = JSONDecoder()
@@ -84,18 +83,7 @@ struct AlbumsResource: ApiResource {
             print(error)
             return nil
         }
-        
-        
-        //Debugging
-        
-        //dump(String(data: data, encoding: .utf8))
-        /*
-         do {
-         let wrapped = try decoder.decode(AlbumsWrapper.self, from: data)
-         } catch {
-         print(error)
-         }
-         */
+
     }
 }
 

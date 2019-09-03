@@ -24,9 +24,8 @@ class FirstViewController: UIViewController {
     }
     func testAlbumRequest() {
         let artist = Artist(id: "1anAI9P9iSzc9qzLv6AtHZ", name: "Sure Sure")
-        let token = "BQBb084nilaIul2jEYP-FcfeyLIs886gVzak7vzWI9SdN-IJmCRcI7dG9jVb8k5xZw1gxgv-G7n3TdOI5fk"
         
-        let resource = AlbumsResource(artist: artist)//, authToken: token)
+        let resource = AlbumsResource(artist: artist)
         let request = ApiRequest(resource: resource, loader: storageController!.loader)
         self.request = request
         request.load() {
@@ -39,9 +38,8 @@ class FirstViewController: UIViewController {
         
     }
     func testArtistSearch() {
-        let token = "BQBb084nilaIul2jEYP-FcfeyLIs886gVzak7vzWI9SdN-IJmCRcI7dG9jVb8k5xZw1gxgv-G7n3TdOI5fk"
         
-        let resource = ArtistSearchResource(searchText: "Sure Sure")//, authToken: token)
+        let resource = ArtistSearchResource(searchText: "Sure Sure")
         let request = ApiRequest(resource: resource, loader: storageController!.loader)
         self.request = request
         request.load() {

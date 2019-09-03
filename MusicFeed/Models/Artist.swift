@@ -49,13 +49,11 @@ struct ArtistSearchWrapper: Decodable {
 struct ArtistSearchResource: ApiResource {
     
     var methodPath = "search"
-    //var headers: [String : String]
     var httpMethod = "GET"
     var parameters = ["type=artist"]
     
-    init(searchText: String) {// , authToken: String) {
+    init(searchText: String) {
         parameters.append("q=\(searchText)*")
-        //headers = ["Authorization":"Bearer "+authToken]
         
     }
     func makeModel(data: Data) -> [Artist]? {
@@ -70,15 +68,5 @@ struct ArtistSearchResource: ApiResource {
             return nil
         }
         
-        //Debugging
-        
-        //dump(String(data: data, encoding: .utf8))
-        /*
-         do {
-         let wrapped = try decoder.decode(AlbumsWrapper.self, from: data)
-         } catch {
-         print(error)
-         }
-         */
     }
 }
