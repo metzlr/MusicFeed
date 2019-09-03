@@ -12,10 +12,20 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let storageController = StorageController()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        guard let tabBarController = window?.rootViewController as? UITabBarController,
+            let viewControllers = tabBarController.viewControllers else {
+                return true
+        }
+        for (index, viewController) in viewControllers.enumerated() {
+            if let navigationController = viewController as? UINavigationController,
+                let firstViewController = navigationController.viewControllers.first as? FirstViewController {
+                firstViewController.storageController = storageController
+            }
+        }
+        return true
         return true
     }
 

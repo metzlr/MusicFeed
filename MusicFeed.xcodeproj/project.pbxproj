@@ -15,6 +15,13 @@
 		8854977B231B677D0021BCB1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88549779231B677D0021BCB1 /* LaunchScreen.storyboard */; };
 		88549786231B677D0021BCB1 /* MusicFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88549785231B677D0021BCB1 /* MusicFeedTests.swift */; };
 		88549791231B677D0021BCB1 /* MusicFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88549790231B677D0021BCB1 /* MusicFeedUITests.swift */; };
+		885497A0231B71530021BCB1 /* StorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854979F231B71530021BCB1 /* StorageController.swift */; };
+		885497A3231B71990021BCB1 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A2231B71990021BCB1 /* Album.swift */; };
+		885497A5231B71A00021BCB1 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A4231B71A00021BCB1 /* Artist.swift */; };
+		885497A7231C61770021BCB1 /* APICalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A6231C61770021BCB1 /* APICalls.swift */; };
+		885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A8231DD0600021BCB1 /* OtherModels.swift */; };
+		885497AB231DD2840021BCB1 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497AA231DD2840021BCB1 /* Auth.swift */; };
+		885497AE231DD9F20021BCB1 /* OAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885497AD231DD9F20021BCB1 /* OAuth2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +56,13 @@
 		8854978C231B677D0021BCB1 /* MusicFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MusicFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		88549790231B677D0021BCB1 /* MusicFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicFeedUITests.swift; sourceTree = "<group>"; };
 		88549792231B677D0021BCB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8854979F231B71530021BCB1 /* StorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageController.swift; sourceTree = "<group>"; };
+		885497A2231B71990021BCB1 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
+		885497A4231B71A00021BCB1 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		885497A6231C61770021BCB1 /* APICalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICalls.swift; sourceTree = "<group>"; };
+		885497A8231DD0600021BCB1 /* OtherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherModels.swift; sourceTree = "<group>"; };
+		885497AA231DD2840021BCB1 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
+		885497AD231DD9F20021BCB1 /* OAuth2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuth2.framework; path = Carthage/Build/iOS/OAuth2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				885497AE231DD9F20021BCB1 /* OAuth2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +98,7 @@
 				88549784231B677D0021BCB1 /* MusicFeedTests */,
 				8854978F231B677D0021BCB1 /* MusicFeedUITests */,
 				8854976C231B677C0021BCB1 /* Products */,
+				885497AC231DD9F20021BCB1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,11 +115,14 @@
 		8854976D231B677C0021BCB1 /* MusicFeed */ = {
 			isa = PBXGroup;
 			children = (
-				8854976E231B677C0021BCB1 /* AppDelegate.swift */,
+				885497A1231B716F0021BCB1 /* Models */,
+				885497A6231C61770021BCB1 /* APICalls.swift */,
+				8854979F231B71530021BCB1 /* StorageController.swift */,
 				88549770231B677C0021BCB1 /* FirstViewController.swift */,
 				88549772231B677C0021BCB1 /* SecondViewController.swift */,
 				88549774231B677C0021BCB1 /* Main.storyboard */,
 				88549777231B677D0021BCB1 /* Assets.xcassets */,
+				8854976E231B677C0021BCB1 /* AppDelegate.swift */,
 				88549779231B677D0021BCB1 /* LaunchScreen.storyboard */,
 				8854977C231B677D0021BCB1 /* Info.plist */,
 			);
@@ -128,6 +147,25 @@
 			path = MusicFeedUITests;
 			sourceTree = "<group>";
 		};
+		885497A1231B716F0021BCB1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				885497A2231B71990021BCB1 /* Album.swift */,
+				885497A4231B71A00021BCB1 /* Artist.swift */,
+				885497AA231DD2840021BCB1 /* Auth.swift */,
+				885497A8231DD0600021BCB1 /* OtherModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		885497AC231DD9F20021BCB1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				885497AD231DD9F20021BCB1 /* OAuth2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -138,6 +176,7 @@
 				88549767231B677C0021BCB1 /* Sources */,
 				88549768231B677C0021BCB1 /* Frameworks */,
 				88549769231B677C0021BCB1 /* Resources */,
+				885497AF231DDA290021BCB1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -254,14 +293,41 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		885497AF231DDA290021BCB1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/OAuth2.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		88549767231B677C0021BCB1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				885497A5231B71A00021BCB1 /* Artist.swift in Sources */,
+				885497A7231C61770021BCB1 /* APICalls.swift in Sources */,
+				885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */,
 				88549773231B677C0021BCB1 /* SecondViewController.swift in Sources */,
 				8854976F231B677C0021BCB1 /* AppDelegate.swift in Sources */,
 				88549771231B677C0021BCB1 /* FirstViewController.swift in Sources */,
+				885497A0231B71530021BCB1 /* StorageController.swift in Sources */,
+				885497A3231B71990021BCB1 /* Album.swift in Sources */,
+				885497AB231DD2840021BCB1 /* Auth.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +504,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7Z6UGT7ZS6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MusicFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -456,6 +526,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7Z6UGT7ZS6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MusicFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
