@@ -19,13 +19,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let viewControllers = tabBarController.viewControllers else {
                 return true
         }
-        for (index, viewController) in viewControllers.enumerated() {
-            if let navigationController = viewController as? UINavigationController,
-                let firstViewController = navigationController.viewControllers.first as? FirstViewController {
-                firstViewController.storageController = storageController
+        for viewController in viewControllers {
+            if let navigationController = viewController as? UINavigationController {
+                if let vc = navigationController.viewControllers.first as? ReleaseListViewController {
+                    vc.storageController = storageController
+                } else if let vc = navigationController.viewControllers.first as? ArtistViewController {
+                    vc.storageController = storageController
+
+                } else if let vc = navigationController.viewControllers.first as? OtherScreenController {
+                    vc.storageController = storageController
+
+                }
             }
         }
-        return true
         return true
     }
 

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import OAuth2
 
 
 struct Album {
@@ -17,8 +18,9 @@ struct Album {
     let releaseDate: Date
     let datePrecision: String
     let totalTracks: Int
-    let artists: [Artist]
-    let urlImages: [SpotifyImage]
+    var artists: [Artist]
+    var urlImages: [SpotifyImage]
+    var imageData: Data?
     
 }
 
@@ -35,7 +37,7 @@ extension Album: Comparable, Equatable {
 }
 
 
-extension Album: Decodable {
+extension Album: Codable {
     enum CodingKeys: String, CodingKey {
         case type = "type"
         case name = "name"
@@ -50,7 +52,7 @@ extension Album: Decodable {
 }
 
 
-struct AlbumsWrapper: Decodable {
+fileprivate struct AlbumsWrapper: Decodable {
     
     let albums: [Album]
     
@@ -75,6 +77,8 @@ struct AlbumsResource: ApiResource {
         let decoder = JSONDecoder()
         // If error comes up where it gets albums that dont have this format, I think its necessary to set up custom init(from: decoder) for Album to handle the different date precisions
         decoder.dateDecodingStrategy = .formatted(DateFormatter.yyyyMMdd)
+        
+        //dump(String(data: data, encoding: .utf8))
         do {
             let wrapped = try decoder.decode(AlbumsWrapper.self, from: data)
             return wrapped.albums
@@ -87,4 +91,36 @@ struct AlbumsResource: ApiResource {
     }
 }
 
+extension UIImageView {
+    
+    func setAlbumImage(album: Album) {
+        /*
+        if let loader = loader, album.imageData == nil {
+            guard let urlImage = album.urlImages.last else {
+                print("Error: No urlImages provided and no image data")
+                return
+            }
+            let request = ImageRequest(url: urlImage.url, loader: loader)
+            request.load() { [unowned self]
+                image in
+                guard let image = image else {
+                    return
+                }
+                self.image = image
+            }
+        } else {
+        */
+        if let data = album.imageData {
+            guard let image = UIImage(data: data) else {
+                print("Error: Couldn't convert album image data to UIImage")
+                return
+            }
+            self.image = image
+        } else {
+            print("Error: No image data in album")
+        }
+    
+    }
+
+}
 

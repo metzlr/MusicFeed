@@ -39,7 +39,7 @@ class FirstViewController: UIViewController {
     }
     func testArtistSearch() {
         
-        let resource = ArtistSearchResource(searchText: "Sure Sure")
+        let resource = ArtistSearchResource(searchText: "Sur")
         let request = ApiRequest(resource: resource, loader: storageController!.loader)
         self.request = request
         request.load() {
