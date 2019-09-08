@@ -17,9 +17,7 @@
 		885497A0231B71530021BCB1 /* StorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854979F231B71530021BCB1 /* StorageController.swift */; };
 		885497A3231B71990021BCB1 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A2231B71990021BCB1 /* Album.swift */; };
 		885497A5231B71A00021BCB1 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A4231B71A00021BCB1 /* Artist.swift */; };
-		885497A7231C61770021BCB1 /* APICalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A6231C61770021BCB1 /* APICalls.swift */; };
 		885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A8231DD0600021BCB1 /* OtherModels.swift */; };
-		885497AB231DD2840021BCB1 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497AA231DD2840021BCB1 /* Auth.swift */; };
 		885497AE231DD9F20021BCB1 /* OAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885497AD231DD9F20021BCB1 /* OAuth2.framework */; };
 		885497CF231DEB390021BCB1 /* ArtistSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497CB231DEB390021BCB1 /* ArtistSearchCell.swift */; };
 		885497D0231DEB390021BCB1 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497CC231DEB390021BCB1 /* ArtistCell.swift */; };
@@ -29,7 +27,11 @@
 		885497D9231DEB4C0021BCB1 /* ReleaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497D5231DEB4C0021BCB1 /* ReleaseListViewController.swift */; };
 		885497DA231DEB4C0021BCB1 /* ReleaseDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497D6231DEB4C0021BCB1 /* ReleaseDetailController.swift */; };
 		885497DF231DEC8A0021BCB1 /* NetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497DE231DEC8A0021BCB1 /* NetStatus.swift */; };
+		886863112325692F007484E9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886863102325692F007484E9 /* Alamofire.framework */; };
 		889AFE27232419EB000521CA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88549770231B677C0021BCB1 /* FirstViewController.swift */; };
+		88F57546232437E900E1A011 /* APICallsOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A6231C61770021BCB1 /* APICallsOld.swift */; };
+		88F57548232437F600E1A011 /* APICalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F57547232437F600E1A011 /* APICalls.swift */; };
+		88F5754A232443C200E1A011 /* OAuth2RetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F57549232443C200E1A011 /* OAuth2RetryHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,9 +69,8 @@
 		8854979F231B71530021BCB1 /* StorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageController.swift; sourceTree = "<group>"; };
 		885497A2231B71990021BCB1 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		885497A4231B71A00021BCB1 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
-		885497A6231C61770021BCB1 /* APICalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICalls.swift; sourceTree = "<group>"; };
+		885497A6231C61770021BCB1 /* APICallsOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICallsOld.swift; sourceTree = "<group>"; };
 		885497A8231DD0600021BCB1 /* OtherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherModels.swift; sourceTree = "<group>"; };
-		885497AA231DD2840021BCB1 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		885497AD231DD9F20021BCB1 /* OAuth2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuth2.framework; path = Carthage/Build/iOS/OAuth2.framework; sourceTree = "<group>"; };
 		885497CB231DEB390021BCB1 /* ArtistSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArtistSearchCell.swift; path = "../../../../../../.Trash/Views 20-26-26-818/Artist List/ArtistSearchCell.swift"; sourceTree = "<group>"; };
 		885497CC231DEB390021BCB1 /* ArtistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArtistCell.swift; path = "../../../../../../.Trash/Views 20-26-26-818/Artist List/ArtistCell.swift"; sourceTree = "<group>"; };
@@ -79,6 +80,9 @@
 		885497D5231DEB4C0021BCB1 /* ReleaseListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReleaseListViewController.swift; path = "../../../../../../.Trash/Views 20-26-26-818/Release List/ReleaseListViewController.swift"; sourceTree = "<group>"; };
 		885497D6231DEB4C0021BCB1 /* ReleaseDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReleaseDetailController.swift; path = "../../../../../../.Trash/Views 20-26-26-818/Release List/ReleaseDetailController.swift"; sourceTree = "<group>"; };
 		885497DE231DEC8A0021BCB1 /* NetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetStatus.swift; sourceTree = "<group>"; };
+		886863102325692F007484E9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		88F57547232437F600E1A011 /* APICalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICalls.swift; sourceTree = "<group>"; };
+		88F57549232443C200E1A011 /* OAuth2RetryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2RetryHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				886863112325692F007484E9 /* Alamofire.framework in Frameworks */,
 				885497AE231DD9F20021BCB1 /* OAuth2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,6 +138,7 @@
 			children = (
 				885497B5231DEA560021BCB1 /* Views */,
 				885497A1231B716F0021BCB1 /* Models */,
+				88F57547232437F600E1A011 /* APICalls.swift */,
 				88549774231B677C0021BCB1 /* Main.storyboard */,
 				88549777231B677D0021BCB1 /* Assets.xcassets */,
 				8854976E231B677C0021BCB1 /* AppDelegate.swift */,
@@ -145,6 +151,7 @@
 		88549784231B677D0021BCB1 /* MusicFeedTests */ = {
 			isa = PBXGroup;
 			children = (
+				885497A6231C61770021BCB1 /* APICallsOld.swift */,
 				88549770231B677C0021BCB1 /* FirstViewController.swift */,
 				88549785231B677D0021BCB1 /* MusicFeedTests.swift */,
 				88549787231B677D0021BCB1 /* Info.plist */,
@@ -166,11 +173,10 @@
 			children = (
 				885497A2231B71990021BCB1 /* Album.swift */,
 				885497A4231B71A00021BCB1 /* Artist.swift */,
-				885497AA231DD2840021BCB1 /* Auth.swift */,
-				885497A6231C61770021BCB1 /* APICalls.swift */,
 				885497DE231DEC8A0021BCB1 /* NetStatus.swift */,
 				885497A8231DD0600021BCB1 /* OtherModels.swift */,
 				8854979F231B71530021BCB1 /* StorageController.swift */,
+				88F57549232443C200E1A011 /* OAuth2RetryHandler.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -178,6 +184,7 @@
 		885497AC231DD9F20021BCB1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				886863102325692F007484E9 /* Alamofire.framework */,
 				885497AD231DD9F20021BCB1 /* OAuth2.framework */,
 			);
 			name = Frameworks;
@@ -359,6 +366,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/OAuth2.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -377,18 +385,18 @@
 			files = (
 				885497DA231DEB4C0021BCB1 /* ReleaseDetailController.swift in Sources */,
 				885497D1231DEB390021BCB1 /* ArtistSearchViewController.swift in Sources */,
+				88F57548232437F600E1A011 /* APICalls.swift in Sources */,
 				885497A5231B71A00021BCB1 /* Artist.swift in Sources */,
 				885497CF231DEB390021BCB1 /* ArtistSearchCell.swift in Sources */,
-				885497A7231C61770021BCB1 /* APICalls.swift in Sources */,
 				885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */,
 				8854976F231B677C0021BCB1 /* AppDelegate.swift in Sources */,
+				88F5754A232443C200E1A011 /* OAuth2RetryHandler.swift in Sources */,
 				881CD27E231E014400EA8A12 /* OtherScreenController.swift in Sources */,
 				885497A0231B71530021BCB1 /* StorageController.swift in Sources */,
 				885497A3231B71990021BCB1 /* Album.swift in Sources */,
 				885497DF231DEC8A0021BCB1 /* NetStatus.swift in Sources */,
 				885497D0231DEB390021BCB1 /* ArtistCell.swift in Sources */,
 				885497D7231DEB4C0021BCB1 /* ReleaseCell.swift in Sources */,
-				885497AB231DD2840021BCB1 /* Auth.swift in Sources */,
 				885497D2231DEB390021BCB1 /* ArtistViewController.swift in Sources */,
 				885497D9231DEB4C0021BCB1 /* ReleaseListViewController.swift in Sources */,
 			);
@@ -400,6 +408,7 @@
 			files = (
 				88549786231B677D0021BCB1 /* MusicFeedTests.swift in Sources */,
 				889AFE27232419EB000521CA /* FirstViewController.swift in Sources */,
+				88F57546232437E900E1A011 /* APICallsOld.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

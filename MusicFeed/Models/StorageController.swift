@@ -20,21 +20,23 @@ class StorageController {
     
     var implicitAccessToken: String?
     
-    let loader: OAuth2DataLoader
+    //let loader: OAuth2DataLoader
     
     var artists = [Artist]()
     var releases = [Album]()
     var dateSortValue = TimeDuration.week
     var state: AppStatus = .rest
     
-    var netRequests = [AnyObject?]()
+    //var netRequests = [AnyObject?]()
+    let apiRequests: APICalls
     
     init() {
+        apiRequests = APICalls()
+        //loader = OAuth2DataLoader(oauth2: authClient)
         
-        loader = OAuth2DataLoader(oauth2: authClient)
     }
     
-    func readArtistsFromFile() {
+    func readArtistsFromFile(completion: @escaping () -> Void) {
         
         let pathDirectory = getDocumentsDirectory()
         try? FileManager().createDirectory(at: pathDirectory, withIntermediateDirectories: true)
@@ -46,6 +48,13 @@ class StorageController {
         }
         
         artists = try! JSONDecoder().decode([Artist].self, from: data)
+        
+        self.apiRequests.getArtistImages(artists: artists) { [unowned self] artists in
+            if artists.count > 0 {
+                self.artists = artists
+            }
+            completion()
+        }
         
         
     }
