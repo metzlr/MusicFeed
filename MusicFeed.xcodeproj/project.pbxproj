@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		881CD27E231E014400EA8A12 /* OtherScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881CD27D231E014400EA8A12 /* OtherScreenController.swift */; };
+		8824BD6523273DD300168DF4 /* OldApiReferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8824BD6323273DCB00168DF4 /* OldApiReferences.swift */; };
 		8854976F231B677C0021BCB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854976E231B677C0021BCB1 /* AppDelegate.swift */; };
 		88549776231B677C0021BCB1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88549774231B677C0021BCB1 /* Main.storyboard */; };
 		88549778231B677D0021BCB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88549777231B677D0021BCB1 /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		881CD27D231E014400EA8A12 /* OtherScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherScreenController.swift; sourceTree = "<group>"; };
+		8824BD6323273DCB00168DF4 /* OldApiReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldApiReferences.swift; sourceTree = "<group>"; };
 		8854976B231B677C0021BCB1 /* MusicFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8854976E231B677C0021BCB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88549770231B677C0021BCB1 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				885497A6231C61770021BCB1 /* APICallsOld.swift */,
+				8824BD6323273DCB00168DF4 /* OldApiReferences.swift */,
 				88549770231B677C0021BCB1 /* FirstViewController.swift */,
 				88549785231B677D0021BCB1 /* MusicFeedTests.swift */,
 				88549787231B677D0021BCB1 /* Info.plist */,
@@ -406,6 +409,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8824BD6523273DD300168DF4 /* OldApiReferences.swift in Sources */,
 				88549786231B677D0021BCB1 /* MusicFeedTests.swift in Sources */,
 				889AFE27232419EB000521CA /* FirstViewController.swift in Sources */,
 				88F57546232437E900E1A011 /* APICallsOld.swift in Sources */,
@@ -506,7 +510,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -561,7 +565,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -589,7 +593,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.spasdesign.MusicFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -611,7 +615,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.spasdesign.MusicFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

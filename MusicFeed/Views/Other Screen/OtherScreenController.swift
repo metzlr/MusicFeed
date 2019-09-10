@@ -13,23 +13,15 @@
  class OtherScreenController: UITableViewController {
     
     var storageController: StorageController?
-    
-    var oauth2 = OAuth2ImplicitGrant(settings: [
-        "client_id": "08037a6d6c044109a99a46b267ed48f3",
-        "keychain": false,
-        "authorize_uri": "https://accounts.spotify.com/authorize",
-        "scope": "user-follow-read",
-        "redirect_uris": ["spotifyalert-rmg://oauth/callback"]
-        ] as OAuth2JSON)
-    
+    var spinnerView: SpinnerViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.clearsSelectionOnViewWillAppear = true
         
-        oauth2.authConfig.authorizeEmbedded = true
-        oauth2.authConfig.authorizeContext = self
+        storageController!.authImplicit.authConfig.authorizeEmbedded = true
+        storageController!.authImplicit.authConfig.authorizeContext = self
         
         
     }
@@ -51,12 +43,47 @@
         //super.tableView(tableView, didSelectRowAt: indexPath)
         if indexPath.row == 0 {
             
-            oauth2.authorize(params: ["show_dialog": "true"]) { [unowned self]
+            storageController!.authImplicit.authorize(params: ["show_dialog": "true"]) { [unowned self]
                 json, error in
                 if error != nil {
                     print(error!)
                 } else {
-                    print(self.oauth2.accessToken)
+                    print("Successfully authorized user")
+                    self.spinnerView = SpinnerViewController()
+                    self.createSpinnerView(child: self.spinnerView!)
+                    self.storageController!.apiRequests.userFollowersCall() { [unowned self] response in
+                        guard let artists = response else {
+                            return
+                        }
+                        
+                        var duplicateCount = 0
+                        for artist in artists {
+                            if self.storageController!.artists.contains(where: {$0 == artist}) {
+                                duplicateCount += 1
+                            } else {
+                                self.storageController!.artists.append(artist)
+                            }
+                        }
+                        self.removeSpinnerView(child: self.spinnerView!)
+                        self.spinnerView = nil
+                        self.storageController!.saveArtistsToFile()
+                        
+                        let dismissAction = UIAlertAction(title: "Dismiss", style: .default)
+                        let alert: UIAlertController
+                        if duplicateCount > 0 {
+                            
+                            if duplicateCount > 1 {
+                                alert = UIAlertController(title: "Notice", message: "\(duplicateCount) Artists from this profile have already been added", preferredStyle: .alert)
+                            } else {
+                                alert = UIAlertController(title: "Notice", message: "1 Artist from this profile has already been added", preferredStyle: .alert)
+                            }
+                            
+                        } else {
+                            alert = UIAlertController(title: "Success", message: "Artists imported from profile", preferredStyle: .alert)
+                        }
+                        alert.addAction(dismissAction)
+                        self.present(alert, animated: true, completion: nil)
+                    }
                 }
             }
         }

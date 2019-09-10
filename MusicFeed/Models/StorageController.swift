@@ -18,6 +18,14 @@ class StorageController {
         "keychain": false
         ])
     
+    let authImplicit = OAuth2ImplicitGrant(settings: [
+        "client_id": "08037a6d6c044109a99a46b267ed48f3",
+        "keychain": false,
+        "authorize_uri": "https://accounts.spotify.com/authorize",
+        "scope": "user-follow-read",
+        "redirect_uris": ["spotifyalert-rmg://oauth/callback"]
+        ] as OAuth2JSON)
+    
     var implicitAccessToken: String?
     
     //let loader: OAuth2DataLoader

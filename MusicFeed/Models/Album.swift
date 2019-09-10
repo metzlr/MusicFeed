@@ -20,7 +20,8 @@ struct Album {
     let totalTracks: Int
     var artists: [Artist]
     var urlImages: [SpotifyImage]
-    var imageData: Data?
+    //var smallImageData: Data?
+    var largeImageData: Data?
     
 }
 
@@ -39,7 +40,7 @@ extension Album: Comparable, Equatable {
 
 extension Album: Codable {
     enum CodingKeys: String, CodingKey {
-        case type = "type"
+        case type = "album_type"
         case name = "name"
         case releaseDate = "release_date"
         case totalTracks = "total_tracks"
@@ -47,6 +48,39 @@ extension Album: Codable {
         
         case artists = "artists"
         case urlImages = "images"
+        
+    }
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        type = try container.decode(String.self, forKey: .type)
+        datePrecision = try container.decode(String.self, forKey: .datePrecision)
+        totalTracks = try container.decode(Int.self, forKey: .totalTracks)
+        artists = try container.decode([Artist].self, forKey: .artists)
+        urlImages = try container.decode([SpotifyImage].self, forKey: .urlImages)
+        
+        let dateString = try container.decode(String.self, forKey: .releaseDate)
+        let dateFormatter: DateFormatter?
+        switch datePrecision {
+        case "year":
+            dateFormatter = DateFormatter.yyyy
+        case "month":
+            dateFormatter = DateFormatter.yyyyMM
+        case "day":
+            dateFormatter = DateFormatter.yyyyMMdd
+        default:
+            dateFormatter = nil
+        }
+        guard let formatter = dateFormatter else {
+            throw DecodingError.dataCorruptedError(forKey: .datePrecision, in: container, debugDescription: "Unrecognized date precision format")
+        }
+        
+        if let date = formatter.date(from: dateString) {
+            releaseDate = date
+        } else {
+           
+            throw DecodingError.dataCorruptedError(forKey: .releaseDate, in: container, debugDescription: "Date string does not match format expected by formatter.")
+        }
         
     }
 }
@@ -67,7 +101,7 @@ struct AlbumsResource: ApiResource {
     
     var methodPath: String
     var httpMethod = "GET"
-    var parameters = ["include_groups=album,single", "limit=7", "market=US"]
+    var parameters = ["include_groups=album,single", "limit=5", "market=US"]
     
     init(artist: Artist) {
         methodPath = "artists/\(artist.id)/albums"
@@ -75,10 +109,6 @@ struct AlbumsResource: ApiResource {
     }
     func makeModel(data: Data) -> [Album]? {
         let decoder = JSONDecoder()
-        // If error comes up where it gets albums that dont have this format, I think its necessary to set up custom init(from: decoder) for Album to handle the different date precisions
-        decoder.dateDecodingStrategy = .formatted(DateFormatter.yyyyMMdd)
-        
-        //dump(String(data: data, encoding: .utf8))
         do {
             let wrapped = try decoder.decode(AlbumsWrapper.self, from: data)
             return wrapped.albums
@@ -110,7 +140,7 @@ extension UIImageView {
             }
         } else {
         */
-        if let data = album.imageData {
+        if let data = album.largeImageData {
             guard let image = UIImage(data: data) else {
                 print("Error: Couldn't convert album image data to UIImage")
                 return

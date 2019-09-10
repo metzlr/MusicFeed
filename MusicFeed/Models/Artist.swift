@@ -15,13 +15,14 @@ struct Artist: Equatable {
     let id: String
     let name: String
     let urlImages: [SpotifyImage]?
-    var imageData: Data?
+    var profileImageData: Data?
+    var largeImageData: Data?
     
-    init(id: String, name: String, url: URL? = nil, image: Data? = nil) {
+    init(id: String, name: String, url: URL? = nil, profileImage: Data? = nil) {
         self.id = id
         self.name = name
         self.urlImages = [SpotifyImage]()
-        self.imageData = image
+        self.profileImageData = profileImage
         
     }
     static func == (lhs: Artist, rhs: Artist) -> Bool {
@@ -41,12 +42,13 @@ extension Artist: Codable {
     }
 }
 
-fileprivate struct ArtistSearchWrapper: Decodable {
+struct ArtistSearchWrapper: Decodable {
     struct ArtistItems: Decodable {
         let items: [Artist]
     }
     let artists: ArtistItems
 }
+
 
 struct ArtistSearchResource: ApiResource {
     
@@ -92,7 +94,7 @@ extension UIImageView {
         } else {
         */
         
-        if let data = artist.imageData {
+        if let data = artist.profileImageData {
             guard let image = UIImage(data: data) else {
                 print("Error: Couldn't convert artist image data to UIImage")
                 return

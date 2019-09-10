@@ -6,6 +6,14 @@
 //  Copyright © 2019 Reed Metzler-Gilbertz. All rights reserved.
 //
 
+/*
+LEFT OFF
+ 
+ need to add timers for more things, like readartistsfile
+ need to implement custom date decoding
+*/
+
+
 import UIKit
 
 @UIApplicationMain
@@ -56,7 +64,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if let tabView = window?.rootViewController as? UITabBarController {
+            //vc.oauth2.handleRedirectURL(url)
+            //return true
+            guard let vc: OtherScreenController = {for view in tabView.viewControllers! {
+                if let navView = view as? UINavigationController {
+                    for view2 in navView.viewControllers {
+                        if let otherView = view2 as? OtherScreenController {
+                            return otherView
+                        }
+                    }
+                }}
+                return nil
+                }() else {
+                    return false
+            }
+            vc.storageController?.authImplicit.handleRedirectURL(url)
+            return true
+        }
+        return false
+    }
 
 }
 
