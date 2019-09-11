@@ -15,7 +15,7 @@ struct Artist: Equatable {
     let id: String
     let name: String
     let urlImages: [SpotifyImage]?
-    var profileImageData: Data?
+    var profileImageData: Data? = UIImage(named: "default-profile")!.pngData()
     var largeImageData: Data?
     
     init(id: String, name: String, url: URL? = nil, profileImage: Data? = nil) {
@@ -75,24 +75,7 @@ struct ArtistSearchResource: ApiResource {
     }
 }
 extension UIImageView {
-    func setArtistImage(artist: Artist) {//, loader: OAuth2DataLoader? = nil) {
-        /*
-        if let loader = loader, artist.imageData == nil {
-            guard let urlImage = artist.urlImages?.last else {
-                print("Error: No urlImages provided and no image data in artist")
-                return
-            }
-            let request = ImageRequest(url: urlImage.url, loader: loader)
-            request.load() { [unowned self]
-                image in
-                guard let image = image else {
-                    return
-                }
-                self.image = image
-                self.setRounded()
-            }
-        } else {
-        */
+    func setArtistImage(artist: Artist) {
         
         if let data = artist.profileImageData {
             guard let image = UIImage(data: data) else {

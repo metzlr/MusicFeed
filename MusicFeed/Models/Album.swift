@@ -18,6 +18,7 @@ struct Album {
     let releaseDate: Date
     let datePrecision: String
     let totalTracks: Int
+    let externalURL: String
     var artists: [Artist]
     var urlImages: [SpotifyImage]
     //var smallImageData: Data?
@@ -49,6 +50,11 @@ extension Album: Codable {
         case artists = "artists"
         case urlImages = "images"
         
+        case externalURL = "external_urls"
+        enum ExternalUrlKeys: String, CodingKey {
+            case spotifyURL = "spotify"
+        }
+        
     }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -58,6 +64,9 @@ extension Album: Codable {
         totalTracks = try container.decode(Int.self, forKey: .totalTracks)
         artists = try container.decode([Artist].self, forKey: .artists)
         urlImages = try container.decode([SpotifyImage].self, forKey: .urlImages)
+        //uri = try container.decode(String.self, forKey: .uri)
+        let externalUrlContainer = try container.nestedContainer(keyedBy: CodingKeys.ExternalUrlKeys.self, forKey: .externalURL)
+        externalURL = try externalUrlContainer.decode(String.self, forKey: .spotifyURL)
         
         let dateString = try container.decode(String.self, forKey: .releaseDate)
         let dateFormatter: DateFormatter?
@@ -124,22 +133,7 @@ struct AlbumsResource: ApiResource {
 extension UIImageView {
     
     func setAlbumImage(album: Album) {
-        /*
-        if let loader = loader, album.imageData == nil {
-            guard let urlImage = album.urlImages.last else {
-                print("Error: No urlImages provided and no image data")
-                return
-            }
-            let request = ImageRequest(url: urlImage.url, loader: loader)
-            request.load() { [unowned self]
-                image in
-                guard let image = image else {
-                    return
-                }
-                self.image = image
-            }
-        } else {
-        */
+        
         if let data = album.largeImageData {
             guard let image = UIImage(data: data) else {
                 print("Error: Couldn't convert album image data to UIImage")

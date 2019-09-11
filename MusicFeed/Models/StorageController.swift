@@ -28,20 +28,15 @@ class StorageController {
     
     var implicitAccessToken: String?
     
-    //let loader: OAuth2DataLoader
-    
     var artists = [Artist]()
     var releases = [Album]()
     var dateSortValue = TimeDuration.week
     var state: AppStatus = .rest
     
-    //var netRequests = [AnyObject?]()
     let apiRequests: APICalls
     
     init() {
         apiRequests = APICalls()
-        //loader = OAuth2DataLoader(oauth2: authClient)
-        
     }
     
     func readArtistsFromFile(completion: @escaping () -> Void) {
@@ -60,6 +55,7 @@ class StorageController {
         self.apiRequests.getArtistImages(artists: artists) { [unowned self] artists in
             if artists.count > 0 {
                 self.artists = artists
+                self.artists.sort(by: {$0.name < $1.name})
             }
             completion()
         }
