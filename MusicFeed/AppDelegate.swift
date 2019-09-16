@@ -7,10 +7,12 @@
 //
 
 /*
-LEFT OFF
+TO DO
+ - better icon for open in spotify
  
- need to add timers for more things, like readartistsfile
- need to implement custom date decoding
+ 
+BUGS
+ - If internet is slow, read artists from file requests time out and then artist images glitch out
 */
 
 

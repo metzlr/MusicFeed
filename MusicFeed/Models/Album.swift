@@ -83,7 +83,7 @@ extension Album: Codable {
         guard let formatter = dateFormatter else {
             throw DecodingError.dataCorruptedError(forKey: .datePrecision, in: container, debugDescription: "Unrecognized date precision format")
         }
-        
+        //print(dateString)
         if let date = formatter.date(from: dateString) {
             releaseDate = date
         } else {

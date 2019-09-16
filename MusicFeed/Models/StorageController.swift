@@ -51,8 +51,8 @@ class StorageController {
         }
         
         artists = try! JSONDecoder().decode([Artist].self, from: data)
-        
-        self.apiRequests.getArtistImages(artists: artists) { [unowned self] artists in
+        let queue = DispatchQueue(label: "com.test.api", qos: .background, attributes: .concurrent)
+        self.apiRequests.getArtistImages(artists: artists, queue: queue) { [unowned self] artists in
             if artists.count > 0 {
                 self.artists = artists
                 self.artists.sort(by: {$0.name < $1.name})

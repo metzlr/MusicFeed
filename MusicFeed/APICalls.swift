@@ -42,10 +42,12 @@ extension ApiResource {
 
 class APICalls {
     
-    var delegate: StorageController?
+    private var delegate: StorageController?
     let clientSessionManager: SessionManager
     let implicitSessionManager: SessionManager
     var reqDelay: Double = 0.0
+    
+    let queue = DispatchQueue(label: "com.spotiy.api", qos: .background, attributes: .concurrent)
     
     init() {
         clientSessionManager = SessionManager()
@@ -63,15 +65,15 @@ class APICalls {
         implicitSessionManager.retrier = retrier2
     }
     
-    func getImage(url: URL, completion: @escaping (Data?) -> Void) {
-        clientSessionManager.request(url).validate().responseData { response in
+    func getImage(url: URL, queue: DispatchQueue, completion: @escaping (Data?) -> Void) {
+        clientSessionManager.request(url).validate().responseData(queue: queue) { response in
             let code = response.response?.statusCode
             if code == 429 {
                 if let retryTimeString = response.response?.allHeaderFields["retry-after"] as? String {
                     
                     let retryTime = Int(retryTimeString)!
                     self.reqDelay = Double(retryTime)
-                    self.getImage(url: url) { response in
+                    self.getImage(url: url, queue: queue) { response in
                         guard let data = response else {
                             print("Retry failed")
                             completion(nil)
@@ -96,9 +98,10 @@ class APICalls {
     }
     
     func artistSearch(text: String, completion: @escaping ([Artist]?) -> Void) {
+       
         let resource = ArtistSearchResource(searchText: text)
-        
-        clientSessionManager.request(resource.url).validate().responseJSON { [unowned self] response in
+        //let queue = DispatchQueue(label: "com.test.api", qos: .background, attributes: .concurrent)
+        clientSessionManager.request(resource.url).validate().responseJSON(queue: queue) { [unowned self] response in
             guard let data = response.data else {
                 print("Artist search failed")
                 completion(nil)
@@ -106,12 +109,16 @@ class APICalls {
             }
             guard let artists = resource.makeModel(data: data) else {
                 print("Wasn't able to decode request response")
+                print(String(data: data, encoding: .utf8)!)
                 completion(nil)
                 return
             }
             
-            self.getArtistImages(artists: artists) { artists in
+            
+            
+            self.getArtistImages(artists: artists, queue: self.queue) { artists in
                 completion(artists)
+                print("done")
             }
         }
     }
@@ -120,8 +127,10 @@ class APICalls {
         //print(reqDelay)
         let resource = AlbumsResource(artist: artist)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + reqDelay) {
-            self.clientSessionManager.request(resource.url).validate().responseJSON { [unowned self] response in
+        //DispatchQueue.main.asyncAfter(deadline: .now() + reqDelay) {
+        queue.asyncAfter(deadline: .now() + reqDelay) {
+            
+            self.clientSessionManager.request(resource.url).validate().responseJSON(queue: self.queue) { [unowned self] response in
                 let code = response.response?.statusCode
                 if code == 429 {
                     if let retryTimeString = response.response?.allHeaderFields["retry-after"] as? String {
@@ -158,10 +167,11 @@ class APICalls {
                     let currentDate = Date()
                     for album in albums {
                         if Int(currentDate.timeIntervalSince(album.releaseDate)) <= TimeDuration.month {
+                            //album.releaseDate.addTimeInterval(TimeDuration.day)
                             newAlbums.append(album)
                         }
                     }
-                    self.getAlbumImages(albums: newAlbums) { finalAlbums in
+                    self.getAlbumImages(albums: newAlbums, queue: self.queue) { finalAlbums in
                         completion(finalAlbums)
                     }
                 }
@@ -170,15 +180,15 @@ class APICalls {
             }
         }
     }
-    func getAlbumImages(albums: [Album], completion: @escaping ([Album]) -> Void) {
+    func getAlbumImages(albums: [Album], queue: DispatchQueue, completion: @escaping ([Album]) -> Void) {
         let group = DispatchGroup()
         var returnAlbumList = [Album]()
         
         for i in 0..<albums.count {
             group.enter()
             var album = albums[i]
-            DispatchQueue.main.asyncAfter(deadline: .now() + reqDelay) {
-                self.getImage(url: album.urlImages.first!.url) { response in
+            queue.asyncAfter(deadline: .now() + reqDelay) {
+                self.getImage(url: album.urlImages.first!.url, queue: queue) { response in
                     //print("i" + String(i))
                     guard let data = response else {
                         group.leave()
@@ -196,7 +206,7 @@ class APICalls {
         }
     }
     
-    func getArtistImages(artists: [Artist], completion: @escaping ([Artist]) -> Void) {
+    func getArtistImages(artists: [Artist], queue: DispatchQueue, completion: @escaping ([Artist]) -> Void) {
         let group = DispatchGroup()
         var returnArtistList = artists.map{$0}
         guard artists.count > 0 else {
@@ -216,29 +226,28 @@ class APICalls {
                 group.leave()
                 continue
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + reqDelay) {
-                self.getImage(url: last.url) { response in
+            //DispatchQueue.main.asyncAfter(deadline: .now() + reqDelay) {
+            queue.asyncAfter(deadline: .now() + reqDelay) {
+                self.getImage(url: last.url, queue: queue) { response in
                     guard let data = response else {
                         group.leave()
                         return
                     }
                     artist.profileImageData = data
                     returnArtistList[i] = artist
-                    //print(artist.name)
                     group.leave()
                 }
             }
         
         }
-        group.notify(queue: .main) {
+        group.notify(queue: queue) {
             //print("done")
             completion(returnArtistList)
         }
-    
-        
-        
         
     }
+    
+    
     func userFollowersCall(afterCode:String? = nil, completion: @escaping ([Artist]?) -> Void) {
         
         //var artistArray = [Artist]()
@@ -250,8 +259,8 @@ class APICalls {
             resource = UserFollowersResource()
         }
         
-        
-        implicitSessionManager.request(resource.url).responseJSON() { [unowned self] response in
+        //let queue = DispatchQueue(label: "com.test.api", qos: .background, attributes: .concurrent)
+        implicitSessionManager.request(resource.url).responseJSON(queue: queue) { [unowned self] response in
             guard let data = response.data else {
                 print("Get user followers request failed")
                 completion(nil)
@@ -269,7 +278,7 @@ class APICalls {
             }
             var finalArtistArray = [Artist]()
             
-            self.getArtistImages(artists: artists) { [unowned self] artists in
+            self.getArtistImages(artists: artists, queue: self.queue) { [unowned self] artists in
                 finalArtistArray.append(contentsOf: artists)
                 guard let nextAfter = responseObj.after else {
                     completion(finalArtistArray)

@@ -80,6 +80,7 @@ extension UIImageView {
         if let data = artist.profileImageData {
             guard let image = UIImage(data: data) else {
                 print("Error: Couldn't convert artist image data to UIImage")
+                self.image = UIImage(named: "default-profile")
                 return
             }
             self.image = image

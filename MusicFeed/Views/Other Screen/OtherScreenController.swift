@@ -64,25 +64,30 @@
                                 self.storageController!.artists.append(artist)
                             }
                         }
-                        self.removeSpinnerView(child: self.spinnerView!)
-                        self.spinnerView = nil
-                        self.storageController!.saveArtistsToFile()
+                        DispatchQueue.main.async {
+                            self.removeSpinnerView(child: self.spinnerView!)
+                            self.spinnerView = nil
                         
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .default)
-                        let alert: UIAlertController
-                        if duplicateCount > 0 {
+                       
+                            self.storageController!.artists.sort(by: {$0.name < $1.name})
+                            self.storageController!.saveArtistsToFile()
                             
-                            if duplicateCount > 1 {
-                                alert = UIAlertController(title: "Notice", message: "\(duplicateCount) Artists from this profile have already been added", preferredStyle: .alert)
+                            let dismissAction = UIAlertAction(title: "Dismiss", style: .default)
+                            let alert: UIAlertController
+                            if duplicateCount > 0 {
+                                
+                                if duplicateCount > 1 {
+                                    alert = UIAlertController(title: "Notice", message: "\(duplicateCount) Artists from this profile have already been added", preferredStyle: .alert)
+                                } else {
+                                    alert = UIAlertController(title: "Notice", message: "1 Artist from this profile has already been added", preferredStyle: .alert)
+                                }
+                                
                             } else {
-                                alert = UIAlertController(title: "Notice", message: "1 Artist from this profile has already been added", preferredStyle: .alert)
+                                alert = UIAlertController(title: "Success", message: "Artists imported from profile", preferredStyle: .alert)
                             }
-                            
-                        } else {
-                            alert = UIAlertController(title: "Success", message: "Artists imported from profile", preferredStyle: .alert)
+                            alert.addAction(dismissAction)
+                            self.present(alert, animated: true, completion: nil)
                         }
-                        alert.addAction(dismissAction)
-                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }
