@@ -34,6 +34,8 @@ class ReleaseListViewController: UIViewController {
     var monthSection = [Album]()
     var sections = [[Album]]()
     
+    var spinnerView: SpinnerViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,6 +61,8 @@ class ReleaseListViewController: UIViewController {
         
         
         if NetStatus.shared.isConnected {
+            spinnerView = SpinnerViewController()
+            createSpinnerView(child: spinnerView!)
             storageController?.authClient.authorize() { json, error in
                 if error != nil {
                     print(error!)
@@ -66,6 +70,8 @@ class ReleaseListViewController: UIViewController {
                     print("Successfully authorized")
                     self.storageController!.readArtistsFromFile() {
                         print("Artits read from file")
+                        print("Getting releases")
+                        self.getAlbums()
                     }
                 }
                 
@@ -98,6 +104,10 @@ class ReleaseListViewController: UIViewController {
         self.storageController!.releases = [Album]()
         self.sections = [[Album]]()
         
+        if spinnerView!.parent == nil {
+            createSpinnerView(child: spinnerView!)
+        }
+        
         if NetStatus.shared.isConnected {
             let group = DispatchGroup()
             for artist in self.storageController!.artists {
@@ -126,7 +136,10 @@ class ReleaseListViewController: UIViewController {
                 }
             }
             group.notify(queue: .main) {
+                self.removeSpinnerView(child: self.spinnerView!)
+                //self.spinnerView = nil
                 self.tableView.reloadData()
+                print("Done getting releases")
             }
         }
             

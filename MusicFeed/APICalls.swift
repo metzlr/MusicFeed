@@ -162,7 +162,7 @@ class APICalls {
                         completion(nil)
                         return
                     }
-                    
+                    //print(artist.name + "got albums")
                     var newAlbums = [Album]()
                     let currentDate = Date()
                     for album in albums {
@@ -172,6 +172,7 @@ class APICalls {
                         }
                     }
                     self.getAlbumImages(albums: newAlbums, queue: self.queue) { finalAlbums in
+                        print(artist.name + " got images")
                         completion(finalAlbums)
                     }
                 }
