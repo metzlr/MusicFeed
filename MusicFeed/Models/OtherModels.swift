@@ -139,6 +139,8 @@ class SpinnerViewController: UIViewController {
     }
 }
 
+
+
 extension UIViewController {
     func createSpinnerView(child: SpinnerViewController) {
         self.addChild(child)
@@ -150,6 +152,12 @@ extension UIViewController {
         child.willMove(toParent: nil)
         child.view.removeFromSuperview()
         child.removeFromParent()
+    }
+    func createReleaseLoadingView(child: ReleaseLoadingView) {
+        self.addChild(child)
+        child.view.frame = self.view.frame
+        self.view.addSubview(child.view)
+        child.didMove(toParent: self)
     }
 }
 

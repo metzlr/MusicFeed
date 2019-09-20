@@ -175,11 +175,33 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_ of _ Artists" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8YJ-HZ-lhg">
+                                <rect key="frame" x="160.5" y="387.5" width="93" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="D2X-5J-X9n"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded Releases for" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8T-pT-Hoq">
+                                <rect key="frame" x="129.5" y="362.5" width="155.5" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="1JB-eH-SFy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="SAc-XN-vkV" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="28m-Gd-d1S"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SAc-XN-vkV" secondAttribute="bottom" id="5Kp-iV-ngw"/>
+                            <constraint firstItem="X8T-pT-Hoq" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-75" id="HrO-bw-X7b"/>
+                            <constraint firstItem="8YJ-HZ-lhg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TJx-IG-bPX"/>
+                            <constraint firstItem="8YJ-HZ-lhg" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-50" id="V8v-Ya-Kac"/>
+                            <constraint firstItem="X8T-pT-Hoq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nlC-uk-bfs"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="SAc-XN-vkV" secondAttribute="trailing" id="wkB-xF-GG8"/>
                             <constraint firstItem="SAc-XN-vkV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="yeC-u8-sFs"/>
                         </constraints>
@@ -193,6 +215,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="loadingLabel1" destination="X8T-pT-Hoq" id="fyM-Mf-uNI"/>
+                        <outlet property="loadingLabel2" destination="8YJ-HZ-lhg" id="wOv-wN-hxK"/>
                         <outlet property="refreshButton" destination="onB-CL-sgk" id="KXo-Cs-PF2"/>
                         <outlet property="tableView" destination="SAc-XN-vkV" id="A1G-RN-vhv"/>
                     </connections>
@@ -384,6 +408,21 @@
                 <exit id="Dh5-1r-5FA" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3636" y="15"/>
+        </scene>
+        <!--Release Loading View-->
+        <scene sceneID="feU-kt-axH">
+            <objects>
+                <viewController storyboardIdentifier="ReleaseLoadingView" id="jxc-It-fRX" customClass="ReleaseLoadingView" customModule="MusicFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eJh-sO-Nn0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="evR-TR-34k"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4R2-hi-nHH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-625" y="-1395"/>
         </scene>
         <!--Releases-->
         <scene sceneID="hFS-4s-zSh">

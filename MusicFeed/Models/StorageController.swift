@@ -29,7 +29,7 @@ class StorageController {
     var implicitAccessToken: String?
     
     var artists = [Artist]()
-    var releases = [Album]()
+    //var releases = [Album]()
     var dateSortValue = TimeDuration.week
     var state: AppStatus = .rest
     
@@ -55,7 +55,7 @@ class StorageController {
         self.apiRequests.getArtistImages(artists: artists, queue: queue) { [unowned self] artists in
             if artists.count > 0 {
                 self.artists = artists
-                self.artists.sort(by: {$0.name < $1.name})
+                
             }
             completion()
         }
@@ -69,7 +69,7 @@ class StorageController {
     }
     
     func saveArtistsToFile() {
-        
+        self.artists.sort(by: {$0.name < $1.name})
         let pathDirectory = getDocumentsDirectory()
         try? FileManager().createDirectory(at: pathDirectory, withIntermediateDirectories: true)
         let filePath = pathDirectory.appendingPathComponent("artists.json")

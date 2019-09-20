@@ -21,6 +21,7 @@
 		885497AE231DD9F20021BCB1 /* OAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885497AD231DD9F20021BCB1 /* OAuth2.framework */; };
 		885497DF231DEC8A0021BCB1 /* NetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497DE231DEC8A0021BCB1 /* NetStatus.swift */; };
 		886863112325692F007484E9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886863102325692F007484E9 /* Alamofire.framework */; };
+		888963BE2335437F00B627FF /* ReleaseLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888963BD2335437F00B627FF /* ReleaseLoadingView.swift */; };
 		889AFE27232419EB000521CA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88549770231B677C0021BCB1 /* FirstViewController.swift */; };
 		88A4BF712329EDC0002E0340 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88A4BF702329EDC0002E0340 /* Assets.xcassets */; };
 		88EAAA96232EE36A00F069D3 /* ReleaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EAAA95232EE36A00F069D3 /* ReleaseListViewController.swift */; };
@@ -88,6 +89,7 @@
 		885497AD231DD9F20021BCB1 /* OAuth2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuth2.framework; path = Carthage/Build/iOS/OAuth2.framework; sourceTree = "<group>"; };
 		885497DE231DEC8A0021BCB1 /* NetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetStatus.swift; sourceTree = "<group>"; };
 		886863102325692F007484E9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		888963BD2335437F00B627FF /* ReleaseLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseLoadingView.swift; sourceTree = "<group>"; };
 		88A4BF702329EDC0002E0340 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MusicFeed/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		88EAAA95232EE36A00F069D3 /* ReleaseListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleaseListViewController.swift; sourceTree = "<group>"; };
 		88EAAA97232EE37800F069D3 /* ReleaseDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleaseDetailController.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				88EAAA95232EE36A00F069D3 /* ReleaseListViewController.swift */,
 				88EAAA97232EE37800F069D3 /* ReleaseDetailController.swift */,
 				88EAAA99232EE38800F069D3 /* ReleaseCell.swift */,
+				888963BD2335437F00B627FF /* ReleaseLoadingView.swift */,
 			);
 			path = "Release List";
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				885497A0231B71530021BCB1 /* StorageController.swift in Sources */,
 				88EAAAA0232EE39600F069D3 /* ArtistViewController.swift in Sources */,
 				88EAAA9F232EE39600F069D3 /* ArtistCell.swift in Sources */,
+				888963BE2335437F00B627FF /* ReleaseLoadingView.swift in Sources */,
 				885497A3231B71990021BCB1 /* Album.swift in Sources */,
 				88EAAAA2232EE39600F069D3 /* ArtistSearchViewController.swift in Sources */,
 				885497DF231DEC8A0021BCB1 /* NetStatus.swift in Sources */,
