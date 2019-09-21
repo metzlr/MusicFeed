@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,12 +18,12 @@
 		885497A3231B71990021BCB1 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A2231B71990021BCB1 /* Album.swift */; };
 		885497A5231B71A00021BCB1 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A4231B71A00021BCB1 /* Artist.swift */; };
 		885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A8231DD0600021BCB1 /* OtherModels.swift */; };
-		885497AE231DD9F20021BCB1 /* OAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885497AD231DD9F20021BCB1 /* OAuth2.framework */; };
 		885497DF231DEC8A0021BCB1 /* NetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497DE231DEC8A0021BCB1 /* NetStatus.swift */; };
-		886863112325692F007484E9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886863102325692F007484E9 /* Alamofire.framework */; };
 		888963BE2335437F00B627FF /* ReleaseLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888963BD2335437F00B627FF /* ReleaseLoadingView.swift */; };
 		889AFE27232419EB000521CA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88549770231B677C0021BCB1 /* FirstViewController.swift */; };
 		88A4BF712329EDC0002E0340 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88A4BF702329EDC0002E0340 /* Assets.xcassets */; };
+		88E407032336BEE9007F2BE9 /* OAuth2 in Frameworks */ = {isa = PBXBuildFile; productRef = 88E407022336BEE9007F2BE9 /* OAuth2 */; };
+		88E407062336BF4E007F2BE9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 88E407052336BF4E007F2BE9 /* Alamofire */; };
 		88EAAA96232EE36A00F069D3 /* ReleaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EAAA95232EE36A00F069D3 /* ReleaseListViewController.swift */; };
 		88EAAA98232EE37800F069D3 /* ReleaseDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EAAA97232EE37800F069D3 /* ReleaseDetailController.swift */; };
 		88EAAA9A232EE38800F069D3 /* ReleaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EAAA99232EE38800F069D3 /* ReleaseCell.swift */; };
@@ -107,8 +107,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				886863112325692F007484E9 /* Alamofire.framework in Frameworks */,
-				885497AE231DD9F20021BCB1 /* OAuth2.framework in Frameworks */,
+				88E407032336BEE9007F2BE9 /* OAuth2 in Frameworks */,
+				88E407062336BF4E007F2BE9 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +266,10 @@
 			dependencies = (
 			);
 			name = MusicFeed;
+			packageProductDependencies = (
+				88E407022336BEE9007F2BE9 /* OAuth2 */,
+				88E407052336BF4E007F2BE9 /* Alamofire */,
+			);
 			productName = MusicFeed;
 			productReference = 8854976B231B677C0021BCB1 /* MusicFeed.app */;
 			productType = "com.apple.product-type.application";
@@ -338,6 +342,10 @@
 				Base,
 			);
 			mainGroup = 88549762231B677C0021BCB1;
+			packageReferences = (
+				88E407012336BEE9007F2BE9 /* XCRemoteSwiftPackageReference "OAuth2" */,
+				88E407042336BF4E007F2BE9 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 8854976C231B677C0021BCB1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -385,8 +393,6 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/OAuth2.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -394,7 +400,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+			shellScript = "
+";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -528,7 +535,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -583,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -596,7 +603,6 @@
 		88549796231B677D0021BCB1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7Z6UGT7ZS6;
@@ -619,7 +625,6 @@
 		88549797231B677D0021BCB1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7Z6UGT7ZS6;
@@ -761,6 +766,39 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		88E407012336BEE9007F2BE9 /* XCRemoteSwiftPackageReference "OAuth2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/p2/OAuth2.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+		88E407042336BF4E007F2BE9 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 5.0.0;
+				minimumVersion = 4.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		88E407022336BEE9007F2BE9 /* OAuth2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88E407012336BEE9007F2BE9 /* XCRemoteSwiftPackageReference "OAuth2" */;
+			productName = OAuth2;
+		};
+		88E407052336BF4E007F2BE9 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88E407042336BF4E007F2BE9 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 88549763231B677C0021BCB1 /* Project object */;
 }
