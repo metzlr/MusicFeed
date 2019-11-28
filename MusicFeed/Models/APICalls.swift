@@ -118,7 +118,6 @@ class APICalls {
             
             self.getArtistImages(artists: artists, queue: self.queue) { artists in
                 completion(artists)
-                print("done")
             }
         }
     }
@@ -156,19 +155,23 @@ class APICalls {
                         completion(nil)
                         return
                     }
+                    //print(String(data: data, encoding: .utf8))
                     guard let albums = resource.makeModel(data: data) else {
                         print("Wasn't able to decode request response")
                         print(String(data: data, encoding: .utf8)!)
                         completion(nil)
                         return
                     }
-                    //print(artist.name + "got albums")
+                    
+                    print(artist.name + " got albums")
                     var newAlbums = [Album]()
                     let currentDate = Date()
                     for album in albums {
                         if Int(currentDate.timeIntervalSince(album.releaseDate)) <= TimeDuration.month {
                             //album.releaseDate.addTimeInterval(TimeDuration.day)
-                            newAlbums.append(album)
+                            if (!newAlbums.contains(album)) {
+                                newAlbums.append(album)
+                            }
                         }
                     }
                     self.getAlbumImages(albums: newAlbums, queue: self.queue) { finalAlbums in

@@ -27,11 +27,6 @@ class ReleaseListViewController: UIViewController {
     }
     
     
-    @IBOutlet weak var loadingLabel1: UILabel!
-    @IBOutlet weak var loadingLabel2: UILabel!
-    
-    
-    
     var releaseForDetail: Album?
     var storageController: StorageController?
     
@@ -40,26 +35,49 @@ class ReleaseListViewController: UIViewController {
     var monthSection = [Album]()
     var sections = [[Album]]()
     
+    var progressView: UIProgressView?
+    var progressLabel: UILabel?
+    
     var spinnerView: SpinnerViewController?
-    var releaseProgressView: ReleaseLoadingView?
+    //var releaseProgressView: ReleaseLoadingView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.loadingLabel1.textColor = .clear
-        self.loadingLabel2.textColor = .clear
+        //self.loadingLabel1.textColor = .clear
+        //self.loadingLabel2.textColor = .clear
+        
+        //progressLabel = UILabel(frame: CGRect(x: self.view.center.x/2, y: self.view.center.y - 100, width: 100, height: 50))
+        //progressLabel!.isHidden = true
+        progressLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+        //progressLabel!.center = CGPoint(x: self.view.center.x/2, y: self.view.center.y/2 - 100)
+        view.addSubview(progressLabel!)
+        progressLabel!.font = progressLabel!.font.withSize(20)
+        progressLabel!.translatesAutoresizingMaskIntoConstraints = false
+        progressLabel!.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        progressLabel!.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -75).isActive = true
+        progressLabel!.textAlignment = .center
+        //progressLabel!.sizeToFit()
+        
         
         NetStatus.shared.startMonitoring()
         NetStatus.shared.netStatusChangeHandler = {
             DispatchQueue.main.async { [unowned self] in
                 if !NetStatus.shared.isConnected {
-                    self.tableView.allowsSelection = false
-                    self.storageController!.state = .noConnection
-                    self.tableView.reloadData()
+                    self.tableView!.isHidden = true
+                    self.progressLabel!.text = "No Internet Connection"
+                    self.progressLabel!.isHidden = false
+                    self.refreshButton.isEnabled = true
+                    //self.tableView.allowsSelection = false
+                    //self.storageController!.state = .noConnection
+                    //self.tableView.reloadData()
                 } else {
-                    self.storageController!.state = .rest
-                    self.tableView.allowsSelection = true
-                    self.tableView.reloadData()
+                    self.tableView!.isHidden = false
+                    self.progressLabel!.isHidden = true
+                    self.refreshButton.isEnabled = false
+                    //self.storageController!.state = .rest
+                    //self.tableView.allowsSelection = true
+                    //self.tableView.reloadData()
                 }
             }
         }
@@ -68,11 +86,26 @@ class ReleaseListViewController: UIViewController {
         tableView.dataSource = self
         
         storageController!.apiRequests.setDelegate(storageController!)
+        spinnerView = SpinnerViewController()
         
+       
+        
+        progressView = UIProgressView(progressViewStyle: UIProgressView.Style.default)
+        progressView!.center = self.view.center
+        view.addSubview(progressView!)
+        progressView!.isHidden = true
+        progressView!.transform = progressView!.transform.scaledBy(x: 2, y: 8)
+        
+        /*
+        progressView!.layer.cornerRadius = 10
+        progressView!.clipsToBounds = true
+        progressView!.layer.sublayers![1].cornerRadius = 10
+        progressView!.subviews[1].clipsToBounds = true
+        */
         
         if NetStatus.shared.isConnected {
-            spinnerView = SpinnerViewController()
             //releaseProgressView =  (UIStoryboard(name: "Main",bundle: nil)).instantiateViewController(withIdentifier: "ReleaseLoadingView") as? ReleaseLoadingView
+            self.refreshButton.isEnabled = false
             createSpinnerView(child: spinnerView!)
             storageController?.authClient.authorize() { json, error in
                 if error != nil {
@@ -81,6 +114,9 @@ class ReleaseListViewController: UIViewController {
                     print("Successfully authorized")
                     self.storageController!.readArtistsFromFile() {
                         print("Artits read from file")
+                        DispatchQueue.main.async {
+                            self.removeSpinnerView(child: self.spinnerView!)
+                        }
                         print("Getting releases")
                         self.getAlbums()
                     }
@@ -109,9 +145,11 @@ class ReleaseListViewController: UIViewController {
         }
     }
     
+    /*
     func updateProgressLabel(currArtist: Int, totalArtists: Int) -> String {
         return "\(currArtist) of \(totalArtists) Artists"
     }
+    */
     
     
     func getAlbums() {
@@ -127,9 +165,11 @@ class ReleaseListViewController: UIViewController {
         if NetStatus.shared.isConnected {
             
             DispatchQueue.main.async {
+                /*
                 if self.spinnerView!.parent == nil {
                     self.createSpinnerView(child: self.spinnerView!)
                 }
+                */
                 /*
                 if self.releaseProgressView!.parent == nil {
                     self.createReleaseLoadingView(child: self.releaseProgressView!)
@@ -137,11 +177,21 @@ class ReleaseListViewController: UIViewController {
                 */
                 //self.loadingLabel1.isEnabled = true
                 //self.loadingLabel2.isEnabled = true
-                self.loadingLabel1.textColor = .darkGray
-                self.loadingLabel2.textColor = .darkGray
+                //self.loadingLabel1.textColor = .darkGray
+                //self.loadingLabel2.textColor = .darkGray
+                
+                self.progressView!.isHidden = false
+                self.progressView!.progress = 0.0
+                
+                self.tableView!.isHidden = true
+                self.refreshButton!.isEnabled = false
+                
+                self.progressLabel!.text = "Fetching New Releases"
+                self.progressLabel!.isHidden = false
             }
-            var currArtist: Int = 0
+            //var currArtist: Int = 0
             //var totalArtists: Int = self.storageController!.artists.count
+            let progressStep = 1.0/Float(self.storageController!.artists.count)
             
             let currDate = Date()
             
@@ -153,9 +203,15 @@ class ReleaseListViewController: UIViewController {
                     guard let releases = response else {
                         return
                     }
-                    currArtist += 1
-                    self.loadingLabel2.text = self.updateProgressLabel(currArtist: currArtist, totalArtists: self.storageController!.artists.count)
+                    //currArtist += 1
+                    
+                    DispatchQueue.main.async {
+                        self.progressView!.progress += progressStep
+                    }
+                    
+                    //self.loadingLabel2.text = self.updateProgressLabel(currArtist: currArtist, totalArtists: self.storageController!.artists.count)
                     for release in releases {
+                        
                         switch Int(currDate.timeIntervalSince(release.releaseDate)) {
                         case 0..<TimeDuration.day:
                             self.daySection.append(release)
@@ -174,10 +230,10 @@ class ReleaseListViewController: UIViewController {
                 }
             }
             group.notify(queue: .main) {
-                self.loadingLabel1.textColor = .clear
-                self.loadingLabel2.textColor = .clear
-                self.removeSpinnerView(child: self.spinnerView!)
-                //self.spinnerView = nil
+                //self.loadingLabel1.textColor = .clear
+                //self.loadingLabel2.textColor = .clear
+                //self.removeSpinnerView(child: self.spinnerView!)
+                
                 var sortedSections = [[Album]]()
                 for section in self.sections {
                     var copy = section.map{$0}
@@ -187,6 +243,10 @@ class ReleaseListViewController: UIViewController {
                 }
                 self.sections = sortedSections
                 self.tableView.reloadData()
+                self.progressView!.isHidden = true
+                self.progressLabel!.isHidden = true
+                self.tableView!.isHidden = false
+                self.refreshButton!.isEnabled = true
                 print("Done getting releases")
                 
                 

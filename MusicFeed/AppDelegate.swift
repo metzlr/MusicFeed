@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let storageController = StorageController()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        window?.overrideUserInterfaceStyle = .light
         guard let tabBarController = window?.rootViewController as? UITabBarController,
             let viewControllers = tabBarController.viewControllers else {
                 return true

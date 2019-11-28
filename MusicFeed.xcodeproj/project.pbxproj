@@ -155,7 +155,6 @@
 			children = (
 				885497B5231DEA560021BCB1 /* Views */,
 				885497A1231B716F0021BCB1 /* Models */,
-				88F57547232437F600E1A011 /* APICalls.swift */,
 				88549774231B677C0021BCB1 /* Main.storyboard */,
 				8854976E231B677C0021BCB1 /* AppDelegate.swift */,
 				88549779231B677D0021BCB1 /* LaunchScreen.storyboard */,
@@ -195,6 +194,7 @@
 				885497A8231DD0600021BCB1 /* OtherModels.swift */,
 				8854979F231B71530021BCB1 /* StorageController.swift */,
 				88F57549232443C200E1A011 /* OAuth2RetryHandler.swift */,
+				88F57547232437F600E1A011 /* APICalls.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
