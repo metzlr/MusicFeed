@@ -110,11 +110,12 @@ struct AlbumsResource: ApiResource {
     
     var methodPath: String
     var httpMethod = "GET"
-    var parameters = ["include_groups=album,single", "limit=5", "market=US"]
+    //var parameters = ["include_groups=album,single", "limit=10", "market=US"]
+    var parameters = ["limit=5", "market=US"]
     
-    init(artist: Artist) {
+    init(artist: Artist, type: String = "album,single") {
         methodPath = "artists/\(artist.id)/albums"
-        
+        parameters.append("include_groups=\(type)")
     }
     func makeModel(data: Data) -> [Album]? {
         let decoder = JSONDecoder()

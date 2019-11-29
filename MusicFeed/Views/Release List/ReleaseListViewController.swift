@@ -201,6 +201,7 @@ class ReleaseListViewController: UIViewController {
                 group.enter()
                 storageController!.apiRequests.getNewestAlbums(artist: artist) { [unowned self] response in
                     guard let releases = response else {
+                        group.leave()
                         return
                     }
                     //currArtist += 1

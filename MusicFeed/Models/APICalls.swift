@@ -124,8 +124,39 @@ class APICalls {
     
     func getNewestAlbums(artist: Artist, completion: @escaping ([Album]?) -> Void) {
         //print(reqDelay)
-        let resource = AlbumsResource(artist: artist)
+        //let resource = AlbumsResource(artist: artist)
         
+        let resources = [AlbumsResource(artist: artist, type: "album"), AlbumsResource(artist: artist, type: "single")]
+        //let resources = [AlbumsResource(artist: artist)]
+        var allAlbums = [Album]()
+        let group = DispatchGroup()
+        for i in 0..<resources.count {
+            group.enter()
+            let resource = resources[i]
+            
+            newestAlbumsCall(resource: resources[i]) { response in
+                guard let albums = response else {
+                    group.leave()
+                    return
+                }
+                allAlbums.append(contentsOf: albums)
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            self.getAlbumImages(albums: allAlbums, queue: self.queue) {
+                finalAlbums in
+                print(artist.name + " got albums")
+                completion(finalAlbums)
+            }
+        }
+    }
+    
+    private func newestAlbumsCall(resource: AlbumsResource, completion: @escaping ([Album]?) -> Void) {
+        //print(reqDelay)
+        //let resource = AlbumsResource(artist: artist)
+        
+       
         //DispatchQueue.main.asyncAfter(deadline: .now() + reqDelay) {
         queue.asyncAfter(deadline: .now() + reqDelay) {
             
@@ -136,7 +167,7 @@ class APICalls {
                         
                         let retryTime = Int(retryTimeString)!
                         self.reqDelay = Double(retryTime)
-                        self.getNewestAlbums(artist: artist) { response in
+                        self.newestAlbumsCall(resource: resource) { response in
                             guard let albums = response else {
                                 print("Retry failed")
                                 completion(nil)
@@ -144,6 +175,7 @@ class APICalls {
                             }
                             self.reqDelay = 0.0
                             completion(albums)
+                            
                         }
                     } else {
                         print("Couldn't get retry-after string from 429 response")
@@ -151,7 +183,7 @@ class APICalls {
                     
                 } else {
                     guard let data = response.data else {
-                        print("Get new albums request failed for "+artist.name)
+                        print("Get new albums request failed for call: "+resource.url.debugDescription)
                         completion(nil)
                         return
                     }
@@ -163,7 +195,6 @@ class APICalls {
                         return
                     }
                     
-                    print(artist.name + " got albums")
                     var newAlbums = [Album]()
                     let currentDate = Date()
                     for album in albums {
@@ -172,18 +203,20 @@ class APICalls {
                             if (!newAlbums.contains(album)) {
                                 newAlbums.append(album)
                             }
+                        } else {
+                            break
                         }
                     }
-                    self.getAlbumImages(albums: newAlbums, queue: self.queue) { finalAlbums in
-                        print(artist.name + " got images")
-                        completion(finalAlbums)
-                    }
+                    completion(newAlbums)
+                    
                 }
                 
             
             }
         }
+    
     }
+    
     func getAlbumImages(albums: [Album], queue: DispatchQueue, completion: @escaping ([Album]) -> Void) {
         let group = DispatchGroup()
         var returnAlbumList = [Album]()
