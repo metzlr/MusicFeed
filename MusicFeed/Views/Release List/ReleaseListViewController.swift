@@ -14,7 +14,7 @@ import Network
 
 
 class ReleaseListViewController: UIViewController {
-
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
@@ -85,7 +85,7 @@ class ReleaseListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        storageController!.apiRequests.setDelegate(storageController!)
+        //storageController!.apiRequests.setDelegate(storageController!)
         spinnerView = SpinnerViewController()
         
        
@@ -106,20 +106,20 @@ class ReleaseListViewController: UIViewController {
         if NetStatus.shared.isConnected {
             //releaseProgressView =  (UIStoryboard(name: "Main",bundle: nil)).instantiateViewController(withIdentifier: "ReleaseLoadingView") as? ReleaseLoadingView
             self.refreshButton.isEnabled = false
-            createSpinnerView(child: spinnerView!)
+            //createSpinnerView(child: spinnerView!)
             storageController?.authClient.authorize() { json, error in
                 if error != nil {
                     print(error!)
                 } else {
                     print("Successfully authorized")
-                    self.storageController!.readArtistsFromFile() {
-                        print("Artits read from file")
-                        DispatchQueue.main.async {
-                            self.removeSpinnerView(child: self.spinnerView!)
-                        }
-                        print("Getting releases")
-                        self.getAlbums()
-                    }
+                    //self.storageController!.readArtistsFromFile() {
+                    //print("Artits read from file")
+                    //DispatchQueue.main.async {
+                    //    self.removeSpinnerView(child: self.spinnerView!)
+                    //}
+                    print("Getting releases")
+                    self.getAlbums()
+                    //}
                 }
                 
             }
@@ -186,7 +186,7 @@ class ReleaseListViewController: UIViewController {
                 self.tableView!.isHidden = true
                 self.refreshButton!.isEnabled = false
                 
-                self.progressLabel!.text = "Fetching New Releases"
+                self.progressLabel!.text = "Fetching New Releases..."
                 self.progressLabel!.isHidden = false
             }
             //var currArtist: Int = 0
@@ -276,19 +276,12 @@ extension ReleaseListViewController: UITableViewDelegate, UITableViewDataSource 
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReleaseCell") as! ReleaseCell
-        if storageController!.state == .rest {
             
-            let section = self.sections[indexPath.section]
-            let album = section[indexPath.row]
-            cell.accessoryType = .disclosureIndicator
-            cell.setAlbumLabel(album: album)
-            cell.setAlbumImage(album: album)
-        } else {
-            cell.artistLabel.text = storageController!.state.rawValue
-            cell.albumLabel.text = nil
-            cell.albumImageView.image = nil
-            cell.accessoryType = .none
-        }
+        let section = self.sections[indexPath.section]
+        let album = section[indexPath.row]
+        cell.accessoryType = .disclosureIndicator
+        cell.setAlbumLabel(album: album)
+        cell.setAlbumImage(album: album)
         
         return cell
     }

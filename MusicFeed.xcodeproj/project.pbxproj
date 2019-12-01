@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		881CD27E231E014400EA8A12 /* OtherScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881CD27D231E014400EA8A12 /* OtherScreenController.swift */; };
 		8824BD6523273DD300168DF4 /* OldApiReferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8824BD6323273DCB00168DF4 /* OldApiReferences.swift */; };
+		884A7CF6239354D4004493AA /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884A7CF5239354D4004493AA /* ArtistList.swift */; };
 		8854976F231B677C0021BCB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854976E231B677C0021BCB1 /* AppDelegate.swift */; };
 		88549776231B677C0021BCB1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88549774231B677C0021BCB1 /* Main.storyboard */; };
 		8854977B231B677D0021BCB1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88549779231B677D0021BCB1 /* LaunchScreen.storyboard */; };
@@ -19,6 +20,8 @@
 		885497A5231B71A00021BCB1 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A4231B71A00021BCB1 /* Artist.swift */; };
 		885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A8231DD0600021BCB1 /* OtherModels.swift */; };
 		885497DF231DEC8A0021BCB1 /* NetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497DE231DEC8A0021BCB1 /* NetStatus.swift */; };
+		88832486239339DD00828DE2 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88832485239339DD00828DE2 /* LaunchViewController.swift */; };
+		8883248823933DA800828DE2 /* SetupSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8883248723933DA800828DE2 /* SetupSearchController.swift */; };
 		888963BE2335437F00B627FF /* ReleaseLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888963BD2335437F00B627FF /* ReleaseLoadingView.swift */; };
 		889AFE27232419EB000521CA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88549770231B677C0021BCB1 /* FirstViewController.swift */; };
 		88A4BF712329EDC0002E0340 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88A4BF702329EDC0002E0340 /* Assets.xcassets */; };
@@ -69,6 +72,7 @@
 /* Begin PBXFileReference section */
 		881CD27D231E014400EA8A12 /* OtherScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherScreenController.swift; sourceTree = "<group>"; };
 		8824BD6323273DCB00168DF4 /* OldApiReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldApiReferences.swift; sourceTree = "<group>"; };
+		884A7CF5239354D4004493AA /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
 		8854976B231B677C0021BCB1 /* MusicFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8854976E231B677C0021BCB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88549770231B677C0021BCB1 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 		885497AD231DD9F20021BCB1 /* OAuth2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuth2.framework; path = Carthage/Build/iOS/OAuth2.framework; sourceTree = "<group>"; };
 		885497DE231DEC8A0021BCB1 /* NetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetStatus.swift; sourceTree = "<group>"; };
 		886863102325692F007484E9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		88832485239339DD00828DE2 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		8883248723933DA800828DE2 /* SetupSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupSearchController.swift; sourceTree = "<group>"; };
 		888963BD2335437F00B627FF /* ReleaseLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseLoadingView.swift; sourceTree = "<group>"; };
 		88A4BF702329EDC0002E0340 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MusicFeed/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		88EAAA95232EE36A00F069D3 /* ReleaseListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleaseListViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				885497A2231B71990021BCB1 /* Album.swift */,
+				884A7CF5239354D4004493AA /* ArtistList.swift */,
 				885497A4231B71A00021BCB1 /* Artist.swift */,
 				885497DE231DEC8A0021BCB1 /* NetStatus.swift */,
 				885497A8231DD0600021BCB1 /* OtherModels.swift */,
@@ -240,6 +247,8 @@
 		885497B8231DEA6D0021BCB1 /* Release List */ = {
 			isa = PBXGroup;
 			children = (
+				88832485239339DD00828DE2 /* LaunchViewController.swift */,
+				8883248723933DA800828DE2 /* SetupSearchController.swift */,
 				88EAAA95232EE36A00F069D3 /* ReleaseListViewController.swift */,
 				88EAAA97232EE37800F069D3 /* ReleaseDetailController.swift */,
 				88EAAA99232EE38800F069D3 /* ReleaseCell.swift */,
@@ -417,7 +426,10 @@
 				885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */,
 				8854976F231B677C0021BCB1 /* AppDelegate.swift in Sources */,
 				88F5754A232443C200E1A011 /* OAuth2RetryHandler.swift in Sources */,
+				88832486239339DD00828DE2 /* LaunchViewController.swift in Sources */,
 				881CD27E231E014400EA8A12 /* OtherScreenController.swift in Sources */,
+				8883248823933DA800828DE2 /* SetupSearchController.swift in Sources */,
+				884A7CF6239354D4004493AA /* ArtistList.swift in Sources */,
 				885497A0231B71530021BCB1 /* StorageController.swift in Sources */,
 				88EAAAA0232EE39600F069D3 /* ArtistViewController.swift in Sources */,
 				88EAAA9F232EE39600F069D3 /* ArtistCell.swift in Sources */,

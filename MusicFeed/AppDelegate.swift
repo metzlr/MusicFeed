@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         for viewController in viewControllers {
             if let navigationController = viewController as? UINavigationController {
-                if let vc = navigationController.viewControllers.first as? ReleaseListViewController {
+                if let vc = navigationController.viewControllers.first as? LaunchViewController {
                     vc.storageController = storageController
                 } else if let vc = navigationController.viewControllers.first as? ArtistViewController {
                     vc.storageController = storageController

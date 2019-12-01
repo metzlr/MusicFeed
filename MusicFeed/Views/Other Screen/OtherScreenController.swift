@@ -53,6 +53,10 @@
                     self.createSpinnerView(child: self.spinnerView!)
                     self.storageController!.apiRequests.userFollowersCall() { [unowned self] response in
                         guard let artists = response else {
+                            DispatchQueue.main.async {
+                                self.removeSpinnerView(child: self.spinnerView!)
+                                self.spinnerView = nil
+                            }
                             return
                         }
                         

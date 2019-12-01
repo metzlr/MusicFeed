@@ -10,7 +10,14 @@ import Foundation
 import UIKit
 import OAuth2
 
-struct Artist: Equatable {
+class Artist: Equatable, Codable {
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case profileImageData
+        case urlImages = "images"
+    }
     
     let id: String
     let name: String
@@ -25,22 +32,18 @@ struct Artist: Equatable {
         self.profileImageData = profileImage
         
     }
+    
     static func == (lhs: Artist, rhs: Artist) -> Bool {
         return lhs.id == rhs.id
     }
+    /*
     func convertImageToData() -> Bool {
-        return false
+        return fals
     }
+    */
     
 }
-extension Artist: Codable {
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case urlImages = "images"
-    }
-}
+
 
 struct ArtistSearchWrapper: Decodable {
     struct ArtistItems: Decodable {

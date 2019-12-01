@@ -26,10 +26,12 @@ class StorageController {
         "redirect_uris": ["spotifyalert-rmg://oauth/callback"]
         ] as OAuth2JSON)
     
-    var implicitAccessToken: String?
+    //var implicitAccessToken: String?
     
     var artists = [Artist]()
-    //var releases = [Album]()
+    var artistLists = [ArtistList]()
+    
+    
     var dateSortValue = TimeDuration.week
     var state: AppStatus = .rest
     
@@ -37,9 +39,14 @@ class StorageController {
     
     init() {
         apiRequests = APICalls()
+        apiRequests.setDelegate(self)
+        
+        readArtistsFromFile()
+        readArtistListsFromFile()
+    
     }
     
-    func readArtistsFromFile(completion: @escaping () -> Void) {
+    func readArtistsFromFile() {
         
         let pathDirectory = getDocumentsDirectory()
         try? FileManager().createDirectory(at: pathDirectory, withIntermediateDirectories: true)
@@ -51,6 +58,8 @@ class StorageController {
         }
         
         artists = try! JSONDecoder().decode([Artist].self, from: data)
+        
+        /*
         let queue = DispatchQueue(label: "com.test.api", qos: .background, attributes: .concurrent)
         self.apiRequests.getArtistImages(artists: artists, queue: queue) { [unowned self] artists in
             if artists.count > 0 {
@@ -59,8 +68,34 @@ class StorageController {
             }
             completion()
         }
+        */
+        
+    }
+    
+    func readArtistListsFromFile() {
+        
+        let pathDirectory = getDocumentsDirectory()
+        try? FileManager().createDirectory(at: pathDirectory, withIntermediateDirectories: true)
+        let filePath = pathDirectory.appendingPathComponent("artist_lists.json")
+        
+        guard let data = try? Data(contentsOf: filePath) else {
+            print("Failed to get contents of artist list file")
+            createAllArtistsList()
+            return
+        }
+        
+        self.artistLists = try! JSONDecoder().decode([ArtistList].self, from: data)
         
         
+    }
+    
+    func createAllArtistsList() {
+        if self.artistLists.count == 0 {
+            self.artistLists.append(ArtistList(name: "All Artists", canEdit: false))
+            for artist in self.artists {
+                self.artistLists[0].artists.append(artist)
+            }
+        }
     }
     
     private func getDocumentsDirectory() -> URL {
@@ -81,6 +116,42 @@ class StorageController {
         } catch {
             print("Failed to write JSON data: \(error.localizedDescription)")
         }
+    }
+    
+    func saveArtistListsToFile() {
+        let pathDirectory = getDocumentsDirectory()
+        try? FileManager().createDirectory(at: pathDirectory, withIntermediateDirectories: true)
+        let filePath = pathDirectory.appendingPathComponent("artist_lists.json")
+        
+        let json = try? JSONEncoder().encode(artistLists)
+        
+        do {
+            try json!.write(to: filePath)
+        } catch {
+            print("Failed to write JSON data: \(error.localizedDescription)")
+        }
+
+    }
+    
+    func removeArtistFromLists(artist: Artist) {
+        for list in self.artistLists {
+            list.removeArtist(artist: artist)
+        }
+        /*
+        let removedID = artist.id
+        for i in 0..<self.artistLists.count {
+            var list = artistLists[i]
+            if (list.artistIDs.contains(removedID)) {
+                var newIDs = [String]()
+                for id in list.artistIDs {
+                    if !(id == removedID) {
+                        newIDs.append(id)
+                    }
+                }
+                list.artistIDs = newIDs
+            }
+        }
+        */
     }
 
     
