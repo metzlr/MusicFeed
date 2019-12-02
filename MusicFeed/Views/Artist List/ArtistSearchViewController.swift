@@ -29,7 +29,7 @@ class ArtistSearchViewController: UIViewController {
         searchBar.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
-
+        
     }
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {

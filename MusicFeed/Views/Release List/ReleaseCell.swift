@@ -23,20 +23,6 @@ class ReleaseCell: UITableViewCell {
             albumImageView.image = UIImage(data: data)
         }
         
-        /*
-        if let url = album.smallImageURL {
-            albumImageView.af_setImage(
-                withURL: url
-                // placeholderImage: placeholderImage
-            )
-            
-            // Could also use AlamoFireImage built in image method to make image circle
-            //albumImageView.setRounded()
-        } else {
-            albumImageView.image = nil
-        }
- */
-        
     }
 
 }

@@ -9,7 +9,10 @@
 import Foundation
 
 
-class ArtistList: Codable {
+class ArtistList: Equatable, Codable {
+    static func == (lhs: ArtistList, rhs: ArtistList) -> Bool {
+        return (lhs.name == rhs.name)
+    }
     
     var name: String
     var artists = [Artist]()
@@ -26,5 +29,6 @@ class ArtistList: Codable {
         }
         artists.remove(at: index)
     }
+    
 
 }

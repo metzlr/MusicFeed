@@ -79,6 +79,7 @@ class ArtistViewController: UIViewController {
         removeAllButton.tintColor = .clear
         editArtistButton.title = "Edit"
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nc = segue.destination as? UINavigationController {
             for view in nc.viewControllers {
@@ -100,11 +101,11 @@ class ArtistViewController: UIViewController {
 extension ArtistViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return storageController!.artists.count
+        return self.storageController!.artistLists[0].artists.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArtistCell") as! ArtistCell
-        let artist = storageController!.artists[indexPath.row]
+        let artist = self.storageController!.artistLists[0].artists[indexPath.row]
         cell.setArtistImage(artist: artist)
         cell.setArtistLabel(artist: artist)
         
@@ -120,8 +121,8 @@ extension ArtistViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            storageController!.artists.remove(at: indexPath.row)
-            storageController!.saveArtistsToFile()
+            self.storageController!.artistLists[0].artists.remove(at: indexPath.row)
+            storageController!.saveArtistListsToFile()
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
     }
