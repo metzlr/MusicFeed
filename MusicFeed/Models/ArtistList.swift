@@ -22,12 +22,17 @@ class ArtistList: Equatable, Codable {
         self.name = name
         self.canEdit = canEdit
     }
-    
+
     func removeArtist(artist: Artist) {
         guard let index = artists.firstIndex(of: artist) else {
             return
         }
         artists.remove(at: index)
+    }
+
+    
+    subscript(index: Int) -> Artist {
+        return artists[index]
     }
     
 

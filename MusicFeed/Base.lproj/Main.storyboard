@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zei-f9-vbt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zei-f9-vbt">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -850,7 +850,7 @@
                                 <rect key="frame" x="0.0" y="112" width="414" height="696"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ArtistSearchCell" rowHeight="50" id="qqE-qa-xwu" customClass="ArtistSearchCell" customModule="MusicFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AddArtistToListCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddArtistToListCell" rowHeight="50" id="qqE-qa-xwu" customClass="AddArtistToListCell" customModule="MusicFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qqE-qa-xwu" id="oyb-ic-6eD">
@@ -858,7 +858,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Udk-TE-6tu">
-                                                    <rect key="frame" x="60" y="12.5" width="294" height="25"/>
+                                                    <rect key="frame" x="95" y="12.5" width="224" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="Ioz-h2-meY"/>
                                                     </constraints>
@@ -867,25 +867,35 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c3g-pb-AQA">
-                                                    <rect key="frame" x="10" y="5" width="40" height="40"/>
+                                                    <rect key="frame" x="45" y="5" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="BhO-Zv-zPe"/>
                                                         <constraint firstAttribute="height" constant="40" id="ydi-32-cAV"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="maz-oX-dUN">
+                                                    <rect key="frame" x="10" y="12.5" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="XQb-va-8JW"/>
+                                                        <constraint firstAttribute="height" constant="25" id="iyy-Ox-Hdr"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Udk-TE-6tu" firstAttribute="leading" secondItem="c3g-pb-AQA" secondAttribute="trailing" constant="10" id="4kg-RJ-830"/>
                                                 <constraint firstItem="Udk-TE-6tu" firstAttribute="centerX" secondItem="oyb-ic-6eD" secondAttribute="centerX" id="DWc-7v-CDD"/>
-                                                <constraint firstItem="c3g-pb-AQA" firstAttribute="leading" secondItem="oyb-ic-6eD" secondAttribute="leading" constant="10" id="b7q-eS-QL1"/>
                                                 <constraint firstItem="Udk-TE-6tu" firstAttribute="centerY" secondItem="oyb-ic-6eD" secondAttribute="centerY" id="czU-52-vot"/>
+                                                <constraint firstItem="maz-oX-dUN" firstAttribute="centerY" secondItem="oyb-ic-6eD" secondAttribute="centerY" id="eNU-VX-zXG"/>
+                                                <constraint firstItem="c3g-pb-AQA" firstAttribute="leading" secondItem="maz-oX-dUN" secondAttribute="trailing" constant="10" id="pm2-oD-Lbb"/>
+                                                <constraint firstItem="maz-oX-dUN" firstAttribute="leading" secondItem="oyb-ic-6eD" secondAttribute="leading" constant="10" id="tKv-YP-UXH"/>
                                                 <constraint firstItem="c3g-pb-AQA" firstAttribute="centerY" secondItem="oyb-ic-6eD" secondAttribute="centerY" id="vqn-gu-hi6"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <outlet property="artistImageView" destination="c3g-pb-AQA" id="LDi-nc-yH8"/>
-                                            <outlet property="artistLabel" destination="Udk-TE-6tu" id="XBm-rE-uUi"/>
+                                            <outlet property="artistImageView" destination="c3g-pb-AQA" id="yhT-z5-AXV"/>
+                                            <outlet property="artistLabel" destination="Udk-TE-6tu" id="bKt-dq-KU3"/>
+                                            <outlet property="checkImage" destination="maz-oX-dUN" id="UUa-dc-YAC"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -908,10 +918,20 @@
                         <viewLayoutGuide key="safeArea" id="6v3-Dl-dxn"/>
                     </view>
                     <navigationItem key="navigationItem" id="9Nb-HW-VCs">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="B8d-qw-YOl"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="B8d-qw-YOl">
+                            <connections>
+                                <segue destination="bWe-Xb-3rJ" kind="unwind" unwindAction="unwindToArtistListDetailWithSender:" id="y2r-pz-lfn"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="saveButton" destination="B8d-qw-YOl" id="58Y-c5-Ycj"/>
+                        <outlet property="searchBar" destination="VQ5-R9-y46" id="Ebj-Po-1t7"/>
+                        <outlet property="tableView" destination="YVM-Rz-gUw" id="YpX-Jh-S4K"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5t2-Fc-0T5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="bWe-Xb-3rJ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="5481" y="-2731"/>
         </scene>
@@ -970,21 +990,22 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9iV-mz-2a7">
                                 <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                 <items>
-                                    <barButtonItem systemItem="edit" id="yY9-lC-TtD">
+                                    <barButtonItem title="Deselect All" id="6hx-99-LGk">
+                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="editTapped:" destination="xq3-kC-nWj" id="blP-EE-YC3"/>
+                                            <action selector="deselectTapped:" destination="xq3-kC-nWj" id="ySz-KY-Qg7"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="KQ0-yN-txy"/>
                                     <barButtonItem title="Select All" id="csF-iH-XX7">
                                         <connections>
                                             <action selector="selectTapped:" destination="xq3-kC-nWj" id="xAR-49-9b9"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Deselect All" id="6hx-99-LGk">
-                                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="KQ0-yN-txy"/>
+                                    <barButtonItem title="Delete" id="e8L-8u-drD">
+                                        <color key="tintColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="deselectTapped:" destination="xq3-kC-nWj" id="ySz-KY-Qg7"/>
+                                            <action selector="deleteTapped:" destination="xq3-kC-nWj" id="xH5-7S-gEz"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -1004,37 +1025,41 @@
                         <viewLayoutGuide key="safeArea" id="afu-62-6U5"/>
                     </view>
                     <navigationItem key="navigationItem" id="eSK-mG-9CE">
+                        <nil key="title"/>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="CXV-Ld-oIe">
+                            <barButtonItem title="Edit" id="KMh-5K-bXA">
                                 <connections>
-                                    <segue destination="qYS-Ud-lh4" kind="presentation" id="nlM-v2-maK"/>
+                                    <action selector="editTapped:" destination="xq3-kC-nWj" id="TMc-pf-Tea"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Rename" id="KMh-5K-bXA">
+                            <barButtonItem title="Add" id="CXV-Ld-oIe">
                                 <connections>
-                                    <action selector="renameTapped:" destination="xq3-kC-nWj" id="cuj-eR-cHl"/>
+                                    <action selector="addButtonTapped:" destination="xq3-kC-nWj" id="SWB-r5-yVd"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="addButton" destination="CXV-Ld-oIe" id="6vu-R1-tQo"/>
+                        <outlet property="addButton" destination="CXV-Ld-oIe" id="84C-ag-SMl"/>
                         <outlet property="artistTable" destination="Jsm-Na-Rgv" id="D6p-oY-i5g"/>
+                        <outlet property="deleteButton" destination="e8L-8u-drD" id="o6r-6K-gCB"/>
                         <outlet property="deselectAll" destination="6hx-99-LGk" id="zyY-bG-kwc"/>
-                        <outlet property="editButton" destination="yY9-lC-TtD" id="hXr-PX-Sc8"/>
-                        <outlet property="renameButton" destination="KMh-5K-bXA" id="rgd-pM-J2K"/>
+                        <outlet property="editButton" destination="KMh-5K-bXA" id="f64-ej-Y7V"/>
+                        <outlet property="editToolBar" destination="9iV-mz-2a7" id="Iqt-Y0-4TA"/>
                         <outlet property="selectAll" destination="csF-iH-XX7" id="XSd-nl-ZRA"/>
+                        <segue destination="qYS-Ud-lh4" kind="presentation" identifier="AddArtistSegue" id="aF4-E0-igg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P2K-VW-P7Y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4418.840579710145" y="-2071.2053571428569"/>
+            <point key="canvasLocation" x="4352" y="-2013"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0MM-ia-L06">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qYS-Ud-lh4" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="OtX-CK-aJY"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6MT-F5-FhX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>

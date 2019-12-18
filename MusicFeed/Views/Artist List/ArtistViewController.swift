@@ -63,10 +63,11 @@ class ArtistViewController: UIViewController {
     
     @IBAction func unwindToArtistList(sender: UIStoryboardSegue) {
         if let source = sender.source as? ArtistSearchViewController, let artist = source.selectedArtist {
-            let newIndexPath = IndexPath(row: storageController!.artists.count, section: 0)
+            //let newIndexPath = IndexPath(row: storageController!.artists.count, section: 0)
             storageController!.artists.append(artist)
             storageController!.saveArtistsToFile()
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            tableView.reloadData()
+            //tableView.insertRows(at: [newIndexPath], with: .automatic)
             
         }
     }
@@ -106,8 +107,9 @@ extension ArtistViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArtistCell") as! ArtistCell
         let artist = self.storageController!.artistLists[0].artists[indexPath.row]
-        cell.setArtistImage(artist: artist)
-        cell.setArtistLabel(artist: artist)
+        cell.setArtist(artist: artist)
+        //cell.setArtistImage(artist: artist)
+        //cell.setArtistLabel(artist: artist)
         
         return cell
     }

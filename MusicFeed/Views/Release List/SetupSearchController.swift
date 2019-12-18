@@ -116,7 +116,7 @@ extension SetupSearchController: UITableViewDataSource, UITableViewDelegate {
         } else { // Selected create new
             showInputDialog()
         }
-        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

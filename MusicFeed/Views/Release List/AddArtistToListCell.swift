@@ -1,43 +1,42 @@
 //
-//  ArtistCell.swift
-//  SpotifyAlert
+//  AddArtistToListCell.swift
+//  MusicFeed
 //
-//  Created by Reed Metzler-Gilbertz on 8/10/19.
+//  Created by Reed Metzler-Gilbertz on 12/13/19.
 //  Copyright © 2019 Reed Metzler-Gilbertz. All rights reserved.
 //
 
 import UIKit
 
-class ArtistCell: UITableViewCell {
-
+class AddArtistToListCell: UITableViewCell {
+    
+    
     @IBOutlet weak var artistLabel: UILabel!
+    
     @IBOutlet weak var artistImageView: UIImageView!
     
-    var artist: Artist!
+    @IBOutlet weak var checkImage: UIImageView!
     
-    func setArtist(artist: Artist) {
-        self.artist = artist
-        artistLabel.text = artist.name
-        if let data = artist.profileImageData {
-            artistImageView.image = UIImage(data: data)
-            artistImageView.setRounded()
-
-        }
-    }
+    var checked = false
     
-    /*
     func setArtistLabel(artist: Artist) {
         artistLabel.text = artist.name
-
+        
     }
     func setArtistImage(artist: Artist) {
         if let data = artist.profileImageData {
             artistImageView.image = UIImage(data: data)
             artistImageView.setRounded()
-
         }
     }
-    */
+    func check() {
+        checkImage.image = UIImage(systemName: "checkmark.circle.fill")
+        checked = true
+    }
+    func uncheck() {
+        checkImage.image = UIImage(systemName: "circle")
+        checked = false
+    }
     
+      
 }
-

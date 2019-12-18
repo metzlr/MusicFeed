@@ -21,6 +21,7 @@
 		885497A5231B71A00021BCB1 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A4231B71A00021BCB1 /* Artist.swift */; };
 		885497A9231DD0600021BCB1 /* OtherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497A8231DD0600021BCB1 /* OtherModels.swift */; };
 		885497DF231DEC8A0021BCB1 /* NetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885497DE231DEC8A0021BCB1 /* NetStatus.swift */; };
+		8868F17723A41B15000AD58C /* AddArtistToListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8868F17623A41B15000AD58C /* AddArtistToListCell.swift */; };
 		887251E2239591CD005730D1 /* AddArtistToListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887251E1239591CD005730D1 /* AddArtistToListController.swift */; };
 		88832486239339DD00828DE2 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88832485239339DD00828DE2 /* LaunchViewController.swift */; };
 		8883248823933DA800828DE2 /* SetupSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8883248723933DA800828DE2 /* SetupSearchController.swift */; };
@@ -98,6 +99,7 @@
 		885497AD231DD9F20021BCB1 /* OAuth2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuth2.framework; path = Carthage/Build/iOS/OAuth2.framework; sourceTree = "<group>"; };
 		885497DE231DEC8A0021BCB1 /* NetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetStatus.swift; sourceTree = "<group>"; };
 		886863102325692F007484E9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		8868F17623A41B15000AD58C /* AddArtistToListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddArtistToListCell.swift; sourceTree = "<group>"; };
 		887251E1239591CD005730D1 /* AddArtistToListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddArtistToListController.swift; sourceTree = "<group>"; };
 		88832485239339DD00828DE2 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		8883248723933DA800828DE2 /* SetupSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupSearchController.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				8883248723933DA800828DE2 /* SetupSearchController.swift */,
 				88B20E6B23957D140026CBBA /* ArtistListDetailController.swift */,
 				887251E1239591CD005730D1 /* AddArtistToListController.swift */,
+				8868F17623A41B15000AD58C /* AddArtistToListCell.swift */,
 				88EAAA95232EE36A00F069D3 /* ReleaseListViewController.swift */,
 				88EAAA97232EE37800F069D3 /* ReleaseDetailController.swift */,
 				88EAAA99232EE38800F069D3 /* ReleaseCell.swift */,
@@ -444,6 +447,7 @@
 				881CD27E231E014400EA8A12 /* OtherScreenController.swift in Sources */,
 				8883248823933DA800828DE2 /* SetupSearchController.swift in Sources */,
 				884A7CF6239354D4004493AA /* ArtistList.swift in Sources */,
+				8868F17723A41B15000AD58C /* AddArtistToListCell.swift in Sources */,
 				885497A0231B71530021BCB1 /* StorageController.swift in Sources */,
 				88EAAAA0232EE39600F069D3 /* ArtistViewController.swift in Sources */,
 				88EAAA9F232EE39600F069D3 /* ArtistCell.swift in Sources */,
