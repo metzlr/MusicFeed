@@ -44,8 +44,20 @@ class LaunchViewController: UIViewController {
         searchSetupView = storyboard.instantiateViewController(identifier: "SetupSearchController")
         searchSetupView?.storageController = storageController!
         
-        
-        self.add(searchSetupView!, frame: self.view.frame)
+        self.add(connectingView!, frame: self.view.frame)
+        NetStatus.shared.startMonitoring()
+        NetStatus.shared.netStatusChangeHandler = {
+            DispatchQueue.main.async { [unowned self] in
+                if NetStatus.shared.isConnected {
+                    self.connectingView!.remove()
+                    self.add(self.searchSetupView!, frame: self.view.frame)
+                } else {
+                    if self.connectingView!.parent == nil {
+                        self.add(self.connectingView!, frame: self.view.frame)
+                    }
+                }
+            }
+        }
         
     }
     

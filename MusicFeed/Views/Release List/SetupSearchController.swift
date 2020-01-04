@@ -14,7 +14,20 @@ class SetupSearchController: UIViewController {
     
     @IBOutlet weak var searchButton: UIButton!
         
-
+    @IBAction func searchTapped(_ sender: Any) {
+        guard let list = selectedList else {
+            print("No list selected")
+            return
+        }
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ReleaseListViewController") as? ReleaseListViewController {
+            viewController.artistList = list
+            viewController.storageController = self.storageController!
+            if let navigator = self.navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
+    }
+    
     var storageController: StorageController?
     
     var selectedList: ArtistList?
@@ -48,10 +61,17 @@ class SetupSearchController: UIViewController {
             if name == nil || name == "" {
                 name = "New List"
             }
-            let newList = ArtistList(name: name!, canEdit: true)
-            if let index = self.storageController!.artistLists.firstIndex(of: newList) {
-                newList.name = self.storageController!.artistLists[index].name + " (1)"
+            var count = 1
+            let originalName = name
+            while (true) {
+                if self.storageController!.artistLists.firstIndex(where: {$0.name == name} ) != nil {
+                    name = originalName! + " (\(count))"
+                    count += 1
+                } else {
+                    break
+                }
             }
+            let newList = ArtistList(name: name!, canEdit: true)
             self.storageController!.artistLists.append(newList)
             self.listPreviewTable.reloadData()
         
@@ -139,8 +159,19 @@ extension SetupSearchController: UITableViewDataSource, UITableViewDelegate {
             cell.setListLabel(list: self.storageController!.artistLists[indexPath.row-1])
             return cell
         }
-        
-        
+    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (indexPath.row != 0 && indexPath.row != 1) {
+            return true
+        }
+        return false
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.storageController!.artistLists.remove(at: indexPath.row-1)
+            self.storageController!.saveArtistListsToFile()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

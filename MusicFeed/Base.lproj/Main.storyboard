@@ -105,12 +105,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="87x-3n-InO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="6K5-TE-kSa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6518.840579710145" y="-1402.2321428571429"/>
+            <point key="canvasLocation" x="7151" y="-1467"/>
         </scene>
-        <!--View Controller-->
+        <!--Progress View Controller-->
         <scene sceneID="6Bp-7M-Qhu">
             <objects>
-                <viewController id="ZUt-w5-K5t" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProgressViewController" id="ZUt-w5-K5t" customClass="ProgressViewController" customModule="MusicFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LAD-4N-Ao2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -138,15 +138,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uP8-Fb-qSW"/>
                     </view>
+                    <connections>
+                        <outlet property="progressBar" destination="ASE-mK-cEg" id="hJF-dD-IAJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LY2-nk-Mqw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4608.695652173913" y="-1402.2321428571429"/>
+            <point key="canvasLocation" x="5274" y="-1467"/>
         </scene>
         <!--Releases-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ReleaseListViewController" customModule="MusicFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ReleaseListViewController" id="BYZ-38-t0r" customClass="ReleaseListViewController" customModule="MusicFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -219,21 +222,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Releases" id="tWg-s9-H5V">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="onB-CL-sgk">
-                            <connections>
-                                <action selector="refreshButtonTapped:" destination="BYZ-38-t0r" id="5Hj-Vr-ptj"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Releases" id="tWg-s9-H5V"/>
                     <connections>
-                        <outlet property="refreshButton" destination="onB-CL-sgk" id="KXo-Cs-PF2"/>
                         <outlet property="tableView" destination="SAc-XN-vkV" id="A1G-RN-vhv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5634.7826086956529" y="-1402.2321428571429"/>
+            <point key="canvasLocation" x="6262" y="-1467"/>
         </scene>
         <!--Saved Artists-->
         <scene sceneID="N7M-JM-VmC">
@@ -706,7 +702,7 @@
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <state key="normal" title="Get Releases"/>
                                         <connections>
-                                            <action selector="searchTapped:" destination="SXr-Lm-zr5" eventType="touchUpInside" id="6N8-Pl-QTk"/>
+                                            <action selector="searchTapped:" destination="SXr-Lm-zr5" eventType="touchUpInside" id="NIV-X5-ZLL"/>
                                         </connections>
                                     </button>
                                 </subviews>
