@@ -15,6 +15,12 @@ class ReleaseDetailController: UIViewController {
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
+    @IBAction func openInSpotifyTapped(_ sender: Any) {
+        let spotifyURL = release!.externalURL
+        if let url = URL(string: spotifyURL) {
+            UIApplication.shared.open(url)
+        }
+    }
     
     var release: Album?
     //var storageController: StorageController?
