@@ -7,8 +7,14 @@
         <div class="row">
             <a class="btn btn-primary btn" href="#" role="button">New Artist Group</a>
         </div>
-        <div class="row">
-            
-        </div>
+    </div>
+    <div class="container mt-4">
+        <ul class="list-group list-group-flush mt-2">
+            {% for group in groups %}
+                <li class="list-group-item">
+                    {{ group.name }}
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock content %}

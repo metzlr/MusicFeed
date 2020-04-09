@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from . import spotify
 
 
@@ -22,9 +23,12 @@ def release_search(request):
     
     return render(request, 'feed/artist_search.html', context)
 
+@login_required
 def artists(request):
     context = {
         'title':'Artists'
     }
+    groups = request.user.artistgroup_set.all()
+    context['groups'] = groups
     return render(request, 'feed/artists.html', context)
    
