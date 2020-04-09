@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from . import spotify
 
-# Create your views here.
 
 def home(request):
     context = {
