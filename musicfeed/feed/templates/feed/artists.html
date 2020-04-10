@@ -5,10 +5,27 @@
             <h1>Artist Groups</h1>
         </div>
         <div class="row">
-            <a class="btn btn-primary btn" href="#" role="button">New Artist Group</a>
+            <a class="btn btn-primary btn" href="{% url 'feed-new-group' %}" role="button">New Artist Group</a>
         </div>
     </div>
     <div class="container mt-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Number of Artists</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups %}
+                    <tr>
+                        <td><a href="{% url 'feed-group-detail' pk=group.id %}">{{ group.name }}</a></td>
+                        <td>{{ group.artists.count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--
         <ul class="list-group list-group-flush mt-2">
             {% for group in groups %}
                 <li class="list-group-item">
@@ -16,5 +33,6 @@
                 </li>
             {% endfor %}
         </ul>
+        -->
     </div>
 {% endblock content %}
