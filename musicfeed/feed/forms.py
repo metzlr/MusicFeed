@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.postgres.forms.jsonb import JSONField
+#from django.contrib.postgres.forms.jsonb import JSONField
 from .models import ArtistGroup, Artist
 
 
@@ -19,8 +19,8 @@ class AddArtistToGroupForm(forms.ModelForm):
 
 class AddArtistToGroupForm(forms.Form):
 
-    #artist = forms.CharField(widget=forms.HiddenInput, required=True)
-    artist_metadata = JSONField(widget=forms.HiddenInput())
+    artist_metadata = forms.CharField(widget=forms.HiddenInput, required=True)
+    #artist_metadata = JSONField(widget=forms.HiddenInput())
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

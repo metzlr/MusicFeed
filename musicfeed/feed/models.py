@@ -10,6 +10,7 @@ class Artist(models.Model):
     img_url = models.URLField(max_length=200)
     artist_groups = models.ManyToManyField('ArtistGroup')
 
+
 class ArtistGroup(models.Model):
     name = models.CharField(max_length=50)
     artists = models.ManyToManyField(Artist)

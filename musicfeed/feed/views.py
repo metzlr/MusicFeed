@@ -6,6 +6,7 @@ from django.views.generic import DetailView
 from . import spotify
 from .models import Artist, ArtistGroup
 from .forms import ArtistGroupForm, AddArtistToGroupForm
+import json
 
 
 def home(request):
@@ -47,7 +48,7 @@ def artists(request):
             form_add = AddArtistToGroupForm(request.POST, user=request.user)
             print(form_add.errors)
             if form_add.is_valid():
-                artist_data = form_add.cleaned_data['artist_metadata']
+                artist_data = json.loads(form_add.cleaned_data['artist_metadata'])
                 artist = Artist(name=artist_data['name'], spotify_id = artist_data['id'], img_url = artist_data['images'][-1])
                 artist.save()
                 selected_groups = form_add.cleaned_data['groups']

@@ -29,13 +29,14 @@
             </table>
         </div>
     </div>
-    <div class="container">
+    <div class="container mt-5">
+        <h4>Search for an Artist</h4>
         <form class="row my-4" action="{% url 'feed-release-search' %}" accept-charset="UTF-8">
             <div class="col">
                 <input class="form-control" type="search" name="q" id="artistSearchInput" value="" placeholder="Search">
             </div>
             <div class="col-auto px-0">
-                <input class="btn btn-primary" type="submit" name="commit" value="Search">
+                <input class="btn btn-primary" type="submit" value="Search">
             </div>
         </form>
         {% if artists %}
@@ -50,7 +51,7 @@
                                     <img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="{{ last.url }}">
                                     <label for="artistSearchImage">{{ artist.name }}</label>
                                 </div>
-                                <div class="d-flex col align-items-center justify-content-center">
+                                <div class="d-flex col align-items-center">
                                     <button type="button" class="btn btn-link" id="addToGroupButton" data-toggle="modal" data-target="#modalArtistAdd" data-artist-name="{{ artist.name }}" data-artist-img="{{ last.url }}" data-artist-id="{{ artist.id }}">Add to an Artist Group</button>
                                 </div>
                             </div>
