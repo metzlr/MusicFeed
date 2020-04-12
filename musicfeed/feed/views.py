@@ -1,12 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import DetailView
 from . import spotify
 from .models import Artist, ArtistGroup
-from .forms import ArtistGroupForm, AddArtistToGroupForm, DeleteGroupForm
+from .forms import ArtistGroupForm, AddArtistToGroupForm, DeleteGroupForm, RenameGroupForm
 import json
+from django.http import JsonResponse
+
 
 
 def home(request):
@@ -28,7 +31,7 @@ def release_search(request):
         results = spotify.artist_search(q)
         context['artists'] = results
     
-    return render(request, 'feed/artist_search.html', context)
+    return render(request, 'feed/artists.html', context)
 '''
 
 @login_required
@@ -44,11 +47,11 @@ def artists(request):
         'form_delete_group':form_delete_group,
         'artists': None
     }
+    
     if request.method == 'POST':
-        print(request.POST)
         if 'save_add_artist' in request.POST:
             form_add = AddArtistToGroupForm(request.POST, user=request.user)
-            print(form_add.errors)
+            context['form_add'] = form_add
             if form_add.is_valid():
                 artist_data = json.loads(form_add.cleaned_data['artist_metadata'])
                 artist = Artist(name=artist_data['name'], spotify_id = artist_data['id'], img_url = artist_data['images'][-1]['url'], spotify_profile_url = artist_data['external_urls']['spotify'])
@@ -58,15 +61,23 @@ def artists(request):
                     group = groups.filter(id=g).first()
                     group.artists.add(artist)
                     artist.artist_groups.add(group)
+
                 return redirect('feed-artists')
+            else:
+                print(request.POST)
+                print(form_add.errors)
+
         elif 'delete_group' in request.POST:
             form_delete_group = DeleteGroupForm(request.POST)
-            print(form_delete_group.errors)
+            context['form_delete_group'] = form_delete_group
             if form_delete_group.is_valid():
                 g = form_delete_group.cleaned_data['group_id']
                 group = groups.filter(id=g).first()
                 ArtistGroup.delete(group)
                 groups = request.user.artistgroup_set.all()
+                messages.success(request, f'Group deleted!')
+            else:
+                print(form_delete_group.errors)
     else:
         try:
             q = request.GET.get('q')
@@ -77,6 +88,29 @@ def artists(request):
             context['artists'] = results
 
     return render(request, 'feed/artists.html', context)
+
+@require_POST
+def ajax_add_artist_to_group(request):
+    data = {}
+
+    groups = request.user.artistgroup_set.all()
+    form_add = AddArtistToGroupForm(request.POST, user=request.user)
+    if form_add.is_valid():
+        artist_data = json.loads(form_add.cleaned_data['artist_metadata'])
+        artist = Artist(name=artist_data['name'], spotify_id = artist_data['id'], img_url = artist_data['images'][-1]['url'], spotify_profile_url = artist_data['external_urls']['spotify'])
+        artist.save()
+        selected_groups = form_add.cleaned_data['groups']
+        for g in selected_groups:
+            group = groups.filter(id=g).first()
+            group.artists.add(artist)
+            artist.artist_groups.add(group)
+        data['success'] = "Successfully added artists to selected groups"
+        data['message'] = 'Successfully added Artist to selected groups!'
+
+    else:
+        data['error'] = form_add.errors
+    print("returning")
+    return JsonResponse(data)
 
 @login_required
 def new_group(request):
@@ -106,14 +140,41 @@ def group_edit(request, pk):
 
 
 class GroupDetailView(LoginRequiredMixin, DetailView):
+    template_name='feed/group_detail.html'
+    form_class = RenameGroupForm
     context_object_name = 'group_data'
     model = ArtistGroup
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, object, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in the group
-        self.group = get_object_or_404(ArtistGroup, id=self.kwargs['pk'])
-        context['group'] = self.group
-        context['artists'] = self.group.artists.all()
+        # Add in the artists
+        #self.group = get_object_or_404(ArtistGroup, id=self.kwargs['pk'])
+        context['artists'] = object.artists.all()
         return context
+    
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        # Make sure users can only access their own groups
+        if self.object not in request.user.artistgroup_set.all():
+            return redirect('feed-artists')
+        
+        form = self.form_class(instance=self.object)
+        context = self.get_context_data(object=self.object)
+        context['form_rename_group'] = form
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        prev_name = self.object.name
+        form = self.form_class(request.POST, instance=self.object)
+        print(form.errors)
+        if form.is_valid():
+            form.save()
+            new_name = form.cleaned_data['name']
+            messages.success(request, f'Successfully renamed "{prev_name}" to "{new_name}"')
+            return redirect('feed-artists')
+        context = self.get_context_data(object=self.object)
+        context['form_rename_group'] = form
+        return render(request, self.template_name, context)

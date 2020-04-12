@@ -7,5 +7,7 @@ urlpatterns = [
     path('artists/s/', views.artists, name='feed-release-search'),
     path('artists/', views.artists, name='feed-artists'),
     path('new-group/',views.new_group, name='feed-new-group'),
-    path('artists/group-detail/<int:pk>', views.GroupDetailView.as_view(template_name='feed/group_detail.html'), name='feed-group-detail')
+    path('artists/group-detail/<int:pk>', views.GroupDetailView.as_view(), name='feed-group-detail'),
+    path('ajax/add-artist-to-group', views.ajax_add_artist_to_group, name='ajax-add-artist-to-group'),
+
 ]

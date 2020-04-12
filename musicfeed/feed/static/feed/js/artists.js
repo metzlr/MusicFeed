@@ -1,10 +1,14 @@
 
+
+
 $('#modalArtistAdd').on('show.bs.modal', function (event) {
+    $modal = $(this);
+    $modal.find('form')[0].reset();
+    $("#ajaxAddFailAlert").hide();
     var button = $(event.relatedTarget) // Button that triggered the modal
     var name = button.data('artist-name') // Extract info from data-* attributes
     var img = button.data('artist-img')
     var id = button.data('artist-id')
-
     // Store artist data in form
     var artists = JSON.parse(document.getElementById('artist-data').textContent)
     var index = artists.findIndex(function(item, i){
@@ -27,25 +31,7 @@ $('#modalGroupDelete').on('show.bs.modal', function (event) {
     var id = button.data('group-id')
 
     $("#id_group_id").val(id)
-    $("#modalGroupDeleteName").text(name)
+    $("#modalGroupDeleteName").text('Are you sure you want to delete "'+name+'"?')
 });
 
-/*
-$("#modalAddArtistSubmitButton").click(function(){
-    var artists = JSON.parse(document.getElementById('artist-data').textContent)
-    var id = $("")
-    var index = artists.findIndex(function(item, i){
-        return item.name === val
-    });
-    //$("#id_artist").attr("value",)
-    
-    $("#selectArtistGroupForm").submit(function(){
-      $("<input />").attr("type", "hidden")
-      .attr("name", "dates")
-      .attr("value", "something")
-      .appendTo("#objectForm");
-      return true;
-     }); // Submit the form
-    
-});
-*/
+

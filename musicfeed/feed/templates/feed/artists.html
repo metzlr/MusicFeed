@@ -33,7 +33,7 @@
     </div>
     <div class="container mt-5">
         <h4>Search for an Artist</h4>
-        <form class="row my-4" action="{% url 'feed-release-search' %}" accept-charset="UTF-8">
+        <form method="GET" class="row my-4" action="{% url 'feed-release-search' %}" accept-charset="UTF-8">
             <div class="col">
                 <input class="form-control" type="search" name="q" id="artistSearchInput" value="" placeholder="Search">
             </div>
@@ -84,7 +84,7 @@
     <div class="modal fade" id="modalArtistAdd" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form id="selectArtistGroupForm" method="POST">
+                <form method="POST" action="{% url 'ajax-add-artist-to-group' %}" id="addArtistGroupForm" method="POST">
                     {% csrf_token %}
                     <div class="modal-header">
                         <h4 class="modal-title" id="modalArtistAddTitle">Add Artist to Group</h4>
@@ -97,6 +97,16 @@
                             <div class="row">
                                 <img class="rounded-circle img-artist-add mr-3" id="modalArtistAddImage" src="https://cdn3.iconfinder.com/data/icons/modifiers-add-on-1/48/v-17-512.png">
                                 <h5 class="align-self-center" id="modalArtistAddName"></h5>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="alert alert-danger" role="alert" id="ajaxAddFailAlert" style="display:none">
+                                    One or more of the selected groups already contain this Artist
+                                    <!--
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    -->
+                                </div>
                             </div>
                         </div>
                         <div class="container-fluid modal-add-artistgroup mt-4">
