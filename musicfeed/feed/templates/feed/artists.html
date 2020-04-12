@@ -6,7 +6,7 @@
             <h1>Artist Groups</h1>
         </div>
         <div class="row">
-            <a class="btn btn-primary btn" href="{% url 'feed-new-group' %}" role="button">New Artist Group</a>
+            <a class="btn btn-primary" href="{% url 'feed-new-group' %}" role="button">New Artist Group</a>
         </div>
     </div>
     <div class="container mt-4">
@@ -16,6 +16,7 @@
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Number of Artists</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,6 +24,7 @@
                         <tr>
                             <td><a href="{% url 'feed-group-detail' pk=group.id %}">{{ group.name }}</a></td>
                             <td>{{ group.artists.count }}</td>
+                            <td><button type="button" class="btn btn-link" id="deleteGroupButton" data-toggle="modal" data-target="#modalGroupDelete" data-group-name="{{ group.name }}" data-group-id="{{ group.id }}">Delete</button></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -49,7 +51,7 @@
                             <div class="row">
                                 <div class="col">
                                     <img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="{{ last.url }}">
-                                    <label for="artistSearchImage">{{ artist.name }}</label>
+                                    <label for="artistSearchImage"><a href="{{ artist.external_urls.spotify }}">{{ artist.name }}</a></label>
                                 </div>
                                 <div class="d-flex col align-items-center">
                                     <button type="button" class="btn btn-link" id="addToGroupButton" data-toggle="modal" data-target="#modalArtistAdd" data-artist-name="{{ artist.name }}" data-artist-img="{{ last.url }}" data-artist-id="{{ artist.id }}">Add to an Artist Group</button>
@@ -102,17 +104,40 @@
                             <fieldset class="form-group">
                                 {{ form_add|crispy }}
                             </fieldset>
-                            <!--
-                            <div class="form-group">
-                                <button class="btn btn-outline-info" name="save_add_artist" type="submit">Sign Up</button>
-                            </div>
-                            -->
                             
                         </div>
                     </div>
                     <div class="modal-footer">
                         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
                         <button class="btn btn-primary" name="save_add_artist" id="modalAddArtistSubmitButton" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalGroupDelete" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="groupDeleteForm" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalGroupDeleteTitle">Delete Confirmation</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <h5 class="align-self-center" id="modalGroupDeleteName"></h5>
+                            </div>
+                        </div>
+                        {{ form_delete_group.as_p }}
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                        <button class="btn btn-primary" name="delete_group" id="modalGroupDeleteSubmitButton" type="submit">Delete</button>
                     </div>
                 </form>
             </div>

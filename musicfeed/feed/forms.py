@@ -29,4 +29,8 @@ class AddArtistToGroupForm(forms.Form):
         artistgroups = self.user.artistgroup_set.all()
         self.fields['groups'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(), choices=[(x.id, x.name) for x in artistgroups])
         self.fields['groups'].label = "Select Groups"
+
+class DeleteGroupForm(forms.Form):
+    group_id = forms.CharField(widget=forms.HiddenInput, required=True)
+    
         

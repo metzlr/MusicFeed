@@ -21,6 +21,15 @@ $('#modalArtistAdd').on('show.bs.modal', function (event) {
     $("#modalArtistAddImage").attr('src', img)
 });
 
+$('#modalGroupDelete').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var name = button.data('group-name') // Extract info from data-* attributes
+    var id = button.data('group-id')
+
+    $("#id_group_id").val(id)
+    $("#modalGroupDeleteName").text(name)
+});
+
 /*
 $("#modalAddArtistSubmitButton").click(function(){
     var artists = JSON.parse(document.getElementById('artist-data').textContent)

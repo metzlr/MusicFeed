@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.views.generic import DetailView
 from . import spotify
 from .models import Artist, ArtistGroup
-from .forms import ArtistGroupForm, AddArtistToGroupForm
+from .forms import ArtistGroupForm, AddArtistToGroupForm, DeleteGroupForm
 import json
 
 
@@ -36,10 +36,12 @@ def artists(request):
     groups = request.user.artistgroup_set.all()
 
     form_add = AddArtistToGroupForm(user=request.user)
+    form_delete_group = DeleteGroupForm()
     context = {
         'title':'Artists',
         'groups': groups,
         'form_add': form_add,
+        'form_delete_group':form_delete_group,
         'artists': None
     }
     if request.method == 'POST':
@@ -49,15 +51,22 @@ def artists(request):
             print(form_add.errors)
             if form_add.is_valid():
                 artist_data = json.loads(form_add.cleaned_data['artist_metadata'])
-                artist = Artist(name=artist_data['name'], spotify_id = artist_data['id'], img_url = artist_data['images'][-1])
+                artist = Artist(name=artist_data['name'], spotify_id = artist_data['id'], img_url = artist_data['images'][-1]['url'], spotify_profile_url = artist_data['external_urls']['spotify'])
                 artist.save()
                 selected_groups = form_add.cleaned_data['groups']
                 for g in selected_groups:
                     group = groups.filter(id=g).first()
                     group.artists.add(artist)
                     artist.artist_groups.add(group)
-                
                 return redirect('feed-artists')
+        elif 'delete_group' in request.POST:
+            form_delete_group = DeleteGroupForm(request.POST)
+            print(form_delete_group.errors)
+            if form_delete_group.is_valid():
+                g = form_delete_group.cleaned_data['group_id']
+                group = groups.filter(id=g).first()
+                ArtistGroup.delete(group)
+                groups = request.user.artistgroup_set.all()
     else:
         try:
             q = request.GET.get('q')

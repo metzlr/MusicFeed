@@ -1,11 +1,28 @@
 {% extends "feed/base.html" %}
 {% block content %}
     <div class="container">
-        <h1>{{ group.name }}</h1>
+        <div class="row d-inline-flex">
+            <div class="col">
+                <h1>{{ group.name }}</h1>
+            </div>
+            <div class="col d-flex align-items-center">
+                <button class="btn btn-primary btn-sm" type="button">Rename</button>
+            </div>
+        </div>
         <ul class="list-group list-group-flush mt-2">
             {% for artist in artists %}
                 <li class="list-group-item">
-                    {{ artist.name }}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="{{ artist.img_url }}">
+                                <label for="artistSearchImage"><a href="{{ artist.spotify_profile_url }}">{{ artist.name }}</a></label>
+                            </div>
+                            <div class="d-flex col align-items-center">
+                                <button type="button" class="btn btn-link" id="removeArtistFromGroup">Remove from Group</button>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
