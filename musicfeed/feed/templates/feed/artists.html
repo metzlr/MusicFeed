@@ -30,11 +30,43 @@
         </div>
     </div>
     <div class="container">
-        <form action="{% url 'feed-release-search' %}" class="mt-4">
-            <div class="form-row">
+        <form class="row my-4" action="{% url 'feed-release-search' %}" accept-charset="UTF-8">
+            <div class="col">
+                <input class="form-control" type="search" name="q" id="artistSearchInput" value="" placeholder="Search">
+            </div>
+            <div class="col-auto px-0">
+                <input class="btn btn-primary" type="submit" name="commit" value="Search">
+            </div>
+        </form>
+        {% if artists %}
+            {{ artists|json_script:"artist-data" }}
+            <ul class="list-group list-group-flush mt-2">
+                {% for artist in artists %}
+                    <li class="list-group-item">
+                        <div class="container">
+                            {% with artist.images|last as last %}
+                            <div class="row">
+                                <div class="col">
+                                    <img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="{{ last.url }}">
+                                    <label for="artistSearchImage">{{ artist.name }}</label>
+                                </div>
+                                <div class="d-flex col align-items-center">
+                                    <button type="button" class="btn btn-link" id="addToGroupButton" data-toggle="modal" data-target="#modalArtistAdd" data-artist-name="{{ artist.name }}" data-artist-img="{{ last.url }}" data-artist-id="{{ artist.id }}">Add to an Artist Group</button>
+                                </div>
+                            </div>
+                            {% endwith %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+        <!--
+            <form action="{% url 'feed-release-search' %}" class="mt-4">
+            <div class="form-group row">
                 <h4 for="artistSearchInput">Search for an Artist</h4>
             </div>
-            <div class="form-row">
+            <div class="form-group row">
                 <div class="col">
                     <input type="text" class="form-control" name="q", id="artistSearchInput" placeholder="Search">
                 </div>
@@ -43,21 +75,9 @@
                 </div>                    
             </div>
         </form>
-        {% if artists %}
-            {{ artists|json_script:"artist-data" }}
-            <ul class="list-group list-group-flush mt-2">
-                {% for artist in artists %}
-                    <li class="list-group-item">
-                        {% with artist.images|last as last %}
-                            <img class="rounded-circle img-artist mr-3" src="{{ last.url }}">
-                            {{ artist.name }}
-                            <button type="button" class="btn btn-link float-right" id="addToGroupButton" data-toggle="modal" data-target="#modalArtistAdd" data-artist-name="{{ artist.name }}" data-artist-img="{{ last.url }}" data-artist-id="{{ artist.id }}">Add to an Artist Group</button>
-                        {% endwith %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
+    -->
+        
+
     <div class="modal fade" id="modalArtistAdd" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
