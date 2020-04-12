@@ -5,15 +5,16 @@ from django.contrib import messages
 from django.views.generic import DetailView
 from . import spotify
 from .models import Artist, ArtistGroup
-from .forms import ArtistGroupForm
+from .forms import ArtistGroupForm, AddArtistToGroupForm
 
 
 def home(request):
     context = {
-        'title':'Releases'
+        'title':'Home'
     }
     return render(request, 'feed/home.html', context)
 
+'''
 def release_search(request):
     context = {
         'title':'Releases'
@@ -27,14 +28,44 @@ def release_search(request):
         context['artists'] = results
     
     return render(request, 'feed/artist_search.html', context)
+'''
 
 @login_required
 def artists(request):
-    context = {
-        'title':'Artists'
-    }
     groups = request.user.artistgroup_set.all()
-    context['groups'] = groups
+
+    form_add = AddArtistToGroupForm(user=request.user)
+    context = {
+        'title':'Artists',
+        'groups': groups,
+        'form_add': form_add,
+        'artists': None
+    }
+    if request.method == 'POST':
+        print(request.POST)
+        if 'save_add_artist' in request.POST:
+            form_add = AddArtistToGroupForm(request.POST, user=request.user)
+            print(form_add.errors)
+            if form_add.is_valid():
+                artist_data = form_add.cleaned_data['artist_metadata']
+                artist = Artist(name=artist_data['name'], spotify_id = artist_data['id'], img_url = artist_data['images'][-1])
+                artist.save()
+                selected_groups = form_add.cleaned_data['groups']
+                for g in selected_groups:
+                    group = groups.filter(id=g).first()
+                    group.artists.add(artist)
+                    artist.artist_groups.add(group)
+                
+                return redirect('feed-artists')
+    else:
+        try:
+            q = request.GET.get('q')
+        except:
+            q = None
+        if q:
+            results = spotify.artist_search(q)
+            context['artists'] = results
+
     return render(request, 'feed/artists.html', context)
 
 @login_required

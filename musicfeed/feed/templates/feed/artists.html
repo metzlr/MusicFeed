@@ -1,4 +1,5 @@
 {% extends "feed/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="container">
         <div class="row mb-4">
@@ -9,30 +10,94 @@
         </div>
     </div>
     <div class="container mt-4">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Number of Artists</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for group in groups %}
+        <div class="artist-group-body">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td><a href="{% url 'feed-group-detail' pk=group.id %}">{{ group.name }}</a></td>
-                        <td>{{ group.artists.count }}</td>
+                        <th scope="col">Name</th>
+                        <th scope="col">Number of Artists</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <!--
-        <ul class="list-group list-group-flush mt-2">
-            {% for group in groups %}
-                <li class="list-group-item">
-                    {{ group.name }}
-                </li>
-            {% endfor %}
-        </ul>
-        -->
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                        <tr>
+                            <td><a href="{% url 'feed-group-detail' pk=group.id %}">{{ group.name }}</a></td>
+                            <td>{{ group.artists.count }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+    <div class="container">
+        <form action="{% url 'feed-release-search' %}" class="mt-4">
+            <div class="form-row">
+                <h4 for="artistSearchInput">Search for an Artist</h4>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" class="form-control" name="q", id="artistSearchInput" placeholder="Search">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary btn-rounded btn-xs">Search</button>
+                </div>                    
+            </div>
+        </form>
+        {% if artists %}
+            {{ artists|json_script:"artist-data" }}
+            <ul class="list-group list-group-flush mt-2">
+                {% for artist in artists %}
+                    <li class="list-group-item">
+                        {% with artist.images|last as last %}
+                            <img class="rounded-circle img-artist mr-3" src="{{ last.url }}">
+                            {{ artist.name }}
+                            <button type="button" class="btn btn-link float-right" id="addToGroupButton" data-toggle="modal" data-target="#modalArtistAdd" data-artist-name="{{ artist.name }}" data-artist-img="{{ last.url }}" data-artist-id="{{ artist.id }}">Add to an Artist Group</button>
+                        {% endwith %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="modal fade" id="modalArtistAdd" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="selectArtistGroupForm" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalArtistAddTitle">Add Artist to Group</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <img class="rounded-circle img-artist-add mr-3" id="modalArtistAddImage" src="https://cdn3.iconfinder.com/data/icons/modifiers-add-on-1/48/v-17-512.png">
+                                <h5 class="align-self-center" id="modalArtistAddName"></h5>
+                            </div>
+                        </div>
+                        <div class="container-fluid modal-add-artistgroup mt-4">
+                            
+                            <fieldset class="form-group">
+                                {{ form_add|crispy }}
+                            </fieldset>
+                            <!--
+                            <div class="form-group">
+                                <button class="btn btn-outline-info" name="save_add_artist" type="submit">Sign Up</button>
+                            </div>
+                            -->
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                        <button class="btn btn-primary" name="save_add_artist" id="modalAddArtistSubmitButton" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
 {% endblock content %}
+
+
