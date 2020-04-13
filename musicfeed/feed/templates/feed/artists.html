@@ -84,7 +84,7 @@
     <div class="modal fade" id="modalArtistAdd" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form method="POST" action="{% url 'ajax-add-artist-to-group' %}" id="addArtistGroupForm" method="POST">
+                <form method="POST" action="{% url 'feed-ajax-add-artist-to-group' %}" id="addArtistGroupForm" method="POST">
                     {% csrf_token %}
                     <div class="modal-header">
                         <h4 class="modal-title" id="modalArtistAddTitle">Add Artist to Group</h4>

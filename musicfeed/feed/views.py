@@ -18,21 +18,13 @@ def home(request):
     }
     return render(request, 'feed/home.html', context)
 
-'''
-def release_search(request):
+
+def releases(request):
     context = {
         'title':'Releases'
     }
-    try:
-        q = request.GET.get('q')
-    except:
-        q = None
-    if q:
-        results = spotify.artist_search(q)
-        context['artists'] = results
-    
-    return render(request, 'feed/artists.html', context)
-'''
+    return render(request, 'feed/releases.html', context)
+
 
 @login_required
 def artists(request):
@@ -89,6 +81,7 @@ def artists(request):
 
     return render(request, 'feed/artists.html', context)
 
+
 @require_POST
 def ajax_add_artist_to_group(request):
     data = {}
@@ -112,6 +105,7 @@ def ajax_add_artist_to_group(request):
     print("returning")
     return JsonResponse(data)
 
+
 @login_required
 def new_group(request):
     if request.method == 'POST':
@@ -130,14 +124,7 @@ def new_group(request):
         'form':form
     }
     return render(request, 'feed/new_group.html', context)
-
-'''
-def group_edit(request, pk):
-    group = get_object_or_404(ArtistGroup, pk)
-
-    if request.method == 'POST':
-'''
-
+    
 
 class GroupDetailView(LoginRequiredMixin, DetailView):
     template_name='feed/group_detail.html'
@@ -178,3 +165,4 @@ class GroupDetailView(LoginRequiredMixin, DetailView):
         context = self.get_context_data(object=self.object)
         context['form_rename_group'] = form
         return render(request, self.template_name, context)
+
