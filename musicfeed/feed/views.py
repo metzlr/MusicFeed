@@ -9,7 +9,7 @@ from .models import Artist, ArtistGroup
 from .forms import ArtistGroupForm, AddArtistToGroupForm, DeleteGroupForm, RenameGroupForm
 import json
 from django.http import JsonResponse
-
+from django.core import serializers
 
 
 def home(request):
@@ -18,12 +18,37 @@ def home(request):
     }
     return render(request, 'feed/home.html', context)
 
+def ajax_get_artists(request):
+    data = {}
+    if request.method == 'GET':
+        data_type = request.GET.get('type')
+        
+        if data_type == 'artist_group':
+            group_id = request.GET.get('id')
+            try:
+                group = ArtistGroup.objects.get(pk=group_id)
+            except ArtistGroup.DoesNotExist:
+                error = 'Error: Ajax tried to get an artist group that does not exist'
+                data['error'] = error
+                print(error)
+                return JsonResponse(data)
+
+            serialized_artists = serializers.serialize('json', group.artists.all())
+            data['artists'] = serialized_artists
+        
+    else:
+        data['error'] = 'Not a GET request'
+    return JsonResponse(data)
 
 def releases(request):
     context = {
         'title':'Releases'
     }
+    context['artistgroups'] = request.user.artistgroup_set.all()
     return render(request, 'feed/releases.html', context)
+
+def get_releases(request):
+    pass
 
 
 @login_required

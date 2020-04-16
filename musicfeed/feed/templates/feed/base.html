@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'feed/css/main.css' %}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
     
     {% if title %}
         <title>{{ title }}</title>
@@ -65,7 +66,9 @@
     <script src="{% static 'feed/js/artists.js' %}"></script>
     <script src="{% static 'feed/js/artists_ajax.js' %}"></script>
     <script src="{% static 'feed/js/group_detail.js' %}"></script>
-    
+    <script src="{% static 'feed/js/releases.js' %}"></script>
+
+    {% block scripts %}{% endblock %}
 
 </body>
 </html>

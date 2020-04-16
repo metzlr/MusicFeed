@@ -15,6 +15,12 @@
     object-fit: cover;
 }
 
+.img-added-artist {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+}
+
 .modal-add-artistgroup {
     max-height: 400px;
     overflow-y: scroll;
