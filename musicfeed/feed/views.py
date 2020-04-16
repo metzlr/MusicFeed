@@ -40,6 +40,23 @@ def ajax_get_artists(request):
         data['error'] = 'Not a GET request'
     return JsonResponse(data)
 
+@require_POST
+def ajax_get_releases(request):
+    response_data = {
+        'releases': []
+    }
+    artist_json = request.POST.get('artists', None)
+    artist_data = json.loads(artist_json)
+    for artist in artist_data:
+        albums = spotify.get_recent_artist_albums(artist['spotify_id'])
+        response_data['success'] = "Successfully got releases!"
+        response_data['releases'].extend(albums)
+
+    #Sort releases by date
+    response_data['releases'].sort(key=spotify.get_album_datetime, reverse=True)
+    
+    return JsonResponse(response_data)
+
 def releases(request):
     context = {
         'title':'Releases'
@@ -47,8 +64,6 @@ def releases(request):
     context['artistgroups'] = request.user.artistgroup_set.all()
     return render(request, 'feed/releases.html', context)
 
-def get_releases(request):
-    pass
 
 
 @login_required

@@ -1,4 +1,4 @@
-
+/*
 $(document).ready(function () {
     $('.add-button').click(function () {
         var id = $(this).data('group-id')
@@ -13,3 +13,5 @@ $(document).ready(function () {
     });
     
 });
+*/
+

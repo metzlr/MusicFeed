@@ -1,6 +1,9 @@
 import spotipy
+import operator
+from datetime import datetime
 from spotipy.client import SpotifyException
 from spotipy.oauth2 import SpotifyClientCredentials
+
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 
@@ -19,10 +22,31 @@ def artist_search(text):
     print(artists)
     return artists
 
-def get_artist_albums(artist_id):
-    results = sp.artist_albums(artist_id, country='US', limit=5)
+def get_album_datetime(item_dictionary):
+    '''Extract datetime string from given dictionary, and return the parsed datetime object'''
+    date_str = item_dictionary['release_date']
+    if item_dictionary['release_date_precision'] == 'day':
+        datetime_obj = datetime.strptime(date_str, '%Y-%m-%d')
+    elif item_dictionary['release_date_precision'] == 'year':
+        datetime_obj = datetime.strptime(date_str, '%Y')
+    else:
+        return None
+    return datetime_obj
+
+def get_recent_artist_albums(artist_id):
+    results = sp.artist_albums(artist_id, country='US', album_type='album,single')
     albums = results['items']
-    return albums
+    recent_albums = []
+    for album in albums:
+        today = datetime.today()
+        date_obj = get_album_datetime(album)
+        if date_obj is None:
+            print("ERROR: Unrecognized date format on album for artist:", artist_id)
+            continue
+        date_change = today - date_obj
+        if date_change.days <= 31:
+            recent_albums.append(album)
+    return recent_albums
 
 #5INjqkS1o8h1imAzPqGZBb
 #get_artist_albums('5INjqkS1o8h1imAzPqGZBb')

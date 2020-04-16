@@ -38,10 +38,27 @@
         </div>
         <div class="col-12 col-md-6 mb-4">
             <div class="container" id="addedArtists"></div>
-            <form method="GET" id="addedElementsForm" action="{% url 'feed-get-releases' %}">
-                <button class="btn btn-primary btn-lg" type="submit">Get Releases</button>
+            <form id="getReleasesForm"> <!-- method="GET" id="addedElementsForm" action=""> -->
+                <button class="btn btn-primary btn-lg" id="getRealeasesButton" type="submit">Get Releases</button>
             </form>
         </div>
+    </div>
+    <div class="row">
+        <!--
+        <div class="container-fluid" id="releasesSection">
+        </div>
+        -->
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Artists</th>
+                <th scope="col">Date Released</th>
+              </tr>
+            </thead>
+            <tbody id="releasesTableBody"></tbody>
+          </table>
     </div>
  
 {% endblock content %}
@@ -60,15 +77,14 @@
                         type: 'artist_group',
                         id: group_id
                     },
-                    success: function( response ) 
-                    {
+                    success: function( response ) {
                         //alert(response['artists'])
                         var artists_response = JSON.parse(response['artists'])
                         artists_response.forEach(function (arrayItem) {
                             if (!artists_obj.artists.some(item => item.spotify_id === arrayItem.fields.spotify_id)) {
                                 //alert(JSON.stringify(arrayItem))
                                 $('#addedArtists').append(
-                                        '<div class="d-flex align-items-center" id="'+arrayItem.fields.spotify_id+'">' +
+                                        '<div class="d-flex align-items-center w-100" id="'+arrayItem.fields.spotify_id+'">' +
                                             '<img class="rounded-circle img-added-artist mr-2" src="'+arrayItem.fields.img_url+'">' +
                                             '<div class="mr-auto">'+arrayItem.fields.name+'</div>' +
                                             
@@ -81,7 +97,6 @@
                                 artists_obj.artists.push(arrayItem.fields)
                             }
                         });
-                        
                     }
                 });
             });
@@ -102,6 +117,71 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+            $('#getReleasesForm').submit(function() { // catch the form's submit event
+                $("#releasesTableBody").empty()
+                $.ajax({ // create an AJAX call...
+                    data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
+                    dataType: 'json',
+                    type: 'POST', // GET or POST
+                    url: "{% url 'feed-ajax-get-releases' %}", // the file to call
+                    success: function(response) { // on success..
+                        if (response.success) {
+                            //alert("Success")
+                    
+                            //alert(JSON.stringify(response.releases))
+                            response.releases.forEach(function(release) { 
+                                //alert(release.name)
+                                //alert(JSON.stringify(release))
+                                var artist_str = ""
+                                var index = 0
+                                
+                                release.artists.forEach(function(artist) { 
+                                    if (index == 0) {
+                                        artist_str += artist.name
+                                    } else {
+                                        artist_str += ', '+artist.name
+                                    }
+                                    index += 1;
+                                });
+                                $("#releasesTableBody").append(
+                                    '<tr>' + 
+                                        '<td>' +
+                                            '<img class="img-release-list" src="'+ release.images[0].url +'">' +
+                                        '</td>' +
+                                        '<td>' +
+                                            release.name +
+                                        '</td>' +
+                                        '<td>' +
+                                            artist_str +
+                                        '</td>' +
+                                        '<td>' +
+                                            release.release_date +
+                                        '</td>' +
+                                    '</tr>'
+                                    /*
+                                    '<div class="d-flex align-items-center">' +
+                                        '<img class="img-release-list mr-2" src="'+ release.images[0].url +'">' +
+                                        '<div class="mr-auto">'+ release.name +'</div>' +
+                                        '<div>'+ release.artists[0].name +'</div>' +
+                                    '</div>'
+                                    */
+                                );
+                            });
+                            
+                        } else {
+                            alert("Error getting releases")
+                        }
+                        
+                    },
+                    error: function(resp) {
+                        alert(resp)
+                    }
+                });
+                return false;
+            });
+        })
 
     </script> 
 
