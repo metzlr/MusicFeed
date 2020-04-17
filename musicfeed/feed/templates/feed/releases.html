@@ -1,7 +1,7 @@
 {% extends "feed/base.html" %}
 {% block content %}
     <div class="row">
-        <div class="col-12 col-md-6 mb-4">
+        <div class="col-12 col-md-6 mb-4 release-search-setup">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Groups</a>
@@ -36,18 +36,21 @@
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
             </div>
         </div>
-        <div class="col-12 col-md-6 mb-4">
-            <div class="container" id="addedArtists"></div>
-            <form id="getReleasesForm"> <!-- method="GET" id="addedElementsForm" action=""> -->
-                <button class="btn btn-primary btn-lg" id="getRealeasesButton" type="submit">Get Releases</button>
-            </form>
+        <div class="col-12 col-md-6 mb-4 release-search-setup">
+            <h4>Artists to include in search:</h4>
+            <div class="container artists-added-body mt-3" id="addedArtists"></div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-danger btn-small mt-2 mr-4" id="clearAddedArtists">Clear</button>
+                <footer class="text-muted">The more artists you add, the longer the search will take</footer>
+            </div>
         </div>
     </div>
+    <div class="row mb-4">
+        <form id="getReleasesForm"> <!-- method="GET" id="addedElementsForm" action=""> -->
+            <button class="btn btn-primary btn-lg ml-2" id="getRealeasesButton" type="submit">Get Releases</button>
+        </form>
+    </div>
     <div class="row">
-        <!--
-        <div class="container-fluid" id="releasesSection">
-        </div>
-        -->
         <table class="table">
             <thead>
               <tr>
@@ -78,13 +81,11 @@
                         id: group_id
                     },
                     success: function( response ) {
-                        //alert(response['artists'])
                         var artists_response = JSON.parse(response['artists'])
                         artists_response.forEach(function (arrayItem) {
                             if (!artists_obj.artists.some(item => item.spotify_id === arrayItem.fields.spotify_id)) {
-                                //alert(JSON.stringify(arrayItem))
                                 $('#addedArtists').append(
-                                        '<div class="d-flex align-items-center w-100" id="'+arrayItem.fields.spotify_id+'">' +
+                                        '<div class="d-flex align-items-center" id="'+arrayItem.fields.spotify_id+'">' +
                                             '<img class="rounded-circle img-added-artist mr-2" src="'+arrayItem.fields.img_url+'">' +
                                             '<div class="mr-auto">'+arrayItem.fields.name+'</div>' +
                                             
@@ -104,7 +105,6 @@
 
         $(document).ready(function() {
             $(document).on('click', '.remove-added-artist', function() {
-                //alert("clicked")
                 var id = $(this).data('artist-id')
                 var index = artists_obj.artists.findIndex(function(item, i){
                     return item.spotify_id === id
@@ -119,6 +119,13 @@
         });
 
         $(document).ready(function() {
+            $(clearAddedArtists).click(function() {
+                artists_obj = { artists: [] }
+                $("#addedArtists").empty()
+            });
+        });
+
+        $(document).ready(function() {
             $('#getReleasesForm').submit(function() { // catch the form's submit event
                 $("#releasesTableBody").empty()
                 $.ajax({ // create an AJAX call...
@@ -128,12 +135,8 @@
                     url: "{% url 'feed-ajax-get-releases' %}", // the file to call
                     success: function(response) { // on success..
                         if (response.success) {
-                            //alert("Success")
-                    
-                            //alert(JSON.stringify(response.releases))
+                            if (response.error) alert(response.error)
                             response.releases.forEach(function(release) { 
-                                //alert(release.name)
-                                //alert(JSON.stringify(release))
                                 var artist_str = ""
                                 var index = 0
                                 
@@ -148,7 +151,7 @@
                                 $("#releasesTableBody").append(
                                     '<tr>' + 
                                         '<td>' +
-                                            '<img class="img-release-list" src="'+ release.images[0].url +'">' +
+                                            '<img class="rounded img-release-list" src="'+ release.images[0].url +'">' +
                                         '</td>' +
                                         '<td>' +
                                             release.name +
@@ -160,13 +163,6 @@
                                             release.release_date +
                                         '</td>' +
                                     '</tr>'
-                                    /*
-                                    '<div class="d-flex align-items-center">' +
-                                        '<img class="img-release-list mr-2" src="'+ release.images[0].url +'">' +
-                                        '<div class="mr-auto">'+ release.name +'</div>' +
-                                        '<div>'+ release.artists[0].name +'</div>' +
-                                    '</div>'
-                                    */
                                 );
                             });
                             
