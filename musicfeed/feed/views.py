@@ -54,7 +54,7 @@ def ajax_get_releases(request):
 
     #Sort releases by date
     response_data['releases'].sort(key=spotify.get_album_datetime, reverse=True)
-    
+
     return JsonResponse(response_data)
 
 def releases(request):
@@ -193,16 +193,28 @@ class GroupDetailView(LoginRequiredMixin, DetailView):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        prev_name = self.object.name
-        form = self.form_class(request.POST, instance=self.object)
-        print(form.errors)
-        if form.is_valid():
-            form.save()
-            new_name = form.cleaned_data['name']
-            messages.success(request, f'Successfully renamed "{prev_name}" to "{new_name}"')
-            return redirect('feed-artists')
-        context = self.get_context_data(object=self.object)
-        context['form_rename_group'] = form
-        return render(request, self.template_name, context)
+        if 'rename_group' in request.POST:
+            self.object = self.get_object()
+            prev_name = self.object.name
+            form = self.form_class(request.POST, instance=self.object)
+            print(form.errors)
+            if form.is_valid():
+                form.save()
+                new_name = form.cleaned_data['name']
+                messages.success(request, f'Successfully renamed "{prev_name}" to "{new_name}"')
+                return redirect('feed-artists')
+            context = self.get_context_data(object=self.object)
+            context['form_rename_group'] = form
+            return render(request, self.template_name, context)
+        elif 'delete_artists' in request.POST:
+            self.object = self.get_object()
+            for value in request.POST.getlist('artist_checkbox'):
+                artist = Artist.objects.get(id=value)
+                self.object.artists.remove(artist)
+                artist.artist_groups.remove(self.object)
+            form = self.form_class(instance=self.object)
+            context = self.get_context_data(object=self.object)
+            context['form_rename_group'] = form
+            return render(request, self.template_name, context)
+        
 
