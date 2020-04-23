@@ -150,17 +150,17 @@
                                 });
                                 $("#releasesTableBody").append(
                                     '<tr>' + 
-                                        '<td>' +
+                                        '<td class="align-middle">' +
                                             '<img class="rounded img-release-list" src="'+ release.images[0].url +'">' +
                                         '</td>' +
-                                        '<td>' +
-                                            release.name +
+                                        '<td class="align-middle">' +
+                                            '<p class="mb-0">' + release.name +'</p>' +
                                         '</td>' +
-                                        '<td>' +
-                                            artist_str +
+                                        '<td class="align-middle">' +
+                                            '<p class="mb-0">'+ artist_str +'</p>' +
                                         '</td>' +
-                                        '<td>' +
-                                            release.release_date +
+                                        '<td class="align-middle">' +
+                                            '<p class="mb-0">'+ release.release_date +'</p>' +
                                         '</td>' +
                                     '</tr>'
                                 );

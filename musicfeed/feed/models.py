@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 
 # Create your models here.
-
+'''
+class UserApiInfo(models.Model):
+    pass
+'''
 
 class Artist(models.Model):
     name = models.CharField(max_length=100)
@@ -23,7 +26,7 @@ class ArtistGroup(models.Model):
 
 
 @receiver(models.signals.pre_delete, sender=ArtistGroup)
-def pre_delete_story(sender, instance, **kwargs):
+def pre_delete_group(sender, instance, **kwargs):
     for artist in instance.artists.all():
         if artist.artist_groups.count() == 1:
             print("DELETING",artist.name)

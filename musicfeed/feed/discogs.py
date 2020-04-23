@@ -1,3 +1,4 @@
+'''
 import requests
 import os
 
@@ -45,3 +46,4 @@ class Discogs():
             return data.get('results')
     
 
+'''
