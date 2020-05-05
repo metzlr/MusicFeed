@@ -1,10 +1,26 @@
 {% extends "feed/base.html" %}
 {% load crispy_forms_tags %}
+
+{% load account socialaccount %}
+
+
+
 {% block content %}
+
+{% get_social_accounts user as accounts %}
+
     <h2>{{ user.username }}</h2>
     <div class="container">
+        {% if accounts %}
+            <div class="row">
+                <h6 class="p-0">Logged in with Spotify</h6>
+            </div>
+        {% endif %}
         <div class="row">
-            <a class="btn btn-success" href="users-add-spotify-profile">Connect to Spotify</a>
+            <a href="{% url 'account_change_password' %}">Change your password</a>
+        </div>
+        <div class="row">
+            <a href="{% url 'account_logout' %}" class="btn btn-primary mt-4">Sign Out</a>
         </div>
     </div>
 {% endblock content %}

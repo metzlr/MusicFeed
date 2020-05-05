@@ -1,0 +1,53 @@
+{% extends "feed/base.html" %}
+{% block head_title %}Sign In{% endblock %}
+{% load crispy_forms_tags %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block content %}
+{% get_providers as socialaccount_providers %}
+
+
+
+<h2>Sign In</h2>
+
+  {% if socialaccount_providers %}
+  <div class="socialaccount_ballot">
+    <ul class="list-unstyled socialaccount_providers" style="list-style: none;">
+      {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+    </ul>
+  </div>
+
+  {% include "socialaccount/snippets/login_extra.html" %}
+
+  {% endif %}
+
+
+<div>
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      <fieldset class="form-group">
+          {% csrf_token %}
+          {{ form|crispy }}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+      </fieldset>
+      <div class="form-group">
+          <button class="btn btn-primary mr-2" type="submit">Login</button>
+          <small><a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a></small>
+      </div>
+    </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Need An Account? <a href="{{ signup_url }}">Register Now</a>
+            
+        </small>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
