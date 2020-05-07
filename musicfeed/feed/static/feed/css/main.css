@@ -32,12 +32,16 @@
     overflow-y: scroll;
 }
 
-.release-search-setup-col {
-    max-height: 550px;
+.release-search-setup {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+.release-search-setup-content {
+    max-height: 350px;
     overflow-y: scroll;
 }
 .artists-added-body {
-    max-height: 275px;
+    max-height: 350px;
     overflow-y: scroll;
 }
 

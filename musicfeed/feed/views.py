@@ -10,6 +10,10 @@ from .forms import ArtistGroupForm, AddArtistToGroupForm, DeleteGroupForm, Renam
 import json
 from django.http import JsonResponse
 from django.core import serializers
+from allauth.socialaccount.models import SocialToken
+from django.utils import timezone
+from datetime import timedelta
+import spotipy
 
 
 def home(request):
@@ -62,6 +66,19 @@ def releases(request):
         'title':'Releases'
     }
     context['artistgroups'] = request.user.artistgroup_set.all()
+    #token = SocialToken.objects.filter(account__user=request.user, account__provider='spotify').first()
+    account = request.user.socialaccount_set.get(provider='spotify')
+    token = account.socialtoken_set.first().token
+    expires = account.socialtoken_set.first().expires_at
+    if expires <= timezone.now():
+        token_secret = account.socialtoken_set.first().token_secret
+        spotify_oauth = spotipy.oauth2.SpotifyOAuth()
+        new_token = spotify_oauth.refresh_access_token(token_secret)
+        account.socialtoken_set.first().token = new_token['access_token']
+        account.socialtoken_set.first().token_secret = new_token['refresh_token']
+        account.socialtoken_set.first().expires_at = timezone.now()+timedelta(seconds=3575)
+    
+    context['spotify_followers'] = spotify.get_user_followers(token)
     return render(request, 'feed/releases.html', context)
 
 

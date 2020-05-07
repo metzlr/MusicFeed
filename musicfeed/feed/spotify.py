@@ -48,6 +48,21 @@ def get_recent_artist_albums(artist_id):
             recent_albums.append(album)
     return recent_albums
 
+def get_user_followers(token):
+    sp = spotipy.Spotify(auth=token)
+    results = sp.current_user_followed_artists()
+    count = results['artists']['total']
+    artist_list = []
+    while (count > 0):
+        artists = results['artists']['items']
+        for artist in artists:
+            artist_list.append(artist)
+            count -= 1
+        if (count > 0):
+            results = sp.current_user_followed_artists(after=artist_list[-1]['id'])
+    return artist_list
+
+
 #5INjqkS1o8h1imAzPqGZBb
 #get_artist_albums('5INjqkS1o8h1imAzPqGZBb')
 
