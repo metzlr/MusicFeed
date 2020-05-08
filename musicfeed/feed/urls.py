@@ -13,5 +13,6 @@ urlpatterns = [
     path('ajax/get-releases/', views.ajax_get_releases, name='feed-ajax-get-releases'),
     #path('releases/get/', views.get_releases, name='feed-get-releases'),
     path('ajax/get-artists/', views.ajax_get_artists, name='feed-ajax-get-artists'),
+    path('ajax/save-artist-search/', views.ajax_save_artist_search, name='feed-ajax-save-artist-search'),
 
 ]

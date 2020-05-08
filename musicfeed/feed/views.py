@@ -68,19 +68,51 @@ def releases(request):
     context['artistgroups'] = request.user.artistgroup_set.all()
     #token = SocialToken.objects.filter(account__user=request.user, account__provider='spotify').first()
     account = request.user.socialaccount_set.get(provider='spotify')
-    token = account.socialtoken_set.first().token
-    expires = account.socialtoken_set.first().expires_at
+    token_obj = account.socialtoken_set.first()
+    expires = token_obj.expires_at
     if expires <= timezone.now():
-        token_secret = account.socialtoken_set.first().token_secret
+        token_secret = token_obj.token_secret
         spotify_oauth = spotipy.oauth2.SpotifyOAuth()
         new_token = spotify_oauth.refresh_access_token(token_secret)
-        account.socialtoken_set.first().token = new_token['access_token']
-        account.socialtoken_set.first().token_secret = new_token['refresh_token']
-        account.socialtoken_set.first().expires_at = timezone.now()+timedelta(seconds=3575)
-    
+        print(new_token)
+        token_obj.token = new_token['access_token']
+        token_obj.token_secret = new_token['refresh_token']
+        token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
+        token_obj.save()
+    token = token_obj.token
     context['spotify_followers'] = spotify.get_user_followers(token)
     return render(request, 'feed/releases.html', context)
 
+@require_POST
+def ajax_save_artist_search(request):
+    artists_json = request.POST.get('artists', None)
+    print(artists_json)
+    artist_data = json.loads(artists_json)
+    response_data = {}
+    if artist_data:
+        group = ArtistGroup()
+        group.author = request.user
+        group.name = 'Saved Group'
+        group.save()
+        for a in artist_data:
+            artist = Artist(name=a['name'], spotify_id = a['spotify_id'], img_url = a['img_url'], spotify_profile_url = a['spotify_profile_url'])
+            artist.save()
+            group.artists.add(artist)
+            artist.artist_groups.add(group)
+        #serialized_group = serializers.serialize('json', group)
+        response_data['success'] = "Successfully saved artist search!"
+        print(group.name)
+        response_data['group'] = {
+            'name': group.name,
+            'id': group.id,
+        }
+        #response_data['group'] = group
+    else:
+        response_data['error'] = "Error saving artist search"
+
+    print(response_data)
+    return JsonResponse(response_data)
+        
 
 
 @login_required

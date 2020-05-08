@@ -1,6 +1,7 @@
 {% extends "feed/base.html" %}
 {% block content %}
     <div class="row">
+        <!--
         <div class="col-12 col-md-6 mb-4 release-search-setup">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
@@ -50,10 +51,13 @@
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
             </div>
         </div>
-        <div class="col-12 col-md-6 mb-4 release-search-setup">
+        -->
+        <div class="col mb-4 release-search-setup">
             <h4>Artists to include in search:</h4>
             <div class="container artists-added-body mt-4" id="addedArtists"></div>
             <div class="d-flex align-items-center">
+                <button class="btn btn-secondary btn-small mt-2 mr-4" id="addArtistsToSearchButton" data-toggle="modal" data-target="#modalAddArtistToSearch">Add Artists</button>
+                <button class="btn btn-success btn-small mt-2 mr-2" id="saveAddedArtistsButton">Save</button>
                 <button class="btn btn-danger btn-small mt-2 mr-4" id="clearAddedArtists">Clear</button>
                 <footer class="text-muted">The more artists you add, the longer the search will take</footer>
             </div>
@@ -77,6 +81,73 @@
             <tbody id="releasesTableBody"></tbody>
           </table>
     </div>
+
+    <div class="modal fade" id="modalAddArtistToSearch" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalArtistAddTitle">Add Artist to Group</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Following</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">None</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div class="list-group" id="artistGroupsList">
+                                {% for group in artistgroups %}
+                                    <li class="list-group-item">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a href="#">{{ group.name }}</a>
+                                                </div>
+                                                <div class="d-flex col align-items-center">
+                                                    <button type="button" class="btn btn-link add-group-button" data-group-id="{{ group.id }}" id="addGroupToForm">Add to Search</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <div class="container-fluid release-search-setup-content">
+                                {% for artist in spotify_followers %}
+                                    {% with artist.images|last as last %}
+                                        <div class="d-flex align-items-center">
+                                            <img class="rounded-circle img-added-artist mr-2" src="{{ last.url }}">
+                                            <div class="mr-auto">{{ artist.name }}</div>
+            
+                                            <button type="button" class="btn btn-link bg-transparent add-followed-artist-button" data-artist-id="{{ artist.id }}" data-artist-img="{{ last.url }}" data-artist-name="{{ artist.name }}" data-artist-profile-url="{{ artist.external_urls.spotify }}">Add</button>
+                                        </div>
+                                    {% endwith %}
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-small add-all-followed-button mt-2">Add All</button>
+                        </div>
+                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
  
 {% endblock content %}
 
@@ -90,6 +161,7 @@
                     spotify_id: $(this).data('artist-id'),
                     name: $(this).data('artist-name'),
                     img_url: $(this).data('artist-img'),
+                    spotify_profile_url: $(this).data('artist-profile-url')
                 }
                 if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
                     $('#addedArtists').append(
@@ -114,6 +186,7 @@
                         spotify_id: $(this).data('artist-id'),
                         name: $(this).data('artist-name'),
                         img_url: $(this).data('artist-img'),
+                        spotify_profile_url: $(this).data('artist-profile-url')
                     }
                     if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
                         $('#addedArtists').append(
@@ -129,11 +202,12 @@
                         artists_obj.artists.push(artist)
                     }
                 });
+                alert(JSON.stringify(artists_obj.artists));
                 
             });
         });
         $(document).ready(function() {
-            $('.add-group-button').click(function() {
+            $(document).on('click', '.add-group-button', function() {
                 var group_id = $(this).data('group-id')
                 $.ajax( {
                     type:"GET",
@@ -179,7 +253,51 @@
                 }
             });
         });
-
+        
+        $(document).ready(function() {
+            $(saveAddedArtistsButton).click(function() {
+                $.ajax({ // create an AJAX call...
+                    data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
+                    dataType: 'json',
+                    type: 'POST', // GET or POST
+                    url: "{% url 'feed-ajax-save-artist-search' %}", // the file to call
+                    success: function(response) { // on success..
+                        if (response.success) {
+                            if (response.error) alert(response.error)
+                            $("#artistGroupsList").append(
+                                '<li class="list-group-item">'+
+                                    '<div class="container">'+
+                                        '<div class="row">'+
+                                            '<div class="col">'+
+                                                '<a href="#">'+response.group.name+'</a>'+
+                                            '</div>'+
+                                            '<div class="d-flex col align-items-center">'+
+                                                '<button type="button" class="btn btn-link add-group-button" data-group-id="'+response.group.id+'" id="addGroupToForm">Add to Search</button>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</li>'
+                            );
+                            $("#message_div").append(
+                                "<div class='alert alert-success alert-dismissable fade show'>"
+                                    +response.success
+                                    +"<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                                        +"<span aria-hidden='true'>&times;</span>"
+                                    +"</button>"
+                                +"</div>"
+                            );
+                        } else {
+                            alert("Error saving artists")
+                        }
+                        
+                    },
+                    error: function(resp) {
+                        alert(resp)
+                    }
+                });
+            });
+        });
+        
         $(document).ready(function() {
             $(clearAddedArtists).click(function() {
                 artists_obj = { artists: [] }
