@@ -63,7 +63,8 @@ def ajax_get_releases(request):
 
 def releases(request):
     context = {
-        'title':'Releases'
+        'title':'Releases',
+        'new_group_form': ArtistGroupForm(),
     }
     context['artistgroups'] = request.user.artistgroup_set.all()
     #token = SocialToken.objects.filter(account__user=request.user, account__provider='spotify').first()
@@ -85,14 +86,14 @@ def releases(request):
 
 @require_POST
 def ajax_save_artist_search(request):
-    artists_json = request.POST.get('artists', None)
-    print(artists_json)
+    artists_json = request.POST.get('artists_json', None)
+    name = request.POST.get('name','New save')
     artist_data = json.loads(artists_json)
     response_data = {}
     if artist_data:
         group = ArtistGroup()
         group.author = request.user
-        group.name = 'Saved Group'
+        group.name = name
         group.save()
         for a in artist_data:
             artist = Artist(name=a['name'], spotify_id = a['spotify_id'], img_url = a['img_url'], spotify_profile_url = a['spotify_profile_url'])
@@ -112,7 +113,7 @@ def ajax_save_artist_search(request):
 
     print(response_data)
     return JsonResponse(response_data)
-        
+    
 
 
 @login_required
@@ -130,6 +131,7 @@ def artists(request):
     }
     
     if request.method == 'POST':
+        '''
         if 'save_add_artist' in request.POST:
             form_add = AddArtistToGroupForm(request.POST, user=request.user)
             context['form_add'] = form_add
@@ -147,8 +149,8 @@ def artists(request):
             else:
                 print(request.POST)
                 print(form_add.errors)
-
-        elif 'delete_group' in request.POST:
+        '''
+        if 'delete_group' in request.POST:
             form_delete_group = DeleteGroupForm(request.POST)
             context['form_delete_group'] = form_delete_group
             if form_delete_group.is_valid():
@@ -176,6 +178,7 @@ def ajax_add_artist_to_group(request):
     data = {}
 
     groups = request.user.artistgroup_set.all()
+    print(request.POST)
     form_add = AddArtistToGroupForm(request.POST, user=request.user)
     if form_add.is_valid():
         artist_data = json.loads(form_add.cleaned_data['artist_metadata'])
@@ -198,6 +201,7 @@ def ajax_add_artist_to_group(request):
 @login_required
 def new_group(request):
     if request.method == 'POST':
+        print(request.POST)
         form = ArtistGroupForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)

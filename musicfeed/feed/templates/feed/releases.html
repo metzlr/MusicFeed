@@ -1,4 +1,5 @@
 {% extends "feed/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="row">
         <!--
@@ -148,6 +149,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalNewGroup" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="newGroupNameForm" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalGroupDeleteTitle">New Save</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            {{ new_group_form|crispy }}
+                            <!--
+                            <div class="row">
+                                <input type="text" placeholder="New Save" id="newGroupNameTextInput">
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" name="save_group" id="modalGroupSaveSubmitButton" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
  
 {% endblock content %}
 
@@ -256,8 +286,21 @@
         
         $(document).ready(function() {
             $(saveAddedArtistsButton).click(function() {
+                $('#modalNewGroup').modal('toggle');
+                $modal.find('form')[0].reset();
+            });
+        });
+        $(document).ready(function() {
+            $('#newGroupNameForm').submit(function() {
                 $.ajax({ // create an AJAX call...
-                    data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
+                    //data: $(this).serialize(),
+                    
+                    data: {
+                        'artists_json': JSON.stringify(artists_obj.artists),
+                        'name': $('#id_name').val()
+                        //'name': $('#newGroupNameTextInput').val()
+                    }, // get the form data
+                    
                     dataType: 'json',
                     type: 'POST', // GET or POST
                     url: "{% url 'feed-ajax-save-artist-search' %}", // the file to call
@@ -295,6 +338,8 @@
                         alert(resp)
                     }
                 });
+                $('#modalNewGroup').modal('toggle');
+                return false;
             });
         });
         

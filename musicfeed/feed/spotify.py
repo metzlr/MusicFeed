@@ -19,7 +19,7 @@ def artist_search(text):
         print('Search text wasn\'t an ID')
 
     artists += search_results['artists']['items']
-    print(artists)
+    #print(artists)
     return artists
 
 def get_album_datetime(item_dictionary):
