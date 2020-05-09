@@ -13,11 +13,24 @@
     <div class="container">
         {% if accounts %}
             <div class="row">
-                <h6 class="p-0">Logged in with Spotify</h6>
+                <div class="col">
+                    <h6 class="p-0">Account connected to Spotify</h6>
+                    <a href="{% url 'socialaccount_connections' %}">Manage Social Connections</a>
+                </div>
+                
             </div>
+        {% else %}
+            <div class="row mt-4">
+                <div class="col">
+                    <h6 class="p-0">Connect account to Spotify:</h6>
+                    {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+                </div>
+            </div>   
         {% endif %}
-        <div class="row">
-            <a href="{% url 'account_change_password' %}">Change your password</a>
+        <div class="row mt-4">
+            <div class="col">
+                <a href="{% url 'account_change_password' %}">Change your password</a>
+            </div>
         </div>
         <div class="row">
             <a href="{% url 'account_logout' %}" class="btn btn-primary mt-4">Sign Out</a>
