@@ -1,5 +1,6 @@
-/* Adds CSRF token to ajax call for methods that need it (POST) */
-/*--------------------------------------------------------------*/
+
+/*
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -30,41 +31,10 @@ $.ajaxSetup({
         }
     }
 });
-/*--------------------------------------------------------------*/
 
-// Here is the function being called
-$(document).ready(function() {
-    $('#addArtistGroupForm').submit(function() { // catch the form's submit event
-        
-        $.ajax({ // create an AJAX call...
-            data: $(this).serialize(), // get the form data
-            type: $(this).attr('method'), // GET or POST
-            url: $(this).attr('action'), // the file to call
-            success: function(response) { // on success..
-                //alert(response.success)
-                if (response.success) {
-                    $("#ajaxAddFailAlert").hide();
-                    $('#modalArtistAdd').modal('toggle');
-                    $("#message_div").append(
-                        "<div class='alert alert-success alert-dismissable fade show'>"
-                            +response.message
-                            +"<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
-                                +"<span aria-hidden='true'>&times;</span>"
-                            +"</button>"
-                        +"</div>"
-                    );
-                } else {
-                    $("#ajaxAddFailAlert").show();
-                }
-                
-            },
-            error: function(resp) {
-                alert(resp)
-            }
-        });
-        return false;
-    });
-});
+
+*/
+
 
 /*
 function update_messages(messages){

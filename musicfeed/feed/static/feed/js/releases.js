@@ -1,17 +1,221 @@
-/*
-$(document).ready(function () {
-    $('.add-button').click(function () {
-        var id = $(this).data('group-id')
-        if (! $('input[id="group'+id+'"]').length) {
-            $('<input>', {
-                type: 'hidden',
-                id: ('group'+id),
-                name: 'release-group',
-                value: id
-            }).appendTo('#addedElementsForm');
+var artists_obj = { artists: [] }
+$(document).ready(function() {
+    $('.add-followed-artist-button').click(function() {
+        var artist = { 
+            spotify_id: $(this).data('artist-id'),
+            name: $(this).data('artist-name'),
+            img_url: $(this).data('artist-img'),
+            spotify_profile_url: $(this).data('artist-profile-url')
+        }
+        if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
+            $('#addedArtists').append(
+                    '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
+                        '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
+                        '<div class="mr-auto">'+artist.name+'</div>' +
+                        
+                        '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
+                            '<i class="fas fa-times"></i>'+
+                        '</button>' +
+                        
+                    '</div>')
+
+            artists_obj.artists.push(artist)
         }
     });
-    
 });
-*/
+$(document).ready(function() {
+    $('.add-all-followed-button').click(function() {
+        $('.add-followed-artist-button').each(function(i, obj) {
+            var artist = { 
+                spotify_id: $(this).data('artist-id'),
+                name: $(this).data('artist-name'),
+                img_url: $(this).data('artist-img'),
+                spotify_profile_url: $(this).data('artist-profile-url')
+            }
+            if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
+                $('#addedArtists').append(
+                        '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
+                            '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
+                            '<div class="mr-auto">'+artist.name+'</div>' +
+                            
+                            '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
+                                '<i class="fas fa-times"></i>'+
+                            '</button>' +
+                            
+                        '</div>')
+                artists_obj.artists.push(artist)
+            }
+        });
+        alert(JSON.stringify(artists_obj.artists));
+        
+    });
+});
+$(document).ready(function() {
+    //$(document).on('click', '.add-group-button', function() {
+    $('.add-group-button').click(function() {
+        var group_id = $(this).data('group-id')
+        $.ajax( {
+            type:"GET",
+            url: $("#artistGroupsList").data('ajax-url'),
+            data:{
+                type: 'artist_group',
+                id: group_id
+            },
+            success: function( response ) {
+                var artists_response = JSON.parse(response['artists'])
+                artists_response.forEach(function (arrayItem) {
+                    if (!artists_obj.artists.some(item => item.spotify_id === arrayItem.fields.spotify_id)) {
+                        $('#addedArtists').append(
+                                '<div class="d-flex align-items-center" id="'+arrayItem.fields.spotify_id+'">' +
+                                    '<img class="rounded-circle img-added-artist mr-2" src="'+arrayItem.fields.img_url+'">' +
+                                    '<div class="mr-auto">'+arrayItem.fields.name+'</div>' +
+                                    
+                                    '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+arrayItem.fields.spotify_id+'">' +
+                                        '<i class="fas fa-times"></i>'+
+                                    '</button>' +
+                                    
+                                '</div>')
+
+                        artists_obj.artists.push(arrayItem.fields)
+                    }
+                });
+            }
+        });
+    });
+});
+
+$(document).ready(function() {
+    $(document).on('click', '.remove-added-artist', function() {
+        var id = $(this).data('artist-id')
+        var index = artists_obj.artists.findIndex(function(item, i){
+            return item.spotify_id === id
+        });
+        if (index != -1) {
+            $('#'+id).remove()
+            artists_obj.artists.splice(index, 1)
+        } else {
+            alert("Error: Artist not found")
+        }
+    });
+});
+
+$(document).ready(function() {
+    $(saveAddedArtistsButton).click(function() {
+        $('#modalNewGroup').modal('toggle');
+        $modal.find('form')[0].reset();
+    });
+});
+$(document).ready(function() {
+    $('#newGroupNameForm').submit(function() {
+        $.ajax({ // create an AJAX call...
+            //data: $(this).serialize(),
+            
+            data: {
+                'artists_json': JSON.stringify(artists_obj.artists),
+                'name': $('#id_name').val()
+                //'name': $('#newGroupNameTextInput').val()
+            }, // get the form data
+            
+            dataType: 'json',
+            type: 'POST', // GET or POST
+            url: $('#newGroupNameForm').data('ajax-url'), // the file to call
+            success: function(response) { // on success..
+                if (response.success) {
+                    if (response.error) alert(response.error)
+                    $("#artistGroupsList").append(
+                        '<li class="list-group-item">'+
+                            '<div class="container">'+
+                                '<div class="row">'+
+                                    '<div class="col">'+
+                                        '<a href="#">'+response.group.name+'</a>'+
+                                    '</div>'+
+                                    '<div class="d-flex col align-items-center">'+
+                                        '<button type="button" class="btn btn-link add-group-button" data-group-id="'+response.group.id+'" id="addGroupToForm">Add to Search</button>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</li>'
+                    );
+                    $("#message_div").append(
+                        "<div class='alert alert-success alert-dismissable fade show'>"
+                            +response.success
+                            +"<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                                +"<span aria-hidden='true'>&times;</span>"
+                            +"</button>"
+                        +"</div>"
+                    );
+                } else {
+                    alert("Error saving artists")
+                }
+                
+            },
+            error: function(resp) {
+                alert(resp)
+            }
+        });
+        $('#modalNewGroup').modal('toggle');
+        return false;
+    });
+});
+
+$(document).ready(function() {
+    $(clearAddedArtists).click(function() {
+        artists_obj = { artists: [] }
+        $("#addedArtists").empty()
+    });
+});
+
+$(document).ready(function() {
+    $('#getReleasesForm').submit(function() { // catch the form's submit event
+        $("#releasesTableBody").empty()
+        $.ajax({ // create an AJAX call...
+            data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
+            dataType: 'json',
+            type: 'POST', // GET or POST
+            url: $('#getReleasesForm').data('ajax-url'), // the file to call
+            success: function(response) { // on success..
+                if (response.success) {
+                    if (response.error) alert(response.error)
+                    response.releases.forEach(function(release) { 
+                        var artist_str = ""
+                        var index = 0
+                        
+                        release.artists.forEach(function(artist) { 
+                            if (index == 0) {
+                                artist_str += artist.name
+                            } else {
+                                artist_str += ', '+artist.name
+                            }
+                            index += 1;
+                        });
+                        $("#releasesTableBody").append(
+                            '<tr>' + 
+                                '<td class="align-middle">' +
+                                    '<img class="rounded img-release-list" src="'+ release.images[0].url +'">' +
+                                '</td>' +
+                                '<td class="align-middle">' +
+                                    '<p class="mb-0">' + release.name +'</p>' +
+                                '</td>' +
+                                '<td class="align-middle">' +
+                                    '<p class="mb-0">'+ artist_str +'</p>' +
+                                '</td>' +
+                                '<td class="align-middle">' +
+                                    '<p class="mb-0">'+ release.release_date +'</p>' +
+                                '</td>' +
+                            '</tr>'
+                        );
+                    });
+                    
+                } else {
+                    alert("Error getting releases")
+                }
+                
+            },
+            error: function(resp) {
+                alert(resp)
+            }
+        });
+        return false;
+    });
+})
 

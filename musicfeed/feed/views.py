@@ -68,21 +68,24 @@ def releases(request):
     }
     context['artistgroups'] = request.user.artistgroup_set.all()
     #token = SocialToken.objects.filter(account__user=request.user, account__provider='spotify').first()
-    account = request.user.socialaccount_set.get(provider='spotify')
-    token_obj = account.socialtoken_set.first()
-    expires = token_obj.expires_at
-    if expires <= timezone.now():
-        token_secret = token_obj.token_secret
-        spotify_oauth = spotipy.oauth2.SpotifyOAuth()
-        new_token = spotify_oauth.refresh_access_token(token_secret)
-        print(new_token)
-        token_obj.token = new_token['access_token']
-        token_obj.token_secret = new_token['refresh_token']
-        token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
-        token_obj.save()
-    token = token_obj.token
-    context['spotify_followers'] = spotify.get_user_followers(token)
+    
+    account = request.user.socialaccount_set.filter(provider='spotify').first()
+    if account:
+        token_obj = account.socialtoken_set.first()
+        expires = token_obj.expires_at
+        if expires <= timezone.now():
+            token_secret = token_obj.token_secret
+            spotify_oauth = spotipy.oauth2.SpotifyOAuth()
+            new_token = spotify_oauth.refresh_access_token(token_secret)
+            print(new_token)
+            token_obj.token = new_token['access_token']
+            token_obj.token_secret = new_token['refresh_token']
+            token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
+            token_obj.save()
+        token = token_obj.token
+        context['spotify_followers'] = spotify.get_user_followers(token)
     return render(request, 'feed/releases.html', context)
+    
 
 @require_POST
 def ajax_save_artist_search(request):
