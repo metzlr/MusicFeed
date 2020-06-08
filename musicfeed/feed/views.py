@@ -44,6 +44,22 @@ def ajax_get_artists(request):
         data['error'] = 'Not a GET request'
     return JsonResponse(data)
 
+def ajax_spotify_artist_search(request):
+    data = {}
+    if request.method == 'GET':
+        try:
+            q = request.GET.get('q')
+        except:
+            q = None
+            data['error'] = 'No search query value in request'
+        if q:
+            results = spotify.artist_search(q)
+            data['artists'] = results
+    else:
+        data['error'] = 'Not a GET request'
+    return JsonResponse(data)
+
+
 @require_POST
 def ajax_get_releases(request):
     response_data = {

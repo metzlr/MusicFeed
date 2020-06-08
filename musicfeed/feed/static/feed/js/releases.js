@@ -23,6 +23,7 @@ $(document).ready(function() {
         }
     });
 });
+
 $(document).ready(function() {
     $('.add-all-followed-button').click(function() {
         $('.add-followed-artist-button').each(function(i, obj) {
@@ -50,6 +51,30 @@ $(document).ready(function() {
         
     });
 });
+
+$(document).ready(function() {
+    $(document).on("click", ".add-artist-to-search-button", function() {
+        var artist = { 
+            spotify_id: $(this).data('artist-id'),
+            name: $(this).data('artist-name'),
+            img_url: $(this).data('artist-img'),
+            spotify_profile_url: $(this).data('artist-profile-url')
+        }
+        if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
+            $('#addedArtists').append(
+                    '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
+                        '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
+                        '<div class="mr-auto">'+artist.name+'</div>' +
+                        
+                        '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
+                            '<i class="fas fa-times"></i>'+
+                        '</button>' +
+                    '</div>')
+            artists_obj.artists.push(artist)
+        }
+    });
+});
+
 $(document).ready(function() {
     //$(document).on('click', '.add-group-button', function() {
     $('.add-group-button').click(function() {
@@ -164,6 +189,50 @@ $(document).ready(function() {
         $("#addedArtists").empty()
     });
 });
+
+$(document).ready(function() {
+    $('#spotifyArtistSearchForm').submit(function(event) { // catch the form's submit event
+        $("#spotifyArtistSearchResultsList").empty()
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(),
+            type: $(this).attr('method'), // GET or POST
+            url: $(this).attr('action'), // the file to call
+            success: function(response) { // on success..
+                if (response.error) {
+                    alert(response.error)
+                }
+                if (response.artists) {
+                    response.artists.forEach(function(artist) {
+                        var imgSrc;
+                        if (artist.images.length > 0) {
+                            imgSrc = artist.images[artist.images.length - 1].url
+                        }
+                        $("#spotifyArtistSearchResultsList").append(
+                            '<li class="list-group-item">' +
+                                '<div class="container p-0">' + 
+                                    '<div class="row">' +
+                                        '<div class="col-10">' +
+                                            '<img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="'+ imgSrc +'">' + 
+                                            '<label for="artistSearchImage"><a href="'+ artist.external_urls.spotify +'">'+artist.name+'</a></label>' +
+                                        '</div>' +
+                                        '<div class="d-flex col-2 flex-column align-items-center justify-content-center">' +
+                                            '<button type="button" class="btn btn-link add-artist-to-search-button" data-artist-profile-url="'+ artist.external_urls.spotify +'" data-artist-name="'+ artist.name +'" data-artist-img="'+ imgSrc +'" data-artist-id="'+ artist.id +'">Add</button>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</li>'
+                        );
+                    });
+                }
+            },
+            error: function(resp) {
+                alert(resp)
+            }
+        });
+        event.preventDefault();
+        return false;
+    });
+})
 
 $(document).ready(function() {
     $('#getReleasesForm').submit(function() { // catch the form's submit event

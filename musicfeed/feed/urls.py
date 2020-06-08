@@ -14,5 +14,6 @@ urlpatterns = [
     #path('releases/get/', views.get_releases, name='feed-get-releases'),
     path('ajax/get-artists/', views.ajax_get_artists, name='feed-ajax-get-artists'),
     path('ajax/save-artist-search/', views.ajax_save_artist_search, name='feed-ajax-save-artist-search'),
+    path('ajax/spotify-artist-search/', views.ajax_spotify_artist_search, name='feed-ajax-spotify-artist-search'),
 
 ]
