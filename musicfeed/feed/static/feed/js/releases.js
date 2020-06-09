@@ -47,8 +47,6 @@ $(document).ready(function() {
                 artists_obj.artists.push(artist)
             }
         });
-        alert(JSON.stringify(artists_obj.artists));
-        
     });
 });
 

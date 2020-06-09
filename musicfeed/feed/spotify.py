@@ -29,7 +29,10 @@ def get_album_datetime(item_dictionary):
         datetime_obj = datetime.strptime(date_str, '%Y-%m-%d')
     elif item_dictionary['release_date_precision'] == 'year':
         datetime_obj = datetime.strptime(date_str, '%Y')
+    elif item_dictionary['release_date_precision'] == 'month':
+        datetime_obj = datetime.strptime(date_str, '%Y-%m')
     else:
+        print("Unrecognized date precision: "+item_dictionary['release_date_precision'])
         return None
     return datetime_obj
 
@@ -41,7 +44,7 @@ def get_recent_artist_albums(artist_id):
         today = datetime.today()
         date_obj = get_album_datetime(album)
         if date_obj is None:
-            print("ERROR: Unrecognized date format on album for artist:", artist_id)
+            print("ERROR: Unrecognized date format on album for artist:", artist_id, album['artists'][0]['name'])
             continue
         date_change = today - date_obj
         if date_change.days <= 31:

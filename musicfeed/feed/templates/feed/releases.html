@@ -2,70 +2,31 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="row">
-        <!--
-        <div class="col-12 col-md-6 mb-4 release-search-setup">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Groups</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Following</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">None</a>
-                </li>
-            </ul>
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <div class="list-group">
-                            {% for group in artistgroups %}
-                                <li class="list-group-item">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col">
-                                                <a href="#">{{ group.name }}</a>
-                                            </div>
-                                            <div class="d-flex col align-items-center">
-                                                <button type="button" class="btn btn-link add-group-button" data-group-id="{{ group.id }}" id="addGroupToForm">Add to Search</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <div class="container release-search-setup-content">
-                            {% for artist in spotify_followers %}
-                                {% with artist.images|last as last %}
-                                    <div class="d-flex align-items-center">
-                                        <img class="rounded-circle img-added-artist mr-2" src="{{ last.url }}">
-                                        <div class="mr-auto">{{ artist.name }}</div>
-        
-                                        <button type="button" class="btn btn-link bg-transparent add-followed-artist-button" data-artist-id="{{ artist.id }}" data-artist-img="{{ last.url }}" data-artist-name="{{ artist.name }}">Add</button>
-                                    </div>
-                                {% endwith %}
-                            {% endfor %}
-                        </div>
-                        <button type="button" class="btn btn-secondary btn-sm add-all-followed-button mt-2">Add All</button>
-                    </div>
-                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-            </div>
-        </div>
-        -->
         <div class="col mb-4 release-search-setup">
             <h4>Artists to include in search:</h4>
             <div class="container artists-added-body mt-4" id="addedArtists"></div>
-            <div class="d-flex align-items-center">
+            <!--
+            <div class="d-flex row align-items-center">
                 <button class="btn btn-secondary btn-sm mt-2 mr-4" id="addArtistsToSearchButton" data-toggle="modal" data-target="#modalAddArtistToSearch">Add Artists</button>
                 <button class="btn btn-success btn-sm mt-2 mr-2" id="saveAddedArtistsButton">Save</button>
                 <button class="btn btn-danger btn-sm mt-2 mr-4" id="clearAddedArtists">Clear</button>
                 <footer class="text-muted">The more artists you add, the longer the search will take</footer>
             </div>
+            -->
+        </div>
+    </div>
+    <div class="row mt-2 mb-4">
+        <div class="col-md-6">
+            <button class="btn btn-secondary btn-sm mr-4" id="addArtistsToSearchButton" data-toggle="modal" data-target="#modalAddArtistToSearch">Add Artists</button>
+            <button class="btn btn-success btn-sm mr-2" id="saveAddedArtistsButton">Save</button>
+            <button class="btn btn-danger btn-sm" id="clearAddedArtists">Clear</button>
+        </div>
+        <div class="col">
+            <footer class="text-muted">The more artists you add, the longer the search will take</footer>
         </div>
     </div>
     <div class="row mb-4">
-        <form id="getReleasesForm" data-ajax-url="{% url 'feed-ajax-get-releases' %}"> <!-- method="GET" id="addedElementsForm" action=""> -->
+        <form id="getReleasesForm" data-ajax-url="{% url 'feed-ajax-get-releases' %}">
             <button class="btn btn-primary ml-2" id="getRealeasesButton" type="submit">Get Releases</button>
         </form>
     </div>
@@ -76,7 +37,7 @@
                 <th scope="col">Image</th>
                 <th scope="col">Name</th>
                 <th scope="col">Artists</th>
-                <th scope="col">Date Released</th>
+                <th scope="col">Release Date</th>
               </tr>
             </thead>
             <tbody id="releasesTableBody"></tbody>
@@ -112,8 +73,8 @@
                                     <li class="list-group-item">
                                         <div class="container">
                                             <div class="row">
-                                                <div class="col">
-                                                    <a href="#">{{ group.name }}</a>
+                                                <div class="d-flex col align-items-center">
+                                                    <a href="{% url 'feed-group-detail' pk=group.id %}">{{ group.name }}</a>
                                                 </div>
                                                 <div class="d-flex col align-items-center">
                                                     <button type="button" class="btn btn-link add-group-button" data-group-id="{{ group.id }}" id="addGroupToForm">Add to Search</button>
