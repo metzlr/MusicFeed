@@ -235,12 +235,14 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#getReleasesForm').submit(function() { // catch the form's submit event
         $("#releasesTableBody").empty()
+        $('#releasesLoadingSpinner').show()
         $.ajax({ // create an AJAX call...
             data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
             dataType: 'json',
             type: 'POST', // GET or POST
             url: $('#getReleasesForm').data('ajax-url'), // the file to call
             success: function(response) { // on success..
+                $('#releasesLoadingSpinner').hide()
                 if (response.success) {
                     if (response.error) alert(response.error)
                     response.releases.forEach(function(release) { 
@@ -279,6 +281,7 @@ $(document).ready(function() {
                 
             },
             error: function(resp) {
+                $('#releasesLoadingSpinner').hide()
                 alert(resp)
             }
         });

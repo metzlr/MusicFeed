@@ -45,4 +45,9 @@
     overflow-y: scroll;
 }
 
+/* same as d-flex but without !important */
+.releases-loading-spinner {
+    display: flex;
+}
+
 
