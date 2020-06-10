@@ -1,4 +1,21 @@
 var artists_obj = { artists: [] }
+
+function addArtistToSearch(artist) {
+    if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
+        $('#addedArtists').append(
+                '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
+                    '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
+                    '<div class="mr-auto">'+artist.name+'</div>' +
+                    
+                    '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
+                        '<i class="fas fa-times"></i>'+
+                    '</button>' +
+                    
+                '</div>')
+
+        artists_obj.artists.push(artist)
+    }
+}
 $(document).ready(function() {
     $('.add-followed-artist-button').click(function() {
         var artist = { 
@@ -7,20 +24,7 @@ $(document).ready(function() {
             img_url: $(this).data('artist-img'),
             spotify_profile_url: $(this).data('artist-profile-url')
         }
-        if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
-            $('#addedArtists').append(
-                    '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
-                        '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
-                        '<div class="mr-auto">'+artist.name+'</div>' +
-                        
-                        '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
-                            '<i class="fas fa-times"></i>'+
-                        '</button>' +
-                        
-                    '</div>')
-
-            artists_obj.artists.push(artist)
-        }
+        addArtistToSearch(artist)
     });
 });
 
@@ -33,19 +37,7 @@ $(document).ready(function() {
                 img_url: $(this).data('artist-img'),
                 spotify_profile_url: $(this).data('artist-profile-url')
             }
-            if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
-                $('#addedArtists').append(
-                        '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
-                            '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
-                            '<div class="mr-auto">'+artist.name+'</div>' +
-                            
-                            '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
-                                '<i class="fas fa-times"></i>'+
-                            '</button>' +
-                            
-                        '</div>')
-                artists_obj.artists.push(artist)
-            }
+            addArtistToSearch(artist)
         });
     });
 });
@@ -58,24 +50,12 @@ $(document).ready(function() {
             img_url: $(this).data('artist-img'),
             spotify_profile_url: $(this).data('artist-profile-url')
         }
-        if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
-            $('#addedArtists').append(
-                    '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
-                        '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
-                        '<div class="mr-auto">'+artist.name+'</div>' +
-                        
-                        '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
-                            '<i class="fas fa-times"></i>'+
-                        '</button>' +
-                    '</div>')
-            artists_obj.artists.push(artist)
-        }
+        addArtistToSearch(artist)
     });
 });
 
 $(document).ready(function() {
-    //$(document).on('click', '.add-group-button', function() {
-    $('.add-group-button').click(function() {
+    $(document).on('click', '.add-group-button', function() {
         var group_id = $(this).data('group-id')
         $.ajax( {
             type:"GET",
@@ -87,20 +67,7 @@ $(document).ready(function() {
             success: function( response ) {
                 var artists_response = JSON.parse(response['artists'])
                 artists_response.forEach(function (arrayItem) {
-                    if (!artists_obj.artists.some(item => item.spotify_id === arrayItem.fields.spotify_id)) {
-                        $('#addedArtists').append(
-                                '<div class="d-flex align-items-center" id="'+arrayItem.fields.spotify_id+'">' +
-                                    '<img class="rounded-circle img-added-artist mr-2" src="'+arrayItem.fields.img_url+'">' +
-                                    '<div class="mr-auto">'+arrayItem.fields.name+'</div>' +
-                                    
-                                    '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+arrayItem.fields.spotify_id+'">' +
-                                        '<i class="fas fa-times"></i>'+
-                                    '</button>' +
-                                    
-                                '</div>')
-
-                        artists_obj.artists.push(arrayItem.fields)
-                    }
+                    addArtistToSearch(arrayItem.fields)
                 });
             }
         });
@@ -131,12 +98,9 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#newGroupNameForm').submit(function() {
         $.ajax({ // create an AJAX call...
-            //data: $(this).serialize(),
-            
             data: {
                 'artists_json': JSON.stringify(artists_obj.artists),
                 'name': $('#id_name').val()
-                //'name': $('#newGroupNameTextInput').val()
             }, // get the form data
             
             dataType: 'json',
