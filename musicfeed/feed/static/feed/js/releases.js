@@ -14,6 +14,7 @@ function addArtistToSearch(artist) {
                 '</div>')
 
         artists_obj.artists.push(artist)
+        $('#artistListHeader').text('Artists Included in Search ('+artists_obj.artists.length+')')
     }
 }
 $(document).ready(function() {
@@ -83,6 +84,7 @@ $(document).ready(function() {
         if (index != -1) {
             $('#'+id).remove()
             artists_obj.artists.splice(index, 1)
+            $('#artistListHeader').text('Artists Included in Search ('+artists_obj.artists.length+')')
         } else {
             alert("Error: Artist not found")
         }
@@ -90,7 +92,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $(saveAddedArtistsButton).click(function() {
+    $('#saveAddedArtistsButton').click(function() {
         $('#modalNewGroup').modal('toggle');
         $modal.find('form')[0].reset();
     });
@@ -146,9 +148,10 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $(clearAddedArtists).click(function() {
+    $('#clearAddedArtists').click(function() {
         artists_obj = { artists: [] }
         $("#addedArtists").empty()
+        $('#artistListHeader').text('Artists Included in Search (0)')
     });
 });
 
