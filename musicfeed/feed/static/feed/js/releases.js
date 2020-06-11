@@ -1,4 +1,7 @@
-var artists_obj = { artists: [] }
+var artists_obj = { 
+    artists: [],
+    gettingReleases: false,
+}
 
 function addArtistToSearch(artist) {
     if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
@@ -149,7 +152,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#clearAddedArtists').click(function() {
-        artists_obj = { artists: [] }
+        artists_obj.artists = []
         $("#addedArtists").empty()
         $('#artistListHeader').text('Artists Included in Search (0)')
     });
@@ -203,55 +206,61 @@ $(document).ready(function() {
     $('#getReleasesForm').submit(function() { // catch the form's submit event
         $("#releasesTableBody").empty()
         $('#releasesLoadingSpinner').show()
-        $.ajax({ // create an AJAX call...
-            data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
-            dataType: 'json',
-            type: 'POST', // GET or POST
-            url: $('#getReleasesForm').data('ajax-url'), // the file to call
-            success: function(response) { // on success..
-                $('#releasesLoadingSpinner').hide()
-                if (response.success) {
-                    if (response.error) alert(response.error)
-                    response.releases.forEach(function(release) { 
-                        var artist_str = ""
-                        var index = 0
-                        
-                        release.artists.forEach(function(artist) { 
-                            if (index == 0) {
-                                artist_str += artist.name
-                            } else {
-                                artist_str += ', '+artist.name
-                            }
-                            index += 1;
+        if (!artists_obj.gettingReleases) {
+            artists_obj.gettingReleases = true
+            $.ajax({ // create an AJAX call...
+                data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
+                dataType: 'json',
+                type: 'POST', // GET or POST
+                url: $('#getReleasesForm').data('ajax-url'), // the file to call
+                success: function(response) { // on success..
+                    $('#releasesLoadingSpinner').hide()
+                    artists_obj.gettingReleases = false
+                    if (response.success) {
+                        if (response.error) alert(response.error)
+                        response.releases.forEach(function(release) { 
+                            var artist_str = ""
+                            var index = 0
+                            
+                            release.artists.forEach(function(artist) { 
+                                if (index == 0) {
+                                    artist_str += artist.name
+                                } else {
+                                    artist_str += ', '+artist.name
+                                }
+                                index += 1;
+                            });
+                            $("#releasesTableBody").append(
+                                '<tr>' + 
+                                    '<td class="align-middle">' +
+                                        '<img class="rounded img-release-list" src="'+ release.images[0].url +'">' +
+                                    '</td>' +
+                                    '<td class="align-middle">' +
+                                        '<p class="mb-0">' + release.name +'</p>' +
+                                    '</td>' +
+                                    '<td class="align-middle">' +
+                                        '<p class="mb-0">'+ artist_str +'</p>' +
+                                    '</td>' +
+                                    '<td class="align-middle">' +
+                                        '<p class="mb-0">'+ release.release_date +'</p>' +
+                                    '</td>' +
+                                '</tr>'
+                            );
                         });
-                        $("#releasesTableBody").append(
-                            '<tr>' + 
-                                '<td class="align-middle">' +
-                                    '<img class="rounded img-release-list" src="'+ release.images[0].url +'">' +
-                                '</td>' +
-                                '<td class="align-middle">' +
-                                    '<p class="mb-0">' + release.name +'</p>' +
-                                '</td>' +
-                                '<td class="align-middle">' +
-                                    '<p class="mb-0">'+ artist_str +'</p>' +
-                                '</td>' +
-                                '<td class="align-middle">' +
-                                    '<p class="mb-0">'+ release.release_date +'</p>' +
-                                '</td>' +
-                            '</tr>'
-                        );
-                    });
+                        
+                    } else {
+                        alert("Error getting releases")
+                    }
                     
-                } else {
-                    alert("Error getting releases")
+                },
+                error: function(resp) {
+                    $('#releasesLoadingSpinner').hide()
+                    artists_obj.gettingReleases = false
+                    alert(resp)
                 }
-                
-            },
-            error: function(resp) {
-                $('#releasesLoadingSpinner').hide()
-                alert(resp)
-            }
-        });
+            });
+            
+        }
         return false;
     });
 })

@@ -73,8 +73,7 @@ def ajax_get_releases(request):
         response_data['releases'].extend(albums)
     #Sort releases by date
     response_data['releases'].sort(key=spotify.get_album_datetime, reverse=True)
-    print(response_data['releases'])
-    
+    #print(response_data['releases'])
     return JsonResponse(response_data)
 
 def releases(request):
