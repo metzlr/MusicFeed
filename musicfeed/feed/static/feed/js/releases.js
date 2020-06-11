@@ -97,11 +97,16 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#saveAddedArtistsButton').click(function() {
         $('#modalNewGroup').modal('toggle');
-        $modal.find('form')[0].reset();
+        $('#newGroupNameForm').trigger('reset')
+        $(':input', '#newGroupNameForm').not(':button :submit, :reset, :hidden').val('');
     });
 });
 $(document).ready(function() {
     $('#newGroupNameForm').submit(function() {
+        if (artists_obj.artists.length <= 0) {
+            alert('No artists have been added to search')
+            return false;
+        }
         $.ajax({ // create an AJAX call...
             data: {
                 'artists_json': JSON.stringify(artists_obj.artists),
@@ -204,9 +209,13 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#getReleasesForm').submit(function() { // catch the form's submit event
-        $("#releasesTableBody").empty()
-        $('#releasesLoadingSpinner').show()
+        if (artists_obj.artists.length <= 0) {
+            alert('Add some artists before searching for releases')
+            return false;
+        }
         if (!artists_obj.gettingReleases) {
+            $("#releasesTableBody").empty()
+            $('#releasesLoadingSpinner').show()
             artists_obj.gettingReleases = true
             $.ajax({ // create an AJAX call...
                 data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
