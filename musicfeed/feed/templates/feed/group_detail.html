@@ -1,30 +1,56 @@
 {% extends "feed/base.html" %}
 {% block content %}
     <div class="container">
-        <form method="POST" action="{% url 'feed-group-detail' pk=group_data.pk %}">
+        <form method="POST" action="{% url 'feed-saved-search-detail' pk=group_data.pk %}">
             <div class="row">
                 <div class="d-flex w-100 align-items-center text-center">
                     <p class="h1 text-center mb-0">{{ group_data.name }}</p>
-                    <button class="ml-4 btn btn-primary btn-sm mr-auto" data-toggle="modal" data-target="#modalGroupRename" type="button">Rename</button>
+                    <button class="ml-4 btn btn-primary btn-sm" data-toggle="modal" data-target="#modalGroupRename" type="button">Rename</button>
+                    <button class="ml-3 btn btn-danger btn-sm mr-auto" data-toggle="modal" data-target="#modalConfirmDelete" type="button">Delete</button>
                     <button class="btn btn-danger btn-sm" name="delete_artists" id="removeSelectedButton" type="submit">Remove Selected</button>
                 </div>
             </div>
             <ul class="list-group list-group-flush mt-1">
-                
-                    {% csrf_token %}
-                    {% for artist in artists %}
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox" class="artist-checkbox mr-3" name="artist_checkbox" value="{{ artist.pk }}">
-                                <img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="{{ artist.img_url }}">
-                                <a href="{{ artist.spotify_profile_url }}">{{ artist.name }}</a>
-                            </div>
-                        </li>
-                    {% endfor %}
+                {% csrf_token %}
+                {% for artist in artists %}
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" class="artist-checkbox mr-3" name="artist_checkbox" value="{{ artist.pk }}">
+                            <img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="{{ artist.img_url }}">
+                            <a href="{{ artist.spotify_profile_url }}">{{ artist.name }}</a>
+                        </div>
+                    </li>
+                {% endfor %}
             </ul>
         </form>
     </div>
     
+    <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="groupDeleteForm" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalGroupDeleteTitle">Delete Confirmation</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <h6 class="align-self-center" id="modalGroupDeleteName">Are you sure you want to delete "{{ group_data.name }}"?</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                        <button class="btn btn-primary" name="delete_group" id="modalGroupDeleteSubmitButton" type="submit">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     
     <div class="modal fade" id="modalGroupRename" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">

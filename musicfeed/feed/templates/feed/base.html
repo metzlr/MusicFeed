@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav mr-auto">
                 <li><a href="{% url 'feed-releases' %}" class="nav-link">Releases</a></li>
-                <li><a href="{% url 'feed-artists' %}" class="nav-link">Artists</a></li>
+                <!-- <li><a href="" class="nav-link">Artists</a></li> -->
             </ul>
             <div class="navbar-nav">
                 {% if user.is_authenticated %}
@@ -91,7 +91,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <!-- <script src="{% static 'feed/js/ajax_setup.js' %}"></script> -->
     <script src="{% static 'feed/js/csrf_setup.js' %}"></script>
-    <script src="{% static 'feed/js/artists.js' %}"></script>
+    <!--<script src="{% static 'feed/js/artists.js' %}"></script>-->
     <script src="{% static 'feed/js/releases.js' %}"></script>
     
 

@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views.generic import DetailView
 from . import spotify
 from .models import Artist, ArtistGroup
-from .forms import ArtistGroupForm, AddArtistToGroupForm, DeleteGroupForm, RenameGroupForm
+from .forms import ArtistGroupForm, AddArtistToGroupForm, RenameGroupForm
 import json
 from django.http import JsonResponse
 from django.core import serializers
@@ -80,25 +80,29 @@ def releases(request):
     context = {
         'title':'Releases',
         'new_group_form': ArtistGroupForm(),
+        'spotify_connected': False
     }
-    context['artistgroups'] = request.user.artistgroup_set.all()
+    if request.user.is_authenticated:
+        context['artistgroups'] = request.user.artistgroup_set.all()
     #token = SocialToken.objects.filter(account__user=request.user, account__provider='spotify').first()
     
-    account = request.user.socialaccount_set.filter(provider='spotify').first()
-    if account:
-        token_obj = account.socialtoken_set.first()
-        expires = token_obj.expires_at
-        if expires <= timezone.now():
-            token_secret = token_obj.token_secret
-            spotify_oauth = spotipy.oauth2.SpotifyOAuth()
-            new_token = spotify_oauth.refresh_access_token(token_secret)
-            print(new_token)
-            token_obj.token = new_token['access_token']
-            token_obj.token_secret = new_token['refresh_token']
-            token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
-            token_obj.save()
-        token = token_obj.token
-        context['spotify_followers'] = spotify.get_user_followers(token)
+        account = request.user.socialaccount_set.filter(provider='spotify').first()
+        if account:
+            context['spotify_connected'] = True
+            token_obj = account.socialtoken_set.first()
+            expires = token_obj.expires_at
+            if expires <= timezone.now():
+                token_secret = token_obj.token_secret
+                spotify_oauth = spotipy.oauth2.SpotifyOAuth()
+                new_token = spotify_oauth.refresh_access_token(token_secret)
+                print(new_token)
+                token_obj.token = new_token['access_token']
+                token_obj.token_secret = new_token['refresh_token']
+                token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
+                token_obj.save()
+            token = token_obj.token
+            context['spotify_followers'] = spotify.get_user_followers(token)
+
     return render(request, 'feed/releases.html', context)
     
 
@@ -133,7 +137,7 @@ def ajax_save_artist_search(request):
     return JsonResponse(response_data)
     
 
-
+'''
 @login_required
 def artists(request):
     groups = request.user.artistgroup_set.all()
@@ -149,25 +153,6 @@ def artists(request):
     }
     
     if request.method == 'POST':
-        '''
-        if 'save_add_artist' in request.POST:
-            form_add = AddArtistToGroupForm(request.POST, user=request.user)
-            context['form_add'] = form_add
-            if form_add.is_valid():
-                artist_data = json.loads(form_add.cleaned_data['artist_metadata'])
-                artist = Artist(name=artist_data['name'], spotify_id = artist_data['id'], img_url = artist_data['images'][-1]['url'], spotify_profile_url = artist_data['external_urls']['spotify'])
-                artist.save()
-                selected_groups = form_add.cleaned_data['groups']
-                for g in selected_groups:
-                    group = groups.filter(id=g).first()
-                    group.artists.add(artist)
-                    artist.artist_groups.add(group)
-
-                return redirect('feed-artists')
-            else:
-                print(request.POST)
-                print(form_add.errors)
-        '''
         if 'delete_group' in request.POST:
             form_delete_group = DeleteGroupForm(request.POST)
             context['form_delete_group'] = form_delete_group
@@ -189,7 +174,7 @@ def artists(request):
             context['artists'] = results
 
     return render(request, 'feed/artists.html', context)
-
+'''
 
 @require_POST
 def ajax_add_artist_to_group(request):
@@ -238,8 +223,7 @@ def new_group(request):
     
 
 class GroupDetailView(LoginRequiredMixin, DetailView):
-    template_name='feed/group_detail.html'
-    form_class = RenameGroupForm
+    template_name = 'feed/group_detail.html'
     context_object_name = 'group_data'
     model = ArtistGroup
 
@@ -258,34 +242,39 @@ class GroupDetailView(LoginRequiredMixin, DetailView):
         if self.object not in request.user.artistgroup_set.all():
             return redirect('feed-artists')
         
-        form = self.form_class(instance=self.object)
+        form = RenameGroupForm(instance=self.object)
         context = self.get_context_data(object=self.object)
+
         context['form_rename_group'] = form
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         if 'rename_group' in request.POST:
-            self.object = self.get_object()
             prev_name = self.object.name
-            form = self.form_class(request.POST, instance=self.object)
+            form = RenameGroupForm(request.POST, instance=self.object)
             print(form.errors)
             if form.is_valid():
                 form.save()
                 new_name = form.cleaned_data['name']
                 messages.success(request, f'Successfully renamed "{prev_name}" to "{new_name}"')
-                return redirect('feed-artists')
-            context = self.get_context_data(object=self.object)
-            context['form_rename_group'] = form
-            return render(request, self.template_name, context)
+                return redirect('feed-releases')
+
         elif 'delete_artists' in request.POST:
-            self.object = self.get_object()
             for value in request.POST.getlist('artist_checkbox'):
                 artist = Artist.objects.get(id=value)
                 self.object.artists.remove(artist)
                 artist.artist_groups.remove(self.object)
-            form = self.form_class(instance=self.object)
-            context = self.get_context_data(object=self.object)
-            context['form_rename_group'] = form
-            return render(request, self.template_name, context)
-        
+
+        elif 'delete_group' in request.POST:
+            ArtistGroup.delete(self.object)
+            messages.success(request, f'Saved Search successfully deleted!')
+            return redirect('feed-releases')
+
+        context = self.get_context_data(object=self.object)
+
+        rename_form = RenameGroupForm(instance=self.object)
+        context['form_rename_group'] = rename_form
+
+        return render(request, self.template_name, context)
 

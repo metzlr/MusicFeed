@@ -58,10 +58,6 @@ class AddArtistToGroupForm(forms.Form):
         
         return cleaned_data
 
-class DeleteGroupForm(forms.Form):
-    group_id = forms.CharField(widget=forms.HiddenInput(), required=True)
-    
-        
 class RenameGroupForm(forms.ModelForm):
     class Meta:
         model = ArtistGroup
