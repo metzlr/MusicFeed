@@ -101,7 +101,7 @@ def releases(request):
                 token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
                 token_obj.save()
             token = token_obj.token
-            context['spotify_followers'] = []#spotify.get_user_followers(token)
+            context['spotify_followers'] = spotify.get_user_followers(token)
 
     return render(request, 'feed/releases.html', context)
     
