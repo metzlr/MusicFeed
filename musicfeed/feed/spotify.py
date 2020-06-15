@@ -1,5 +1,5 @@
+#import operator
 import spotipy
-import operator
 from datetime import datetime
 from spotipy.client import SpotifyException
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -8,6 +8,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 def artist_search(text):
+    print("Searching")
     q = text+'*'
     search_results = sp.search(q, type='artist')
     artists = []
@@ -52,6 +53,7 @@ def get_recent_artist_albums(artist_id):
     return recent_albums
 
 def get_user_followers(token):
+    print("Getting followers")
     sp = spotipy.Spotify(auth=token)
     results = sp.current_user_followed_artists()
     count = results['artists']['total']
@@ -63,6 +65,7 @@ def get_user_followers(token):
             count -= 1
         if (count > 0):
             results = sp.current_user_followed_artists(after=artist_list[-1]['id'])
+    print("Done getting followers")
     return artist_list
 
 

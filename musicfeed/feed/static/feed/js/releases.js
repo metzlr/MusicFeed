@@ -199,7 +199,7 @@ $(document).ready(function() {
                 }
             },
             error: function(resp) {
-                alert(resp)
+                alert(JSON.stringify(resp))
             }
         });
         event.preventDefault();
