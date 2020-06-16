@@ -101,6 +101,13 @@ $(document).ready(function() {
         $(':input', '#newGroupNameForm').not(':button :submit, :reset, :hidden').val('');
     });
 });
+
+$(document).ready(function() {
+    $('#anonymousSaveArtistsButton').click(function() {
+        $('#modalSaveLoginPrompt').modal('toggle');
+    });
+});
+
 $(document).ready(function() {
     $('#newGroupNameForm').submit(function() {
         if (artists_obj.artists.length <= 0) {
@@ -209,6 +216,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#getReleasesForm').submit(function() { // catch the form's submit event
+        $(releasesTableRow).show()
         if (artists_obj.artists.length <= 0) {
             alert('Add some artists before searching for releases')
             return false;
@@ -242,7 +250,7 @@ $(document).ready(function() {
                             $("#releasesTableBody").append(
                                 '<tr>' + 
                                     '<td class="align-middle">' +
-                                        '<img class="shadow rounded img-release-list" src="'+ release.images[0].url +'">' +
+                                        '<img class="shadow img-release-list" src="'+ release.images[0].url +'">' +
                                     '</td>' +
                                     '<td class="align-middle">' +
                                         '<p class="mb-0">' + release.name +'</p>' +
