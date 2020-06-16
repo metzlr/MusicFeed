@@ -29,7 +29,7 @@
     </div>
     <div class="row mb-4">
         <form id="getReleasesForm" data-ajax-url="{% url 'feed-ajax-get-releases' %}">
-            <button class="btn btn-primary ml-2" id="getRealeasesButton" type="submit">Get Releases</button>
+            <button class="shadow-sm btn btn-primary ml-2" id="getRealeasesButton" type="submit">Get Releases</button>
         </form>
     </div>
     
@@ -102,7 +102,7 @@
                                     {% for artist in spotify_followers %}
                                         {% with artist.images|last as last %}
                                             <div class="d-flex align-items-center">
-                                                <img class="rounded-circle img-added-artist mr-2" src="{{ last.url }}">
+                                                <img class="shadow rounded-circle img-added-artist mr-2" src="{{ last.url }}">
                                                 <div class="mr-auto">{{ artist.name }}</div>
                 
                                                 <button type="button" class="btn btn-link bg-transparent add-followed-artist-button" data-artist-id="{{ artist.id }}" data-artist-img="{{ last.url }}" data-artist-name="{{ artist.name }}" data-artist-profile-url="{{ artist.external_urls.spotify }}">Add</button>

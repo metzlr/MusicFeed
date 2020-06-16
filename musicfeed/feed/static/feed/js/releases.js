@@ -185,7 +185,7 @@ $(document).ready(function() {
                                 '<div class="container p-0">' + 
                                     '<div class="row">' +
                                         '<div class="col-10">' +
-                                            '<img class="rounded-circle img-artist mr-3" id="artistSearchImage" src="'+ imgSrc +'">' + 
+                                            '<img class="shadow rounded-circle img-artist mr-3" id="artistSearchImage" src="'+ imgSrc +'">' + 
                                             '<label for="artistSearchImage"><a href="'+ artist.external_urls.spotify +'">'+artist.name+'</a></label>' +
                                         '</div>' +
                                         '<div class="d-flex col-2 flex-column align-items-center justify-content-center">' +
@@ -242,7 +242,7 @@ $(document).ready(function() {
                             $("#releasesTableBody").append(
                                 '<tr>' + 
                                     '<td class="align-middle">' +
-                                        '<img class="rounded img-release-list" src="'+ release.images[0].url +'">' +
+                                        '<img class="shadow rounded img-release-list" src="'+ release.images[0].url +'">' +
                                     '</td>' +
                                     '<td class="align-middle">' +
                                         '<p class="mb-0">' + release.name +'</p>' +

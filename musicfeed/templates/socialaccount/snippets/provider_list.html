@@ -1,4 +1,5 @@
 {% load socialaccount %}
+{% load static %}
 
 {% get_providers as socialaccount_providers %}
 
@@ -13,8 +14,20 @@
 </li>
 {% endfor %}
 {% endif %}
-
+{% if provider.id == "spotify" %}
+  {% if process == "login" %}
+    <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+    href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+      <img src="{% static 'images/spotify_login_button.png' %}" style="max-width: 225px;"/>
+    </a>
+  {% elif process == "connect" %}
+    <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+    href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+      <img src="{% static 'images/connect_spotify_button.png' %}" style="max-width: 225px;"/>
+    </a>
+  {% endif %}
+{% else %}
   <a title="{{provider.name}}" class="btn btn-success socialaccount_provider {{provider.id}}" 
      href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">Log in with {{provider.name}}</a>
-
+{% endif %}
 {% endfor %}
