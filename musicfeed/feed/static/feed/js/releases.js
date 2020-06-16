@@ -186,7 +186,7 @@ $(document).ready(function() {
                                     '<div class="row">' +
                                         '<div class="col-10">' +
                                             '<img class="shadow rounded-circle img-artist mr-3" id="artistSearchImage" src="'+ imgSrc +'">' + 
-                                            '<label for="artistSearchImage"><a href="'+ artist.external_urls.spotify +'">'+artist.name+'</a></label>' +
+                                            '<label for="artistSearchImage"><a href="'+ artist.external_urls.spotify +'" target="_blank">'+artist.name+'</a></label>' +
                                         '</div>' +
                                         '<div class="d-flex col-2 flex-column align-items-center justify-content-center">' +
                                             '<button type="button" class="btn btn-link add-artist-to-search-button" data-artist-profile-url="'+ artist.external_urls.spotify +'" data-artist-name="'+ artist.name +'" data-artist-img="'+ imgSrc +'" data-artist-id="'+ artist.id +'">Add</button>' +
