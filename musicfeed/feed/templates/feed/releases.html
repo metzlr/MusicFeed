@@ -46,7 +46,24 @@
             <button class="shadow-sm btn btn-primary ml-2" id="getRealeasesButton" type="submit">Get Releases</button>
         </form>
     </div>
-    
+    <div class="modal fade" id="modalReleaseDetail" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        Preview
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid" id="modalReleaseDetailBody"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="row" id="releasesTableRow" style="display: none;">
         <table class="table">
             <thead>
@@ -60,6 +77,7 @@
             <tbody id="releasesTableBody"></tbody>
           </table>
     </div>
+    <div class="row" id="releasesMessage" style="display: none;"></div>
     <div id="releasesLoadingSpinner" class="releases-loading-spinner justify-content-center" style="display: none;">
         <div class="spinner spinner-border m-4" role="status">
             <span class="sr-only">Loading...</span>

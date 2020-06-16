@@ -154,7 +154,7 @@ $(document).ready(function() {
                 
             },
             error: function(resp) {
-                alert(resp)
+                alert(JSON.stringify(resp))
             }
         });
         $('#modalNewGroup').modal('toggle');
@@ -217,6 +217,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#getReleasesForm').submit(function() { // catch the form's submit event
         $(releasesTableRow).show()
+        $('#releasesMessage').hide()
         if (artists_obj.artists.length <= 0) {
             alert('Add some artists before searching for releases')
             return false;
@@ -235,6 +236,11 @@ $(document).ready(function() {
                     artists_obj.gettingReleases = false
                     if (response.success) {
                         if (response.error) alert(response.error)
+                        if (response.releases.length == 0) {
+                            $('#releasesMessage').empty()
+                            $('#releasesMessage').append('<h6 class="p-3">No recent releases found</h6>')
+                            $('#releasesMessage').show()
+                        }
                         response.releases.forEach(function(release) { 
                             var artist_str = ""
                             var index = 0
@@ -253,7 +259,7 @@ $(document).ready(function() {
                                         '<img class="shadow img-release-list" src="'+ release.images[0].url +'">' +
                                     '</td>' +
                                     '<td class="align-middle">' +
-                                        '<p class="mb-0">' + release.name +'</p>' +
+                                        '<button class="btn btn-link mb-0 release-detail-button" data-release-spotify-id="'+ release.id +'">' + release.name +'</button>' +
                                     '</td>' +
                                     '<td class="align-middle">' +
                                         '<p class="mb-0">'+ artist_str +'</p>' +
@@ -273,7 +279,7 @@ $(document).ready(function() {
                 error: function(resp) {
                     $('#releasesLoadingSpinner').hide()
                     artists_obj.gettingReleases = false
-                    alert(resp)
+                    alert(JSON.stringify(resp))
                 }
             });
             
@@ -282,3 +288,11 @@ $(document).ready(function() {
     });
 })
 
+$(document).on('click', '.release-detail-button', function() {
+    var spotifyID = $(this).data('release-spotify-id');
+    $('#modalReleaseDetailBody').empty();
+    $('#modalReleaseDetailBody').append(
+        '<iframe src="https://open.spotify.com/embed/album/'+ spotifyID +'" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
+    );
+    $('#modalReleaseDetail').modal('toggle');
+})
