@@ -17,7 +17,7 @@ class Artist(models.Model):
 
 
 class ArtistGroup(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=25)
     artists = models.ManyToManyField(Artist)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 

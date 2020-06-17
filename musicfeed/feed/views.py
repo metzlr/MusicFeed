@@ -240,7 +240,7 @@ class GroupDetailView(LoginRequiredMixin, DetailView):
         
         # Make sure users can only access their own groups
         if self.object not in request.user.artistgroup_set.all():
-            return redirect('feed-artists')
+            return redirect('feed-releases')
         
         form = RenameGroupForm(instance=self.object)
         context = self.get_context_data(object=self.object)
