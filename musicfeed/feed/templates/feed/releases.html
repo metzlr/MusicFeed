@@ -102,7 +102,7 @@
                             <a class="nav-link" id="pills-saved-tab" data-toggle="pill" href="#pills-saved" role="tab" aria-controls="pills-saved" aria-selected="false">Saved</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="pills-followers-tab" data-toggle="pill" href="#pills-followers" role="tab" aria-controls="pills-followers" aria-selected="false">Following</a>
+                            <a class="nav-link" id="pills-followers-tab" data-followers-url="{% url 'feed-ajax-get-followers' %}" data-toggle="pill" href="#pills-followers" role="tab" aria-controls="pills-followers" aria-selected="false">Following</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
@@ -130,19 +130,26 @@
                         </div>
                         <div class="tab-pane fade" id="pills-followers" role="tabpanel" aria-labelledby="pills-followers-tab">
                             {% if spotify_connected %}
-                                <div class="container-fluid release-search-setup-content">
+                                <div id="followersLoadingSpinner" class="followers-loading-spinner justify-content-center" style="display: none;">
+                                    <div class="spinner spinner-border m-4" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="container-fluid release-search-setup-content" id="spotifyFollowersList" data-filled="false">
+                                    
+                                    <!--
                                     {% for artist in spotify_followers %}
                                         {% with artist.images|last as last %}
                                             <div class="d-flex align-items-center">
                                                 <img class="shadow rounded-circle img-added-artist mr-2" src="{{ last.url }}">
                                                 <div class="mr-auto">{{ artist.name }}</div>
-                
                                                 <button type="button" class="btn btn-link bg-transparent add-followed-artist-button" data-artist-id="{{ artist.id }}" data-artist-img="{{ last.url }}" data-artist-name="{{ artist.name }}" data-artist-profile-url="{{ artist.external_urls.spotify }}">Add</button>
                                             </div>
                                         {% endwith %}
                                     {% endfor %}
+                                    -->
                                 </div>
-                                <button type="button" class="btn btn-secondary btn-sm add-all-followed-button mt-2">Add All</button>
+                                <button type="button" class="btn btn-secondary btn-sm add-all-followed-button mt-2" style="display: none">Add All</button>
                             {% else %}
                                 <h6><a href="{% url 'socialaccount_connections' %}">Connect</a> your Spotify account to add from your followed artists</h6>
                             {% endif %}

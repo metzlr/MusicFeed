@@ -49,5 +49,8 @@
 .releases-loading-spinner {
     display: flex;
 }
+.followers-loading-spinner {
+    display: flex;
+}
 
 

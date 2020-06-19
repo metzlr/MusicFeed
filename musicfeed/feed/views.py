@@ -15,6 +15,24 @@ from django.utils import timezone
 from datetime import timedelta
 import spotipy
 
+def get_spotify_account_token(user):
+    account = user.socialaccount_set.filter(provider='spotify').first()
+    if account:
+        token_obj = account.socialtoken_set.first()
+        expires = token_obj.expires_at
+        if expires <= timezone.now():
+            token_secret = token_obj.token_secret
+            spotify_oauth = spotipy.oauth2.SpotifyOAuth()
+            new_token = spotify_oauth.refresh_access_token(token_secret)
+            print(new_token)
+            token_obj.token = new_token['access_token']
+            token_obj.token_secret = new_token['refresh_token']
+            token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
+            token_obj.save()
+        return token_obj.token
+    else:
+        return None
+
 
 def home(request):
     context = {
@@ -76,6 +94,17 @@ def ajax_get_releases(request):
     #print(response_data['releases'])
     return JsonResponse(response_data)
 
+def ajax_get_followers(request):
+    data = {}
+    if request.method == 'GET':
+        token = get_spotify_account_token(request.user)
+        if token:
+            data['followers'] = spotify.get_user_followers(token)
+            #print(data['followers'])
+        else:
+            data['error'] = 'Error: Account not connected to Spotify'
+    return JsonResponse(data)
+
 def releases(request):
     context = {
         'title':'Releases',
@@ -84,24 +113,9 @@ def releases(request):
     }
     if request.user.is_authenticated:
         context['artistgroups'] = request.user.artistgroup_set.all()
-    #token = SocialToken.objects.filter(account__user=request.user, account__provider='spotify').first()
-    
-        account = request.user.socialaccount_set.filter(provider='spotify').first()
-        if account:
+        if get_spotify_account_token(request.user):
             context['spotify_connected'] = True
-            token_obj = account.socialtoken_set.first()
-            expires = token_obj.expires_at
-            if expires <= timezone.now():
-                token_secret = token_obj.token_secret
-                spotify_oauth = spotipy.oauth2.SpotifyOAuth()
-                new_token = spotify_oauth.refresh_access_token(token_secret)
-                print(new_token)
-                token_obj.token = new_token['access_token']
-                token_obj.token_secret = new_token['refresh_token']
-                token_obj.expires_at = timezone.now()+timedelta(seconds=3575)
-                token_obj.save()
-            token = token_obj.token
-            context['spotify_followers'] = spotify.get_user_followers(token)
+            #context['spotify_followers'] = spotify.get_user_followers(token)
 
     return render(request, 'feed/releases.html', context)
     

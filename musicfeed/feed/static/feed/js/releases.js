@@ -6,22 +6,22 @@ var artists_obj = {
 function addArtistToSearch(artist) {
     if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
         $('#addedArtists').append(
-                '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
-                    '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
-                    '<div class="mr-auto">'+artist.name+'</div>' +
-                    
-                    '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
-                        '<i class="fas fa-times"></i>'+
-                    '</button>' +
-                    
-                '</div>')
-
+            '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
+                '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
+                '<div class="mr-auto">'+artist.name+'</div>' +
+                
+                '<button type="button" class="btn bg-transparent remove-added-artist" data-artist-id="'+artist.spotify_id+'">' +
+                    '<i class="fas fa-times"></i>'+
+                '</button>' +
+                
+            '</div>'
+        )
         artists_obj.artists.push(artist)
         $('#artistListHeader').text('Artists Included in Search ('+artists_obj.artists.length+')')
     }
 }
 $(document).ready(function() {
-    $('.add-followed-artist-button').click(function() {
+    $(document).on("click", '.add-followed-artist-button', function() {
         var artist = { 
             spotify_id: $(this).data('artist-id'),
             name: $(this).data('artist-name'),
@@ -167,6 +167,46 @@ $(document).ready(function() {
         artists_obj.artists = []
         $("#addedArtists").empty()
         $('#artistListHeader').text('Artists Included in Search (0)')
+    });
+});
+
+$(document).ready(function() {
+    $('.nav-pills a[href="#pills-followers"]').click(function() {
+        if ($("#spotifyFollowersList").data('filled') == false) {
+            $('#followersLoadingSpinner').show()
+            $("#spotifyFollowersList").data('filled', 'true')
+            $.ajax({ // create an AJAX call...
+                data: $(this).serialize(),
+                type: 'GET', // GET or POST
+                url: $(this).data('followers-url'), // the file to call
+                success: function(response) { // on success..
+                    $('#followersLoadingSpinner').hide()
+                    $('.add-all-followed-button').show()
+                    if (response.error) {
+                        alert(response.error)
+                    }
+                    if (response.followers) {
+                        response.followers.forEach(function(follower) {
+                            var imgSrc;
+                            if (follower.images.length > 0) {
+                                imgSrc = follower.images[follower.images.length - 1].url
+                            }
+                            $("#spotifyFollowersList").append(
+                                '<div class="d-flex align-items-center">' +
+                                    '<img class="shadow rounded-circle img-added-artist mr-2" src="'+ imgSrc +'">' +
+                                    '<div class="mr-auto">'+ follower.name +'</div>' +
+                                    '<button type="button" class="btn btn-link bg-transparent add-followed-artist-button" data-artist-id="'+ follower.id +'" data-artist-img="'+ imgSrc +'" data-artist-name="'+ follower.name +'" data-artist-profile-url="'+ follower.external_urls.spotify +'">Add</button>' +
+                                '</div>'
+                            );
+                        });
+                    }
+                },
+                error: function(resp) {
+                    $('#followersLoadingSpinner').hide()
+                    alert(JSON.stringify(resp))
+                }
+            });
+        }
     });
 });
 
