@@ -1,0 +1,56 @@
+.active-pink-4 input[type=text]:focus:not([readonly]) {
+    border: 1px solid #f48fb1;
+    box-shadow: 0 0 0 1px #f48fb1;
+}
+
+.img-artist {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.img-artist-add {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.img-added-artist {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+}
+
+.img-release-list {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+}
+
+.modal-add-artistgroup {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.release-search-setup {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+.release-search-setup-content {
+    max-height: 350px;
+    overflow-y: scroll;
+}
+.artists-added-body {
+    max-height: 350px;
+    overflow-y: scroll;
+}
+
+/* same as d-flex but without !important */
+.releases-loading-spinner {
+    display: flex;
+}
+.followers-loading-spinner {
+    display: flex;
+}
+
+
