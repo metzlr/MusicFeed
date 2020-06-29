@@ -1,0 +1,45 @@
+{% extends "feed/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <h2 class="mb-5">Featured New Releases</h2>
+        <div class="row">
+            <div class="col">
+                {% if releases_error %}
+                    <h5>{{ releases_error }}</h5>
+                {% else %}
+                    <ul class="list-unstyled">
+                        {% for release in releases %}
+                            <li class="media mb-3">
+                                {% if release.images.1 %}
+                                    <img src="{{ release.images.1.url }}" class="img-featured-release mr-3">
+                                {% else %}
+                                    <img src="{% static '/images/placeholder_album.png' %}" class="mr-3">
+                                {% endif %}
+                                <div class="media-body">
+                                    <button class="btn btn-link featured-release-detail-button p-0 text-left" data-spotify-id="{{ release.id}}"><h5>{{ release.name }}</h5></button>
+                                    <p>{{ release.album_type }} by {{ release.artists_str }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% include 'feed/snippets/release_detail_snippet.html' %}
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        $(document).on('click', '.featured-release-detail-button', function() {
+            var spotifyID = $(this).data('spotify-id');
+            $('#modalReleaseDetailBody').empty();
+            $('#modalReleaseDetailBody').append(
+                '<iframe src="https://open.spotify.com/embed/album/'+ spotifyID +'" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
+            );
+            $('#modalReleaseDetail').modal('toggle');
+        })
+    </script>
+{% endblock scripts %}

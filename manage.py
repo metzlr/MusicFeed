@@ -5,7 +5,10 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'musicfeed.settings')
+    if os.environ.get('DJANGO_DEVELOPMENT'):
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'musicfeed.dev_settings')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'musicfeed.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -43,27 +43,12 @@
     </div>
     <div class="row mb-4">
         <form id="getReleasesForm" data-ajax-url="{% url 'feed-ajax-get-releases' %}">
-            <button class="shadow-sm btn btn-primary ml-2" id="getRealeasesButton" type="submit">Get Releases</button>
+            <button class="shadow-sm btn btn-primary ml-2" id="getRealeasesButton" type="submit">Find Recent Releases</button>
         </form>
     </div>
-    <div class="modal fade" id="modalReleaseDetail" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                    <div class="modal-header">
-                        Preview
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid" id="modalReleaseDetailBody"></div>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+    {% include 'feed/snippets/release_detail_snippet.html' %}
+    
     <div class="row" id="releasesTableRow" style="display: none;">
         <table class="table">
             <thead>

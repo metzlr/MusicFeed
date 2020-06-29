@@ -21,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">  
     
     {% if title %}
-        <title>{{ title }}</title>
+        <title>MusicFeed - {{ title }}</title>
     {% else %}
         <title>{% block head_title %}{% endblock %}</title>
     {% endif %}
@@ -37,8 +37,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav mr-auto">
-                <li><a href="{% url 'feed-releases' %}" class="nav-link">Releases</a></li>
-                <!-- <li><a href="" class="nav-link">Artists</a></li> -->
+                <li><a href="{% url 'feed-featured' %}" class="nav-link">Featured</a></li>
+                <li><a href="{% url 'feed-releases' %}" class="nav-link">Release Search</a></li>
             </ul>
             <div class="navbar-nav">
                 {% if user.is_authenticated %}

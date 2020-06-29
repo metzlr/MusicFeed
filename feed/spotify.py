@@ -1,12 +1,15 @@
 #import operator
 import spotipy
+import os
 from datetime import datetime
 from spotipy.client import SpotifyException
 from spotipy.oauth2 import SpotifyClientCredentials
 import json
 
 
-with open('/etc/config.json') as config_file:
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+with open(os.path.join(BASE_DIR, "musicfeed/dev_config.json")) as config_file:
     config = json.load(config_file)
 
 SPOTIPY_CLIENT_ID = config['SPOTIPY_CLIENT_ID']
@@ -61,8 +64,8 @@ def get_recent_artist_albums(artist_id):
     return recent_albums
 
 def get_user_followers(token):
-    sp = spotipy.Spotify(auth=token)
-    results = sp.current_user_followed_artists()
+    sp_user = spotipy.Spotify(auth=token)
+    results = sp_user.current_user_followed_artists()
     count = results['artists']['total']
     artist_list = []
     while (count > 0):
@@ -71,8 +74,17 @@ def get_user_followers(token):
             artist_list.append(artist)
             count -= 1
         if (count > 0):
-            results = sp.current_user_followed_artists(after=artist_list[-1]['id'])
+            results = sp_user.current_user_followed_artists(after=artist_list[-1]['id'])
     return artist_list
+
+def featured_releases(limit=30):
+    try:
+        results = sp.new_releases("US", limit)
+    except SpotifyException as error:
+        print(error)
+        return None
+    #print(results)
+    return results['albums']['items']
 
 
 #5INjqkS1o8h1imAzPqGZBb

@@ -40,6 +40,26 @@ def home(request):
     }
     return render(request, 'feed/home.html', context)
 
+def featured(request):
+    context = {
+        'title':'Featured',
+        'releases': []
+    }
+    context['releases'] = spotify.featured_releases(50)
+    if context['releases'] == None:
+        context['releases_error'] = "Whoops. There was an error fetching featured releases."
+    else:
+        # Create a comma seperated string with artists' names for each release
+        for release in context['releases']:
+            release['album_type'] = release['album_type'].capitalize()
+            artists_str = ''
+            for artist in release['artists']:
+                artists_str += artist['name'] + ", "
+            artists_str = artists_str[:-2]
+            release['artists_str'] = artists_str
+        
+    return render(request, 'feed/featured.html', context)
+
 def ajax_get_artists(request):
     data = {}
     if request.method == 'GET':

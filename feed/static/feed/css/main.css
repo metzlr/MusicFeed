@@ -27,6 +27,12 @@
     object-fit: cover;
 }
 
+.img-featured-release {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+}
+
 .modal-add-artistgroup {
     max-height: 400px;
     overflow-y: scroll;
@@ -53,4 +59,9 @@
     display: flex;
 }
 
+.release-detail-modal {
+    max-height: 440px;
+    max-width: 300px;
+    overflow-y: scroll;
+}
 
