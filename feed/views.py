@@ -22,7 +22,7 @@ def get_spotify_account_token(user):
         expires = token_obj.expires_at
         if expires <= timezone.now():
             token_secret = token_obj.token_secret
-            spotify_oauth = spotipy.oauth2.SpotifyOAuth(client_id=spotify.SPOTIPY_CLIENT_ID)
+            spotify_oauth = spotipy.oauth2.SpotifyOAuth(client_id=spotify.SPOTIPY_CLIENT_ID, client_secret=spotify.SPOTIPY_CLIENT_SECRET, redirect_uri=spotify.SPOTIPY_REDIRECT_URI)
             new_token = spotify_oauth.refresh_access_token(token_secret)
             token_obj.token = new_token['access_token']
             token_obj.token_secret = new_token['refresh_token']
