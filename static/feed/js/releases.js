@@ -187,22 +187,12 @@ function getSpotifyFollowers() {
         $("#spotifyFollowersList").empty()
         $('#followersLoadingSpinner').show()
         $('#spotifyFollowersRetryButton').hide()
-        $("#spotifyFollowersList").data('filled', 'true')
+        $("#spotifyFollowersList").data('filled', true)
         $.ajax({ // create an AJAX call...
-            data: $(this).serialize(),
             type: 'GET', // GET or POST
-            url: $(this).data('followers-url'), // the file to call
+            url: $('#pills-followers-tab').data('followers-url'), // the file to call
             success: function(response) { // on success..
                 $('#followersLoadingSpinner').hide()
-                alert(response.status)
-                if (response.error) {
-                    alert(response.error)
-                    $("#spotifyFollowersList").data('filled', 'false')
-                    $('#spotifyFollowersRetryButton').show()
-                    $("#spotifyFollowersList").append(
-                        '<h5>'+ response.error +'</h5>'
-                    );
-                }
                 if (response.followers) {
                     $('.add-all-followed-button').show()
                     response.followers.forEach(function(follower) {
@@ -221,10 +211,12 @@ function getSpotifyFollowers() {
                 }
             },
             error: function(data) {
-                alert("ERROR")
                 $('#spotifyFollowersRetryButton').show();
                 $('#followersLoadingSpinner').hide();
-                alert(data.responseJSON.error);
+                $("#spotifyFollowersList").data('filled', false);
+                $("#spotifyFollowersList").append(
+                    '<h6 class="p-0">'+ data.responseJSON.error +'</h6>'
+                );
             }
         });
     }
