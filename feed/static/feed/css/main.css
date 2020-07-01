@@ -38,8 +38,8 @@
     overflow-y: scroll;
 }
 
-.release-search-setup {
-    max-height: 500px;
+.release-search-setup-content {
+    max-height: 400px;
     overflow-y: scroll;
 }
 

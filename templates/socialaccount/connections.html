@@ -4,9 +4,9 @@
 {% block head_title %}{% trans "Account Connections" %}{% endblock %}
 {% block content %}
 
-<h1>{% trans "Account Connections" %}</h1>
+<h1 class="mb-4">{% trans "Manage Your Account Connections" %}</h1>
 {% if form.accounts %}
-    <p>{% blocktrans %}You can sign in to your account using any of the following third party accounts:{% endblocktrans %}</p>
+    <p>{% blocktrans %}You can currently sign in to your account using any of the following third party accounts:{% endblocktrans %}</p>
     <form method="post" action="{% url 'socialaccount_connections' %}">
         {% csrf_token %}
         <fieldset>
@@ -17,15 +17,15 @@
                 {% with base_account.get_provider_account as account %}
                     <div class="container">
                         <label for="id_account_{{ base_account.id }}">
-                            <input id="id_account_{{ base_account.id }}" type="radio" name="account" value="{{ base_account.id }}"/>
+                            <input id="id_account_{{ base_account.id }}" type="radio" name="account" value="{{ base_account.id }}" required/>
                             <span class="socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}">{{account.get_brand.name}}</span>
-                            {{ account }}
+                            - {{ account }}
                         </label>
                     </div>
                 {% endwith %}
             {% endfor %}
             <div>
-                <button class="btn btn-sm btn-danger" type="submit">{% trans 'Remove' %}</button>
+                <button class="btn btn-sm btn-danger mt-3" type="submit">{% trans 'Remove' %}</button>
             </div>
         </fieldset>
     </form>

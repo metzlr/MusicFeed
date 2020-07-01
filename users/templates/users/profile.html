@@ -9,13 +9,13 @@
 
 {% get_social_accounts user as accounts %}
 
-    <h2>{{ user.username }}</h2>
+    <h2 class="mb-4">{{ user.username }}</h2>
     <div class="container">
         {% if accounts %}
             <div class="row">
                 <div class="col">
                     <h6 class="p-0">Account connected to Spotify</h6>
-                    <a href="{% url 'socialaccount_connections' %}">Manage Social Connections</a>
+                    <a href="{% url 'socialaccount_connections' %}">Manage Social Account Connections</a>
                 </div>
                 
             </div>
