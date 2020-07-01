@@ -172,43 +172,55 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('.nav-pills a[href="#pills-followers"]').click(function() {
-        if ($("#spotifyFollowersList").data('filled') == false) {
-            $('#followersLoadingSpinner').show()
-            $("#spotifyFollowersList").data('filled', 'true')
-            $.ajax({ // create an AJAX call...
-                data: $(this).serialize(),
-                type: 'GET', // GET or POST
-                url: $(this).data('followers-url'), // the file to call
-                success: function(response) { // on success..
-                    $('#followersLoadingSpinner').hide()
-                    $('.add-all-followed-button').show()
-                    if (response.error) {
-                        alert(response.error)
-                    }
-                    if (response.followers) {
-                        response.followers.forEach(function(follower) {
-                            var imgSrc;
-                            if (follower.images.length > 0) {
-                                imgSrc = follower.images[follower.images.length - 1].url
-                            }
-                            $("#spotifyFollowersList").append(
-                                '<div class="d-flex align-items-center">' +
-                                    '<img class="shadow rounded-circle img-added-artist mr-2" src="'+ imgSrc +'">' +
-                                    '<div class="mr-auto">'+ follower.name +'</div>' +
-                                    '<button type="button" class="btn btn-link bg-transparent add-followed-artist-button" data-artist-id="'+ follower.id +'" data-artist-img="'+ imgSrc +'" data-artist-name="'+ follower.name +'" data-artist-profile-url="'+ follower.external_urls.spotify +'">Add</button>' +
-                                '</div>'
-                            );
-                        });
-                    }
-                },
-                error: function(resp) {
-                    $('#followersLoadingSpinner').hide()
-                    alert(JSON.stringify(resp))
-                }
-            });
-        }
+        getSpotifyFollowers()
     });
 });
+
+$(document).ready(function() {
+    $('#spotifyFollowersRetryButton').click(function() {
+        getSpotifyFollowers()
+    });
+});
+
+function getSpotifyFollowers() {
+    if ($("#spotifyFollowersList").data('filled') == false) {
+        $("#spotifyFollowersList").empty()
+        $('#followersLoadingSpinner').show()
+        $('#spotifyFollowersRetryButton').hide()
+        $("#spotifyFollowersList").data('filled', true)
+        $.ajax({ // create an AJAX call...
+            type: 'GET', // GET or POST
+            url: $('#pills-followers-tab').data('followers-url'), // the file to call
+            success: function(response) { // on success..
+                $('#followersLoadingSpinner').hide()
+                if (response.followers) {
+                    $('.add-all-followed-button').show()
+                    response.followers.forEach(function(follower) {
+                        var imgSrc;
+                        if (follower.images.length > 0) {
+                            imgSrc = follower.images[follower.images.length - 1].url
+                        }
+                        $("#spotifyFollowersList").append(
+                            '<div class="d-flex align-items-center">' +
+                                '<img class="shadow rounded-circle img-added-artist mr-2" src="'+ imgSrc +'">' +
+                                '<div class="mr-auto">'+ follower.name +'</div>' +
+                                '<button type="button" class="btn btn-link bg-transparent add-followed-artist-button" data-artist-id="'+ follower.id +'" data-artist-img="'+ imgSrc +'" data-artist-name="'+ follower.name +'" data-artist-profile-url="'+ follower.external_urls.spotify +'">Add</button>' +
+                            '</div>'
+                        );
+                    });
+                }
+            },
+            error: function(data) {
+                $('#spotifyFollowersRetryButton').show();
+                $('#followersLoadingSpinner').hide();
+                $("#spotifyFollowersList").data('filled', false);
+                $("#spotifyFollowersList").append(
+                    '<h6 class="p-0">'+ data.responseJSON.error +'</h6>'
+                );
+            }
+        });
+    }
+}
 
 $(document).ready(function() {
     $('#spotifyArtistSearchForm').submit(function(event) { // catch the form's submit event

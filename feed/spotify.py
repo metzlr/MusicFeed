@@ -9,7 +9,6 @@ import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if (os.environ.get("DJANGO_DEVELOPMENT")):
-    print("HERE")
     with open(os.path.join(BASE_DIR, "musicfeed/dev_config.json")) as config_file:
         config = json.load(config_file)
 else:
@@ -69,17 +68,21 @@ def get_recent_artist_albums(artist_id):
 
 def get_user_followers(token):
     sp_user = spotipy.Spotify(auth=token)
-    results = sp_user.current_user_followed_artists()
-    count = results['artists']['total']
-    artist_list = []
-    while (count > 0):
-        artists = results['artists']['items']
-        for artist in artists:
-            artist_list.append(artist)
-            count -= 1
-        if (count > 0):
-            results = sp_user.current_user_followed_artists(after=artist_list[-1]['id'])
-    return artist_list
+    try:
+        results = sp_user.current_user_followed_artists()
+        count = results['artists']['total']
+        artist_list = []
+        while (count > 0):
+            artists = results['artists']['items']
+            for artist in artists:
+                artist_list.append(artist)
+                count -= 1
+            if (count > 0):
+                results = sp_user.current_user_followed_artists(after=artist_list[-1]['id'])
+        return artist_list
+    except SpotifyException as error:
+        print(error)
+        return None
 
 def featured_releases(limit=30):
     try:

@@ -119,7 +119,11 @@ def ajax_get_followers(request):
         token = get_spotify_account_token(request.user)
         if token:
             data['followers'] = spotify.get_user_followers(token)
-            #print(data['followers'])
+            if data['followers'] is None:
+                data['error'] = 'Error fetching Spotify followers'
+                response = JsonResponse(data)
+                response.status_code = 500
+                return response
         else:
             data['error'] = 'Error: Account not connected to Spotify'
     return JsonResponse(data)
