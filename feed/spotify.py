@@ -51,7 +51,7 @@ def get_album_datetime(item_dictionary):
         return None
     return datetime_obj
 
-def get_recent_artist_albums(artist_id):
+def get_recent_artist_albums(artist_id, time_frame):
     results = sp.artist_albums(artist_id, country='US', album_type='album,single')
     albums = results['items']
     recent_albums = []
@@ -62,8 +62,15 @@ def get_recent_artist_albums(artist_id):
             print("ERROR: Unrecognized date format on album for artist:", artist_id, album['artists'][0]['name'])
             continue
         date_change = today - date_obj
-        if date_change.days <= 31:
-            recent_albums.append(album)
+        if time_frame == "day":
+            if date_change.days <= 1:
+                recent_albums.append(album)
+        elif time_frame == "week":
+            if date_change.days <= 7:
+                recent_albums.append(album)
+        else:
+            if date_change.days <= 31:
+                recent_albums.append(album)
     return recent_albums
 
 def get_user_followers(token):

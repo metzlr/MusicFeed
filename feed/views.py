@@ -100,21 +100,21 @@ def ajax_spotify_artist_search(request):
 @require_POST
 def ajax_get_releases(request):
     response_data = {
-        'releases': []
+        'releases': [],
+        'error': 'Unknown error. Try again later.'
     }
     artist_json = request.POST.get('artists', None)
+    time_frame = request.POST.get('timeFrame', None)
     artist_data = json.loads(artist_json)
     for artist in artist_data:
-        albums = spotify.get_recent_artist_albums(artist['spotify_id'])
-        response_data['success'] = "Successfully got releases!"
+        albums = spotify.get_recent_artist_albums(artist['spotify_id'], time_frame)
         response_data['releases'].extend(albums)
     #Sort releases by date
     response_data['releases'].sort(key=spotify.get_album_datetime, reverse=True)
-    #print(response_data['releases'])
     return JsonResponse(response_data)
 
 def ajax_get_followers(request):
-    data = {}
+    data = {'error': 'Unknown error. Try again later.'}
     if request.method == 'GET':
         token = get_spotify_account_token(request.user)
         if token:
