@@ -6,7 +6,7 @@ var artists_obj = {
 function addArtistToSearch(artist) {
     if (!artists_obj.artists.some(item => item.spotify_id === artist.spotify_id)) {
         $('#addedArtists').append(
-            '<div class="d-flex align-items-center" id="'+artist.spotify_id+'">' +
+            '<div class="d-flex align-items-center artists-added-row" id="'+artist.spotify_id+'">' +
                 '<img class="rounded-circle img-added-artist mr-2" src="'+artist.img_url+'">' +
                 '<div class="mr-auto">'+artist.name+'</div>' +
                 

@@ -61,4 +61,7 @@
     max-width: 300px;
     overflow-y: scroll;
 }
+.artists-added-row {
+    max-width: 350px;
+}
 
