@@ -1,5 +1,6 @@
 var artists_obj = { 
     artists: [],
+    //timeFrame: "week",
     gettingReleases: false,
 }
 
@@ -154,7 +155,7 @@ $(document).ready(function() {
                 
             },
             error: function(resp) {
-                alert(JSON.stringify(resp))
+                //alert(JSON.stringify(resp))
             }
         });
         $('#modalNewGroup').modal('toggle');
@@ -258,7 +259,7 @@ $(document).ready(function() {
                 }
             },
             error: function(resp) {
-                alert(JSON.stringify(resp))
+                //alert(JSON.stringify(resp))
             }
         });
         event.preventDefault();
@@ -279,59 +280,53 @@ $(document).ready(function() {
             $('#releasesLoadingSpinner').show()
             artists_obj.gettingReleases = true
             $.ajax({ // create an AJAX call...
-                data: {'artists': JSON.stringify(artists_obj.artists)}, // get the form data
+                data: {'artists': JSON.stringify(artists_obj.artists)}, //, 'timeFrame': artists_obj.timeFrame}, // get the form data
                 dataType: 'json',
                 type: 'POST', // GET or POST
                 url: $('#getReleasesForm').data('ajax-url'), // the file to call
                 success: function(response) { // on success..
                     $('#releasesLoadingSpinner').hide()
                     artists_obj.gettingReleases = false
-                    if (response.success) {
-                        if (response.error) alert(response.error)
-                        if (response.releases.length == 0) {
-                            $('#releasesMessage').empty()
-                            $('#releasesMessage').append('<h6 class="p-3">No recent releases found</h6>')
-                            $('#releasesMessage').show()
-                        }
-                        response.releases.forEach(function(release) { 
-                            var artist_str = ""
-                            var index = 0
-                            
-                            release.artists.forEach(function(artist) { 
-                                if (index == 0) {
-                                    artist_str += artist.name
-                                } else {
-                                    artist_str += ', '+artist.name
-                                }
-                                index += 1;
-                            });
-                            $("#releasesTableBody").append(
-                                '<tr>' + 
-                                    '<td class="align-middle">' +
-                                        '<img class="shadow img-release-list" src="'+ release.images[0].url +'">' +
-                                    '</td>' +
-                                    '<td class="align-middle">' +
-                                        '<button class="btn btn-link mb-0 release-detail-button" data-release-spotify-id="'+ release.id +'">' + release.name +'</button>' +
-                                    '</td>' +
-                                    '<td class="align-middle">' +
-                                        '<p class="mb-0">'+ artist_str +'</p>' +
-                                    '</td>' +
-                                    '<td class="align-middle">' +
-                                        '<p class="mb-0">'+ release.release_date +'</p>' +
-                                    '</td>' +
-                                '</tr>'
-                            );
-                        });
-                        
-                    } else {
-                        alert("Error getting releases")
-                    }
                     
+                    if (response.releases.length == 0) {
+                        $('#releasesMessage').empty()
+                        $('#releasesMessage').append('<h6 class="p-3">No recent releases found</h6>')
+                        $('#releasesMessage').show()
+                    }
+                    response.releases.forEach(function(release) { 
+                        var artist_str = ""
+                        var index = 0
+                        
+                        release.artists.forEach(function(artist) { 
+                            if (index == 0) {
+                                artist_str += artist.name
+                            } else {
+                                artist_str += ', '+artist.name
+                            }
+                            index += 1;
+                        });
+                        $("#releasesTableBody").append(
+                            '<tr>' + 
+                                '<td class="align-middle">' +
+                                    '<img class="shadow img-release-list" src="'+ release.images[0].url +'">' +
+                                '</td>' +
+                                '<td class="align-middle">' +
+                                    '<button class="btn btn-link mb-0 release-detail-button" data-release-spotify-id="'+ release.id +'">' + release.name +'</button>' +
+                                '</td>' +
+                                '<td class="align-middle">' +
+                                    '<p class="mb-0">'+ artist_str +'</p>' +
+                                '</td>' +
+                                '<td class="align-middle">' +
+                                    '<p class="mb-0">'+ release.release_date +'</p>' +
+                                '</td>' +
+                            '</tr>'
+                        );
+                    });
                 },
-                error: function(resp) {
+                error: function(data) {
                     $('#releasesLoadingSpinner').hide()
                     artists_obj.gettingReleases = false
-                    alert(JSON.stringify(resp))
+                    alert(data.responseJSON.error)
                 }
             });
             
@@ -348,3 +343,4 @@ $(document).on('click', '.release-detail-button', function() {
     );
     $('#modalReleaseDetail').modal('toggle');
 })
+

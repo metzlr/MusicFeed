@@ -1,4 +1,5 @@
 $primary: #5f01bd;//#761bdf;
+$secondary: #7a7a7a;//#761bdf;
 
 $enable-shadows: true;
 
@@ -8,5 +9,8 @@ $font-weight-normal: 600;
 $font-weight-bold: 700;
 $font-weight-bolder: 800; 
 $headings-font-weight: 700;
+
+$btn-padding-y-sm: 0.15rem;
+$btn-padding-x-sm: 0.4rem;
 
 @import './bootstrap/scss/bootstrap';

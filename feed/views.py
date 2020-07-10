@@ -104,7 +104,7 @@ def ajax_get_releases(request):
         'error': 'Unknown error. Try again later.'
     }
     artist_json = request.POST.get('artists', None)
-    time_frame = request.POST.get('timeFrame', None)
+    #time_frame = request.POST.get('timeFrame', None)
     artist_data = json.loads(artist_json)
     for artist in artist_data:
         albums = spotify.get_recent_artist_albums(artist['spotify_id'], time_frame)
