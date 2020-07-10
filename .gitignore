@@ -5,6 +5,7 @@ db.sqlite3
 musicfeed/dev_settings.py
 musicfeed/dev_config.json
 .vscode
+unused_code.html
 
 
 # Byte-compiled / optimized / DLL files

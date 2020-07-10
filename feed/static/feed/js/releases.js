@@ -1,6 +1,6 @@
 var artists_obj = { 
     artists: [],
-    timeFrame: "week",
+    //timeFrame: "week",
     gettingReleases: false,
 }
 
@@ -280,7 +280,7 @@ $(document).ready(function() {
             $('#releasesLoadingSpinner').show()
             artists_obj.gettingReleases = true
             $.ajax({ // create an AJAX call...
-                data: {'artists': JSON.stringify(artists_obj.artists), 'timeFrame': artists_obj.timeFrame}, // get the form data
+                data: {'artists': JSON.stringify(artists_obj.artists)}, //, 'timeFrame': artists_obj.timeFrame}, // get the form data
                 dataType: 'json',
                 type: 'POST', // GET or POST
                 url: $('#getReleasesForm').data('ajax-url'), // the file to call
@@ -344,10 +344,3 @@ $(document).on('click', '.release-detail-button', function() {
     $('#modalReleaseDetail').modal('toggle');
 })
 
-$(document).ready(function() {
-    $(document).on("click", ".release-range-item", function() {
-        artists_obj.timeFrame = $(this).data('value');
-        var text = $(this).text();
-        $('#releaseRangeMenuButton').text(text);
-    });
-});

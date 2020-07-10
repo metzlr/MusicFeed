@@ -7,7 +7,7 @@
             <div class="container artists-added-body mt-4" id="addedArtists"></div>
         </div>
     </div>
-    <div class="row mt-2 mb-4 align-items-center">
+    <div class="row mt-2 mb-1 align-items-center">
         <div class="col-12 col-md-auto mt-2">
             <button class="btn btn-secondary btn-sm" id="addArtistsToSearchButton" data-toggle="modal" data-target="#modalAddArtistToSearch">
                 <i class="fas fa-plus mr-1"></i>
@@ -36,28 +36,14 @@
         </div>
     </div>
     <div class="row mb-4 align-items-center">
-        <div class="col-12 mt-3">
-            <h6 class="d-inline mr-2 p-0 font-weight-normal">Find music released</h6>
-            <div class="dropdown d-inline">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="releaseRangeMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    This week
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <button class="dropdown-item release-range-item" data-value="day">Today</button>
-                    <button class="dropdown-item release-range-item" data-value="week">This week</button>
-                    <button class="dropdown-item release-range-item" data-value="month">This month</button>
-                </div>
-              </div>
-        </div>
         <div class="col-auto mt-2">
             <form id="getReleasesForm" data-ajax-url="{% url 'feed-ajax-get-releases' %}">
-                <button class="shadow-sm btn btn-primary ml-2" id="getRealeasesButton" type="submit">Search</button>
+                <button class="shadow-sm btn btn-primary" id="getRealeasesButton" type="submit">Search</button>
             </form>
         </div>
     </div>
 
     {% include 'feed/snippets/release_detail_snippet.html' %}
-    
     <div class="row" id="releasesTableRow" style="display: none;">
         <table class="table">
             <thead>
