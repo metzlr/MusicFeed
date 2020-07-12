@@ -107,7 +107,7 @@ def ajax_get_releases(request):
     #time_frame = request.POST.get('timeFrame', None)
     artist_data = json.loads(artist_json)
     for artist in artist_data:
-        albums = spotify.get_recent_artist_albums(artist['spotify_id'], time_frame)
+        albums = spotify.get_recent_artist_albums(artist['spotify_id'], 'month')
         response_data['releases'].extend(albums)
     #Sort releases by date
     response_data['releases'].sort(key=spotify.get_album_datetime, reverse=True)

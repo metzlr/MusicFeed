@@ -58,8 +58,7 @@
 
 .release-detail-modal {
     max-height: 440px;
-    max-width: 300px;
-    overflow-y: scroll;
+    max-width: 302px;
 }
 .artists-added-row {
     max-width: 350px;
