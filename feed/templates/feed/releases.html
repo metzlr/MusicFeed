@@ -8,13 +8,13 @@
         </div>
     </div>
     <div class="row mt-2 mb-1 align-items-center">
-        <div class="col-12 col-md-auto mt-2">
+        <div class="col-sm-auto mt-2">
             <button class="btn btn-secondary btn-sm" id="addArtistsToSearchButton" data-toggle="modal" data-target="#modalAddArtistToSearch">
                 <i class="fas fa-plus mr-1"></i>
                 Add Artists
             </button>
         </div>
-        <div class="col-12 col-md-auto mt-2">
+        <div class="col-sm-auto mt-2">
             <button class="btn btn-secondary btn-sm mr-2" id="clearAddedArtists">
                 <i class="far fa-times-circle mr-1"></i>
                 Clear
@@ -31,15 +31,15 @@
                 </button>
             {% endif %}
         </div>
-        <div class="col-12 col-md-auto mt-2">
-            <footer class="text-muted">The more artists you add, the longer the search will take</footer>
-        </div>
     </div>
     <div class="row mb-4 align-items-center">
-        <div class="col-auto mt-2">
+        <div class="col-auto mt-3">
             <form id="getReleasesForm" data-ajax-url="{% url 'feed-ajax-get-releases' %}">
-                <button class="shadow-sm btn btn-primary" id="getRealeasesButton" type="submit">Search</button>
+                <button class="shadow-sm btn btn-primary" id="getRealeasesButton" type="submit">Find New Releases</button>
             </form>
+        </div>
+        <div class="col-12 col-md-auto mt-3">
+            <footer class="text-muted">The more artists you add, the longer the search will take</footer>
         </div>
     </div>
 
