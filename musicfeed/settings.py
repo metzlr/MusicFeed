@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'compressor',
 ]
 
-SITE_ID = 1
+SITE_ID = 4
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
