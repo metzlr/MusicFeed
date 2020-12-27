@@ -202,6 +202,7 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = False
 # Compressor
 
 COMPRESS_PRECOMPILERS = [
+    ('text/x-sass', 'django_libsass.SassCompiler'),
     ('text/x-scss', 'django_libsass.SassCompiler'),
 ]
 
