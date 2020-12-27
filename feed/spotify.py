@@ -11,14 +11,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if (os.environ.get("DJANGO_DEVELOPMENT")):
     with open(os.path.join(BASE_DIR, "musicfeed/dev_config.json")) as config_file:
         config = json.load(config_file)
+        SPOTIPY_CLIENT_ID = config['SPOTIPY_CLIENT_ID']
+        SPOTIPY_CLIENT_SECRET = config['SPOTIPY_CLIENT_SECRET']
+        SPOTIPY_REDIRECT_URI = config['SPOTIPY_REDIRECT_URI']     
 else:
-    with open("/etc/config.json") as config_file:
-        config = json.load(config_file)
-
-
-SPOTIPY_CLIENT_ID = config['SPOTIPY_CLIENT_ID']
-SPOTIPY_CLIENT_SECRET = config['SPOTIPY_CLIENT_SECRET']
-SPOTIPY_REDIRECT_URI = 'https://musicfeed.info' #config['SPOTIPY_REDIRECT_URI']
+    # with open("/etc/config.json") as config_file:
+    #     config = json.load(config_file)
+    SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
+    SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
+    SPOTIPY_REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET))
 
