@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['musicfeed.info', '157.245.237.226', 'musicfeed-django.herokuapp.com']
+ALLOWED_HOSTS = ['musicfeed.info',  'musicfeed-django.herokuapp.com', 'www.musicfeed.info']
 
 
 # Application definition
@@ -206,10 +206,12 @@ COMPRESS_PRECOMPILERS = [
     ('text/x-scss', 'django_libsass.SassCompiler'),
 ]
 
+# Must set manually since using env variable for 'Debug' messes up this option (i.e. Deubg = 'True' sets this to 'True' when it should be True)
 LIBSASS_SOURCE_COMMENTS = False
+
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
-# LIBSASS_OUTPUT_STYLE = 'compressed'
+LIBSASS_OUTPUT_STYLE = 'compressed'
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
