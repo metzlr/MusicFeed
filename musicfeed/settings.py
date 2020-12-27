@@ -206,6 +206,7 @@ COMPRESS_PRECOMPILERS = [
     ('text/x-scss', 'django_libsass.SassCompiler'),
 ]
 
+LIBSASS_SOURCE_COMMENTS = False
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 # LIBSASS_OUTPUT_STYLE = 'compressed'
