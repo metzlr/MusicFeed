@@ -24,7 +24,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['musicfeed.info', '157.245.237.226']
+ALLOWED_HOSTS = ['musicfeed.info', '157.245.237.226', 'musicfeed-django.herokuapp.com']
 
 
 # Application definition
